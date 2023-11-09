@@ -4,10 +4,12 @@
     <!-- <item android:drawable="@color/splash_background" /> -->
 
     <!-- Your product logo - 144dp color version of your app icon -->
+
+
     <item>
         <bitmap
             android:src="@drawable/unimoney_splash"
             android:tileMode="disabled"
-            android:gravity="center" />
+            android:gravity="fill" />
     </item>
 </layer-list>
