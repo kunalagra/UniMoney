@@ -8,17 +8,20 @@
 import React from 'react';
 
 import {
+  Button,
   Image,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
   useColorScheme,
   View,
 } from 'react-native';
 
 import { images } from './constants';
+import GetStarted from './components/getstarted/GetStarted';
 
 
 function App() {
@@ -29,45 +32,7 @@ function App() {
         barStyle={'dark-content'}
         backgroundColor={"#fff"}
       />
-      <View style={{flex:1, backgroundColor: "#fff", justifyContent: "space-between", alignItems: "center"}}>
-        
-        <View style={{flexDirection: "row", justifyContent: "flex-end", width: "100%"}}>
-          <View style={{height: 150, aspectRatio: 0.79}}>
-            <Image
-              source={images.headerwave}
-              style={{
-                resizeMode:"cover",
-                height:'100%',
-                width:'100%'
-              }}
-            />
-          </View>
-        </View>
-
-        <View style={{borderWidth: 1, width: '100%', paddingLeft: 20}}>
-          <View>
-            <Text style={{color: "#282828", fontSize: 50, fontWeight: 'bold', lineHeight: 50}}>UNI {'\n'}MONEY</Text>
-          </View>
-          <View style={{marginTop: 10}}>
-            <Text style={{color: "#282828", fontSize: 15, fontWeight: 'bold'}}>Unify your finances, {'\n'}Simply your life</Text>
-          </View>
-        </View>
-
-        <View style={{width: "100%"}}>
-          <View style={{aspectRatio: 1.8}}>
-            <Image
-              source={images.wave_with_coin}
-              style={{
-                resizeMode:"cover",
-                height:'100%',
-                width:'100%'
-              }}
-            />
-          </View>
-          <View style={{width: '100%', height: 100, backgroundColor: "#00B899"}} />
-        </View>
-
-      </View>
+      <GetStarted />
     </SafeAreaView>
   );
 }
