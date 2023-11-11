@@ -30,6 +30,8 @@ const GetStarted = () => {
         </View>
         <View style={{marginTop: 10}}>
           <TouchableOpacity
+          activeOpacity={1}
+          underlayColor="Transparent"
             style={{
               backgroundColor: '#00B899',
               paddingHorizontal: 20,

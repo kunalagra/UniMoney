@@ -6,6 +6,8 @@
  */
 
 import React from 'react';
+import {NavigationContainer, useIsFocused} from "@react-navigation/native";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
 
 import {
   Button,
@@ -23,17 +25,27 @@ import {
 import { images } from './constants';
 import GetStarted from './components/getstarted/GetStarted';
 
+const Stack = createNativeStackNavigator();
+
 
 function App() {
 
   return (
-    <SafeAreaView style={{flex:1, backgroundColor: "#fff"}}>
+    <NavigationContainer>
       <StatusBar
-        barStyle={'dark-content'}
-        backgroundColor={"#fff"}
-      />
-      <GetStarted />
-    </SafeAreaView>
+      barStyle={'dark-content'}
+      backgroundColor={"#fff"}
+    />
+      <Stack.Navigator>
+        <Stack.Screen name="GetStarted" component={GetStarted} 
+        options={
+          {
+            headerShown: false,
+          }
+        }
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
