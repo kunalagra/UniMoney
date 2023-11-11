@@ -8,6 +8,7 @@
 import React from 'react';
 
 import {
+  Image,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -17,82 +18,71 @@ import {
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { images } from './constants';
 
-function Section({children, title}) {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
 
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <SafeAreaView style={{flex:1, backgroundColor: "#fff"}}>
       <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+        barStyle={'dark-content'}
+        backgroundColor={"#fff"}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Yay!!! Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+      <View style={{flex:1, backgroundColor: "#fff", justifyContent: "space-between", alignItems: "center"}}>
+        
+        <View style={{flexDirection: "row", justifyContent: "flex-end", width: "100%"}}>
+          <View style={{height: 150, aspectRatio: 0.79}}>
+            <Image
+              source={images.headerwave}
+              style={{
+                resizeMode:"cover",
+                height:'100%',
+                width:'100%'
+              }}
+            />
+          </View>
         </View>
-      </ScrollView>
+
+        <View style={{borderWidth: 1, width: '100%', paddingLeft: 20}}>
+          <View>
+            <Text style={{color: "#282828", fontSize: 50, fontWeight: 'bold', lineHeight: 50}}>UNI {'\n'}MONEY</Text>
+          </View>
+          <View style={{marginTop: 10}}>
+            <Text style={{color: "#282828", fontSize: 15, fontWeight: 'bold'}}>Unify your finances, {'\n'}Simply your life</Text>
+          </View>
+        </View>
+
+        <View style={{width: "100%"}}>
+          <View style={{aspectRatio: 1.8}}>
+            <Image
+              source={images.wave_with_coin}
+              style={{
+                resizeMode:"cover",
+                height:'100%',
+                width:'100%'
+              }}
+            />
+          </View>
+          <View style={{width: '100%', height: 100, backgroundColor: "#00B899"}} />
+        </View>
+
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+
+  main: {
+    backgroundColor: "#f3f4f8",
+  },
+  
+  text: {
+    color: "#282828"
+  },
+
+
   sectionContainer: {
     marginTop: 32,
     paddingHorizontal: 24,
