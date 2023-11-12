@@ -24,6 +24,7 @@ import {
 
 import { images } from './constants';
 import GetStarted from './components/getstarted/GetStarted';
+import Login from './components/login/Login';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,11 +39,14 @@ function App() {
     />
       <Stack.Navigator>
         <Stack.Screen name="GetStarted" component={GetStarted} 
-        options={
-          {
+        options={{
             headerShown: false,
-          }
-        }
+          }}
+        />
+        <Stack.Screen name="Login" component={Login} 
+        options={{
+          headerShown: false,
+        }}
         />
       </Stack.Navigator>
     </NavigationContainer>

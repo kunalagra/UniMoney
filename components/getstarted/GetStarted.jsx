@@ -1,7 +1,7 @@
 import {Text, Image, View, TouchableOpacity, StyleSheet} from 'react-native';
 import {images} from '../../constants';
 
-const GetStarted = () => {
+const GetStarted = (props) => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.headerWaveContainer}>
@@ -39,7 +39,9 @@ const GetStarted = () => {
               borderRadius: 8,
               shadowColor: '#000',
               elevation: 4,
-            }}>
+            }}
+            onPress={() => {props.navigation.navigate('Login')}}
+            >
             <Text style={styles.getStartedButton}>
               Get Started
             </Text>
