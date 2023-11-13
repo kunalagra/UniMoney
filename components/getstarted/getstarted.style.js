@@ -37,9 +37,9 @@ const styles = StyleSheet.create({
 
     tagline: {
         color: COLORS.gray3, 
-        fontSize: SIZES.medium, 
+        fontSize: SIZES.medium,
         fontFamily: FONT.bold
-      },
+    },
       
     getStartedButton: [
         {

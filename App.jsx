@@ -39,14 +39,14 @@ function App() {
     />
       <Stack.Navigator>
         <Stack.Screen name="GetStarted" component={GetStarted} 
-        options={{
+          options={{
             headerShown: false,
           }}
         />
         <Stack.Screen name="Login" component={Login} 
-        options={{
-          headerShown: false,
-        }}
+          options={{
+            headerShown: false,
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

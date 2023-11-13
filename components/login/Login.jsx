@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 
 import { View, Text, StyleSheet, TouchableOpacity, Image, TouchableHighlight, Button } from "react-native";
-import { images } from "../../constants";
+import { images, icons } from "../../constants";
 import { TextInput, IconButton } from "react-native-paper";
 import Icon from 'react-native-vector-icons/Ionicons';
-import icons from "../../constants/icons";
 
-const Login = () => {
+const Login = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passvis, setPassvis] = useState(true);
+
+    const { GoogleIcon } = icons;
+
     return (
         <View style={styles.mainContainer}>
             <View style={styles.frame}>
@@ -67,6 +69,7 @@ const Login = () => {
                                 marginTop: 10,
                                 alignSelf: 'center',
                             }}
+                            onPress={() => {props.navigation.navigate('Login')}}
                         >
                             <Text style={styles.logintext}>
                                 Login
@@ -95,12 +98,11 @@ const Login = () => {
                         }}
                     >
                         <View style={styles.googelbtu}>
-                            <Image 
-                                source={icons.google}
+                            <GoogleIcon
                                 height={20} 
                                 width={20} 
                                 style={{ alignSelf: 'center' }} 
-                            />
+                            ></GoogleIcon>
                             <Text style={{ color: "#000", fontSize: 13, fontWeight: "500", alignSelf: 'center' }}>Google</Text>
                         </View>
                     </TouchableHighlight>
