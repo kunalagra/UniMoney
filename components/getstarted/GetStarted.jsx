@@ -30,19 +30,12 @@ const GetStarted = (props) => {
         </View>
         <View style={{marginTop: 10}}>
           <TouchableOpacity
-          activeOpacity={1}
-          underlayColor="Transparent"
-            style={{
-              backgroundColor: '#00B899',
-              paddingHorizontal: 20,
-              paddingVertical: 8,
-              borderRadius: 8,
-              shadowColor: '#000',
-              elevation: 4,
-            }}
+            activeOpacity={1}
+            underlayColor="Transparent"
+            style={styles.getStartedButton}
             onPress={() => {props.navigation.navigate('Login')}}
             >
-            <Text style={styles.getStartedButton}>
+            <Text style={styles.getStartedButtonText}>
               Get Started
             </Text>
           </TouchableOpacity>
@@ -71,7 +64,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: 'center'
     },
 
     headerWaveContainer: {
@@ -103,13 +96,22 @@ const styles = StyleSheet.create({
     tagline: {
         color: '#282828', 
         fontSize: 15, 
-        fontFamily: 'DMSans-Regular'
-    },
-
+        fontFamily: 'DMSans-Bold'
+      },
+      
     getStartedButton: {
-        color: '#fff', 
-        fontSize: 17, 
-        fontWeight: 'bold'
+      backgroundColor: '#00B899',
+      paddingHorizontal: 20,
+      paddingVertical: 8,
+      borderRadius: 8,
+      shadowColor: '#000',
+      elevation: 4
+    },
+    
+    getStartedButtonText: {
+      color: '#fff', 
+      fontSize: 17, 
+      fontFamily: 'DMSans-Bold'
     },
 
     footerWaveContainer: {

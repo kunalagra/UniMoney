@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, TouchableHighlight, Bu
 import { images } from "../../constants";
 import { TextInput, IconButton } from "react-native-paper";
 import Icon from 'react-native-vector-icons/Ionicons';
-import Googleicon from '../../constants/icons/googleicon.svg';
+import icons from "../../constants/icons";
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -17,7 +17,7 @@ const Login = () => {
                     <View style={{ flexDirection: "column", alignItems: "center", gap: 17.2 }}>
                         <View style={styles.header}>
                             <Image
-                                source={images.logo}
+                                source={images.logo2}
                                 style={{
                                     resizeMode: 'cover',
                                     height: 48,
@@ -95,7 +95,12 @@ const Login = () => {
                         }}
                     >
                         <View style={styles.googelbtu}>
-                            <Googleicon height={20} width={20} style={{ alignSelf: 'center' }} />
+                            <Image 
+                                source={icons.google}
+                                height={20} 
+                                width={20} 
+                                style={{ alignSelf: 'center' }} 
+                            />
                             <Text style={{ color: "#000", fontSize: 13, fontWeight: "500", alignSelf: 'center' }}>Google</Text>
                         </View>
                     </TouchableHighlight>
