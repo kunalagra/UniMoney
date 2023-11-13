@@ -24,7 +24,9 @@ const COLORS = {
     lightblue1: "#CED6F9",
 
     purple1: "#8C52FF",
-    purple2: "#472A82"
+    purple2: "#472A82",
+
+    black: "#000000"
   };
   
   const FONT = {
@@ -43,6 +45,7 @@ const COLORS = {
     large: 20,
     xLarge: 24,
     xxLarge: 32,
+    xxxLarge: 48,
   };
   
   const SHADOWS = {

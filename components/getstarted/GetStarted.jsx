@@ -1,5 +1,6 @@
 import {Text, Image, View, TouchableOpacity, StyleSheet} from 'react-native';
 import {images} from '../../constants';
+import styles from './getstarted.style';
 
 const GetStarted = (props) => {
   return (
@@ -28,7 +29,7 @@ const GetStarted = (props) => {
             Unify your finances,{'\n'}Simply your life
           </Text>
         </View>
-        <View style={{marginTop: 10}}>
+        <View>
           <TouchableOpacity
             activeOpacity={1}
             underlayColor="Transparent"
@@ -58,76 +59,5 @@ const GetStarted = (props) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-    mainContainer: {
-        flex: 1,
-        backgroundColor: '#fff',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    },
-
-    headerWaveContainer: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        width: '100%',
-    },
-
-    headerWaveImage: {
-        height: 150, 
-        aspectRatio: 0.79
-    },
-
-    textContainer: {
-        width: '100%',
-        paddingLeft: 20,
-        alignItems: 'flex-start',
-        justifyContent: 'space-between',
-        gap: 10,
-    },
-
-    heading: {
-        color: '#282828',
-        fontSize: 50,
-        lineHeight: 50,
-        fontFamily: 'DMSans-Bold',
-    },
-
-    tagline: {
-        color: '#282828', 
-        fontSize: 15, 
-        fontFamily: 'DMSans-Bold'
-      },
-      
-    getStartedButton: {
-      backgroundColor: '#00B899',
-      paddingHorizontal: 20,
-      paddingVertical: 8,
-      borderRadius: 8,
-      shadowColor: '#000',
-      elevation: 4
-    },
-    
-    getStartedButtonText: {
-      color: '#fff', 
-      fontSize: 17, 
-      fontFamily: 'DMSans-Bold'
-    },
-
-    footerWaveContainer: {
-        width: '100%'
-    },
-
-    footerWaveImage: {
-        aspectRatio: 1.8
-    },
-
-    footerRectangle: {
-        width: '100%', 
-        height: 100, 
-        backgroundColor: '#00B899'
-    }
-
-})
 
 export default GetStarted;
