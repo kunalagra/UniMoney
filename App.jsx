@@ -22,9 +22,9 @@ import {
   View,
 } from 'react-native';
 
-import { images } from './constants';
 import GetStarted from './components/getstarted/GetStarted';
 import Login from './components/login/Login';
+import ProfileCreation from './components/profilecreation/ProfileCreation';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,9 +34,9 @@ function App() {
   return (
     <NavigationContainer>
       <StatusBar
-      barStyle={'dark-content'}
-      backgroundColor={"#fff"}
-    />
+        barStyle={'dark-content'}
+        backgroundColor={"#fff"}
+      />
       <Stack.Navigator>
         <Stack.Screen name="GetStarted" component={GetStarted} 
           options={{
@@ -44,6 +44,11 @@ function App() {
           }}
         />
         <Stack.Screen name="Login" component={Login} 
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="ProfileCreation" component={ProfileCreation} 
           options={{
             headerShown: false,
           }}

@@ -69,7 +69,7 @@ const Login = (props) => {
                                 marginTop: 10,
                                 alignSelf: 'center',
                             }}
-                            onPress={() => {props.navigation.navigate('Login')}}
+                            onPress={() => {props.navigation.navigate('ProfileCreation')}}
                         >
                             <Text style={styles.logintext}>
                                 Login

@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         color: COLORS.gray3,
         fontSize: SIZES.xxxLarge,
         lineHeight: 50,
-        fontFamily: FONT.bold,
+        fontFamily: FONT.bold2,
     },
 
     tagline: {
