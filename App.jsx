@@ -25,6 +25,7 @@ import {
 import GetStarted from './components/getstarted/GetStarted';
 import Login from './components/login/Login';
 import ProfileCreation from './components/profilecreation/ProfileCreation';
+import SignUp from './components/signup/SignUp';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,7 +38,11 @@ function App() {
         barStyle={'dark-content'}
         backgroundColor={"#fff"}
       />
-      <Stack.Navigator>
+      <Stack.Navigator
+       screenOptions={{
+        animation : 'slide_from_right',
+       }}
+      >
         <Stack.Screen name="GetStarted" component={GetStarted} 
           options={{
             headerShown: false,
@@ -49,6 +54,11 @@ function App() {
           }}
         />
         <Stack.Screen name="ProfileCreation" component={ProfileCreation} 
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="SignUp" component={SignUp} 
           options={{
             headerShown: false,
           }}

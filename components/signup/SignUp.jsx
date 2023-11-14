@@ -3,13 +3,14 @@ import React, { useState } from "react";
 import { View, Text, Image, TouchableHighlight } from "react-native";
 import { images, icons } from "../../constants";
 import { TextInput } from "react-native-paper";
-import styles from "./login.style";
+import { COLORS } from "../../constants";
+import styles from "./signup.style";
 
-const Login = (props) => {
+const SignUp = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passvis, setPassvis] = useState(true);
-
+    const [name, setName] = useState('');
     const { GoogleIcon } = icons;
 
     return (
@@ -31,15 +32,28 @@ const Login = (props) => {
                             </Text>
                         </View>
                         <TextInput style={styles.input}
-                            label="Email address"
+                            label="Your Name"
+                            value={name}
+                            onChangeText={(e) => { setName(e) }}
+                            mode="outlined"
+                            outlineColor="transparent"
+                            underlineColor="transparent"
+                            activeOutlineColor={COLORS.gray2}
+                            activeUnderlineColor={COLORS.white3}
+                            selectionColor={COLORS.main3}
+                            theme={{ roundness: 10, }}
+
+                        />
+                        <TextInput style={styles.input}
+                            label="Your Email address"
                             value={email}
                             onChangeText={(e) => { setEmail(e) }}
                             mode="outlined"
                             outlineColor="transparent"
                             underlineColor="transparent"
-                            activeOutlineColor="#444262"
-                            activeUnderlineColor="#EDEDED"
-                            selectionColor="#00B899"
+                            activeOutlineColor={COLORS.gray2}
+                            activeUnderlineColor={COLORS.white3}
+                            selectionColor={COLORS.main3}
                             theme={{ roundness: 10, }}
 
                         />
@@ -51,20 +65,20 @@ const Login = (props) => {
                             mode="outlined"
                             outlineColor="transparent"
                             underlineColor="transparent"
-                            activeOutlineColor="#444262"
-                            activeUnderlineColor="#EDEDED"
-                            selectionColor="#00B899"
+                            activeOutlineColor={COLORS.gray2}
+                            activeUnderlineColor={COLORS.white3}
+                            selectionColor={COLORS.main3}
                             theme={{ roundness: 10 }}
                             right={passvis ? <TextInput.Icon icon={'eye'} size={20} color={'#444262'} style={{ marginTop: 10 }} onPress={() => { setPassvis(false) }} /> : <TextInput.Icon icon={'eye-off'} size={20} color={'#444262'} style={{ marginTop: 10 }} onPress={() => { setPassvis(true) }} />}
 
                         />
                         <TouchableHighlight
-                            style={styles.loginbtu}
+                            style={styles.signupbtu}
                             onPress={() => { props.navigation.navigate('ProfileCreation') }}
                             underlayColor='#1DE2C1'
                         >
-                            <Text style={styles.logintext}>
-                                Login
+                            <Text style={styles.signuptext}>
+                                SignUp
                             </Text>
 
                         </TouchableHighlight>
@@ -90,8 +104,8 @@ const Login = (props) => {
                     </TouchableHighlight>
                 </View>
                 <Text style={styles.acctext}
-                    onPress={() => { props.navigation.navigate('SignUp') }}
-                >New to UniMoney? Create an Account</Text>
+                    onPress={() => { props.navigation.navigate('Login') }}
+                >Already had an account? Log in</Text>
 
             </View>
         </View>
@@ -99,4 +113,4 @@ const Login = (props) => {
 };
 
 
-export default Login;
+export default SignUp;
