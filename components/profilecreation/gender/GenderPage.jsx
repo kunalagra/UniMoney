@@ -32,6 +32,7 @@ const GenderPage = ({ selectedGender, setSelectedGender }) => {
                     title1={'About you'}
                     title2={'Select your Gender'}
                     progress={'50%'}
+                    currentPageNum={1}
                     first={true}
                 />
 

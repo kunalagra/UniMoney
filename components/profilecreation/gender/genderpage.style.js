@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
         borderRadius: 8, 
         borderWidth: 2, 
         borderColor: selectedGender===gender? COLORS.main3 : COLORS.white4, 
-        gap: 10, 
         opacity: selectedGender===gender? 1 : 1
     }),
 
@@ -50,6 +49,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center', 
         alignItems: 'center', 
         borderRadius: 100, 
+        marginBottom: 10,
     }),
 
     cardTitle: {
@@ -57,15 +57,12 @@ const styles = StyleSheet.create({
         fontFamily: FONT.regular
     },
 
-    buttonContainer: [
-        {
-            marginTop: 20,
-            backgroundColor: COLORS.main3,
-            paddingVertical: 12,
-            borderRadius: 8,
-        },
-        SHADOWS.small
-    ],
+    buttonContainer: {
+        marginTop: 20,
+        backgroundColor: COLORS.main3,
+        paddingVertical: 12,
+        borderRadius: 8,
+    },
 
     buttonTitle: {
         color: COLORS.white1, 

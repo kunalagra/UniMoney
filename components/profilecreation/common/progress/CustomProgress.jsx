@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import styles from "./customprogress.style";
 
-const CustomProgress = ({ progress, title1, title2, title3 = "", first = false }) => {
+const CustomProgress = ({ progress, currentPageNum, title1, title2, title3 = "", first = false }) => {
     return (
         <View style={styles.container}>
             <View style={styles.progressbar}>
@@ -10,7 +10,7 @@ const CustomProgress = ({ progress, title1, title2, title3 = "", first = false }
                 <View style={styles.prevProgress(first)} />
                 
                 <View style={styles.currentPage} >
-                    <Text style={styles.currentPageNo}>1</Text>
+                    <Text style={styles.currentPageNum}>{currentPageNum}</Text>
                 </View>
 
                 <View style={styles.currentProgressContainer}>

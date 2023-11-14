@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
 
-    currentPageNo: {
+    currentPageNum: {
         color: COLORS.white1, 
         fontSize: SIZES.xSmall,
         fontFamily: FONT.regular
@@ -71,20 +71,24 @@ const styles = StyleSheet.create({
     },
     
     currentPageTitle: {
+        textAlign: 'center',
         color: COLORS.gray3, 
         fontSize: SIZES.small,
         fontFamily: FONT.regular
     },
     
     currentPageTitle2: {
+        textAlign: 'center',
         color: COLORS.gray3, 
         fontSize: SIZES.medium,
         fontFamily: FONT.regular
     },
     
     currentPageTitle3: {
+        marginTop: 5,
+        textAlign: 'center',
         color: COLORS.gray3, 
-        fontSize: SIZES.regular,
+        fontSize: SIZES.small,
         fontFamily: FONT.regular
     },
 
