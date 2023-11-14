@@ -21,7 +21,7 @@ const GenderCard = ({Icon, gender, selectedGender, setSelectedGender}) => {
     )
 }
 
-const GenderPage = ({ selectedGender, setSelectedGender }) => {
+const GenderPage = ({ selectedGender, setSelectedGender, setCurrentScreen }) => {
 
     const { MaleIcon, FemaleIcon, TransgenderIcon } = icons;
 
@@ -61,6 +61,7 @@ const GenderPage = ({ selectedGender, setSelectedGender }) => {
                         <TouchableOpacity
                             style={styles.buttonContainer}
                             activeOpacity={0.6}
+                            onPress={() => setCurrentScreen(1)}
                         >
                             <Text style={styles.buttonTitle}>Continue</Text>
                         </TouchableOpacity>

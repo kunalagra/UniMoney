@@ -28,7 +28,7 @@ const GoalCard = ({goal, title, selectedGoals, setGoals}) => {
     )
 }
 
-const GoalsPage = ({ goals, selectedGoals, setGoals }) => {
+const GoalsPage = ({ goals, selectedGoals, setGoals, printData }) => {
 
     return (
         <View style={styles.container}>
@@ -65,6 +65,7 @@ const GoalsPage = ({ goals, selectedGoals, setGoals }) => {
                         <TouchableOpacity
                             style={styles.buttonContainer}
                             activeOpacity={0.6}
+                            onPress={() => printData()}
                         >
                             <Text style={styles.buttonTitle}>Continue</Text>
                         </TouchableOpacity>

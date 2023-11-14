@@ -16,7 +16,7 @@ const AgeCard = ({ageGroup, selectedAgeGroup, setAgeGroup}) => {
     )
 }
 
-const AgePage = ({ selectedAgeGroup, setAgeGroup }) => {
+const AgePage = ({ selectedAgeGroup, setAgeGroup, setCurrentScreen }) => {
 
     return (
         <View style={styles.container}>
@@ -63,6 +63,7 @@ const AgePage = ({ selectedAgeGroup, setAgeGroup }) => {
                         <TouchableOpacity
                             style={styles.buttonContainer}
                             activeOpacity={0.6}
+                            onPress={() => setCurrentScreen(2)}
                         >
                             <Text style={styles.buttonTitle}>Continue</Text>
                         </TouchableOpacity>
