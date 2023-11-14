@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, FONT, SHADOWS } from "../../../constants";
+import { COLORS, FONT, SIZES } from "../../../constants";
 
 
 const styles = StyleSheet.create({
@@ -19,33 +19,34 @@ const styles = StyleSheet.create({
     },
 
     cardsContainer: {
-        gap: 10
+        width: '100%',
+        padding: 20,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        columnGap: 10,
+        rowGap: 15
     },
 
-    goalCardContainer: (goalSelected) => ({
-        width: '100%', 
-        height: 60, 
-        justifyContent: 'space-between', 
-        flexDirection: 'row',
+    categoryCardContainer: {
+        justifyContent: 'center',
         alignItems: 'center', 
-        borderRadius: 8, 
-        borderWidth: 2, 
-        borderColor: goalSelected===1? COLORS.main3 : COLORS.white4,  
-    }),
+        borderRadius: 8
+    },
 
-    cardBackground: (goalSelected) => ({
-        width: '100%', 
-        height: '100%', 
-        position: 'absolute', 
-        opacity: goalSelected===1? 0.3 : 1,
-        backgroundColor: goalSelected===1? COLORS.main3 : COLORS.white3,
-        borderRadius: 8, 
+    categoryImageContainer: (categorySelected) => ({
+        width: 55, 
+        height: 55, 
+        padding: 5, 
+        backgroundColor: categorySelected===1? COLORS.orange1 : COLORS.white2, 
+        borderRadius: 12
     }),
 
     cardTitle: {
-        marginLeft: 20,
         color: COLORS.gray3,
         fontFamily: FONT.regular,
+        fontSize: SIZES.small
     },
 
     buttonsContainer: {

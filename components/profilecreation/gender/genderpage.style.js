@@ -33,13 +33,14 @@ const styles = StyleSheet.create({
         borderColor: selectedGender===gender? COLORS.main3 : COLORS.white4, 
         opacity: selectedGender===gender? 1 : 1
     }),
-
+    
     cardBackground: (selectedGender, gender) => ({
         width: '100%', 
         height: '100%', 
         position: 'absolute', 
         opacity: selectedGender===gender? 0.3 : 1,
         backgroundColor: selectedGender===gender? COLORS.main3 : COLORS.white3,
+        borderRadius: 8, 
     }),
 
     iconContainer: (selectedGender, gender) => ({

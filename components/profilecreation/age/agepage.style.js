@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
         position: 'absolute', 
         opacity: selectedAgeGroup===ageGroup? 0.3 : 1,
         backgroundColor: selectedAgeGroup===ageGroup? COLORS.main3 : COLORS.white3,
+        borderRadius: 8, 
     }),
 
     cardTitle: {

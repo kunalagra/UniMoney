@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, FONT, SHADOWS } from "../../../constants";
+import { COLORS, FONT, SIZES } from "../../../constants";
 
 
 const styles = StyleSheet.create({
@@ -19,28 +19,19 @@ const styles = StyleSheet.create({
     },
 
     cardsContainer: {
-        gap: 10
+        gap: 10,
+        justifyContent: 'center',
     },
 
-    goalCardContainer: (goalSelected) => ({
+    categoryCardContainer: {
         width: '100%', 
-        height: 60, 
-        justifyContent: 'space-between', 
-        flexDirection: 'row',
+        padding: 10,
+        justifyContent: 'center',
         alignItems: 'center', 
         borderRadius: 8, 
         borderWidth: 2, 
-        borderColor: goalSelected===1? COLORS.main3 : COLORS.white4,  
-    }),
-
-    cardBackground: (goalSelected) => ({
-        width: '100%', 
-        height: '100%', 
-        position: 'absolute', 
-        opacity: goalSelected===1? 0.3 : 1,
-        backgroundColor: goalSelected===1? COLORS.main3 : COLORS.white3,
-        borderRadius: 8, 
-    }),
+        borderColor: COLORS.white4,  
+    },
 
     cardTitle: {
         marginLeft: 20,
@@ -48,12 +39,21 @@ const styles = StyleSheet.create({
         fontFamily: FONT.regular,
     },
 
-    buttonsContainer: {
-        marginTop: 20,
-        gap: 5
+    sliderTitlesContainer: {
+        width: '100%', 
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        alignItems: 'center'
+    },
+
+    sliderTitle: {
+        color: COLORS.gray3, 
+        fontFamily: FONT.regular, 
+        fontSize: SIZES.small
     },
 
     buttonContainer: {
+        marginTop: 20,
         backgroundColor: COLORS.main3,
         paddingVertical: 12,
         borderRadius: 8,

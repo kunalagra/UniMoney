@@ -1,56 +1,55 @@
-import {Text, View, TouchableOpacity, ScrollView } from 'react-native';
-import styles from './goalspage.style';
+import {Text, View, TouchableOpacity, ScrollView, Image } from 'react-native';
+import styles from './spendingcategoriespage.style';
 import CustomProgress from '../common/progress/CustomProgress';
-import { Checkbox } from 'react-native-paper';
 import { COLORS } from '../../../constants';
 
-const GoalCard = ({goal, title, selectedGoals, setGoals}) => {
+const CategoryCard = ({title, category, image, selectedCategories, setCategories}) => {
     return (
         <TouchableOpacity 
-            style={styles.goalCardContainer(selectedGoals[goal])}
+            style={styles.categoryCardContainer}
             onPress={() => {
-                let tmp = [...selectedGoals];
-                tmp[goal] = selectedGoals[goal]===1? 0 : 1;
-                setGoals([...tmp]);
+                let tmp = [...selectedCategories];
+                tmp[category] = selectedCategories[category]===1? 0 : 1;
+                setCategories([...tmp]);
             }}
             activeOpacity={0.6}
         >
-            <View style={styles.cardBackground(selectedGoals[goal])}/>
-
+            <View style={styles.categoryImageContainer(selectedCategories[category])}>
+                <Image
+                    source={image}
+                    alt={title}
+                    style={{width: '100%', height: '100%'}}
+                />
+            </View>
             <Text style={styles.cardTitle}>{title}</Text>
-
-            <Checkbox 
-                status={selectedGoals[goal]===1? 'checked' : 'unchecked'}
-                color={COLORS.main3}
-                uncheckedColor={COLORS.white4}
-            />
         </TouchableOpacity>
     )
 }
 
-const GoalsPage = ({ goals, selectedGoals, setGoals, setCurrentScreen }) => {
+const SpendingCategoriesPage = ({ categories, selectedCategories, setCategories, setCurrentScreen }) => {
 
     return (
         <View style={styles.container}>
             <View style={styles.mainContainer}>
                 <CustomProgress
-                    title1={'Aspiration'}
-                    title2={'What are your goals?'}
-                    title3={'Choose up to 3 goals for more precise personlization'}
+                    title1={'Conservation'}
+                    title2={'Where you spend the most?'}
+                    title3={'Choose at least one category'}
                     progress={'50%'}
-                    currentPageNum={2}
+                    currentPageNum={3}
                 />
 
                 <View style={styles.bottomContainer}>
                     <ScrollView style={{width: '100%', height: 380}}>
                         <View style={styles.cardsContainer}>
-                            {goals.map((title, index) => (
-                                <GoalCard
+                            {categories.map((category, index) => (
+                                <CategoryCard
                                     key={index}
-                                    goal={index}
-                                    title={title}
-                                    selectedGoals={selectedGoals}
-                                    setGoals={setGoals}
+                                    category={index}
+                                    title={category.name}
+                                    image={category.image}
+                                    selectedCategories={selectedCategories}
+                                    setCategories={setCategories}
                                 />
                             ))}
                         </View>
@@ -59,14 +58,13 @@ const GoalsPage = ({ goals, selectedGoals, setGoals, setCurrentScreen }) => {
                         <TouchableOpacity
                             style={[styles.buttonContainer, { backgroundColor: COLORS.gray1 }]}
                             activeOpacity={0.6}
-                            onPress={() => setCurrentScreen(4)}
                         >
                             <Text style={styles.buttonTitle}>Skip</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.buttonContainer}
                             activeOpacity={0.6}
-                            onPress={() => setCurrentScreen(3)}
+                            onPress={() => setCurrentScreen(5)}
                         >
                             <Text style={styles.buttonTitle}>Continue</Text>
                         </TouchableOpacity>
@@ -77,4 +75,4 @@ const GoalsPage = ({ goals, selectedGoals, setGoals, setCurrentScreen }) => {
     )
 }
 
-export default GoalsPage;
+export default SpendingCategoriesPage;
