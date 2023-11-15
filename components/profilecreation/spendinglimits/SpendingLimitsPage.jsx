@@ -4,11 +4,12 @@ import {Text, View, TouchableOpacity, ScrollView, SafeAreaView, StatusBar } from
 import styles from './spendinglimitspage.style';
 import CustomProgress from '../common/progress/CustomProgress';
 import Slider from 'react-native-slider';
-import { COLORS } from '../../../constants';
+import { COLORS, icons } from '../../../constants';
 import { useEffect, useState } from 'react';
-import { spendingCategories } from '../../../utils';
+import { moneyTextHelper, spendingCategories } from '../../../utils';
+import { TextInput } from 'react-native-paper';
 
-const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesLimits}) => {
+const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesLimits, maxLimit}) => {
 
     const [value, setValue] = useState(1000);
 
@@ -28,7 +29,7 @@ const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesL
                     }} 
                     step={100}
                     minimumValue={1000}
-                    maximumValue={10000}
+                    maximumValue={Math.max(Math.min(100000, Number(maxLimit)), 10000)}
                     maximumTrackTintColor={COLORS.white4}
                     minimumTrackTintColor={COLORS.main3}
                     thumbTintColor={COLORS.white1}
@@ -39,7 +40,7 @@ const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesL
 
             <View style={styles.sliderTitlesContainer}>
                 <Text style={styles.sliderTitle}>₹ 1,000</Text>
-                <Text style={styles.sliderTitle}>₹ 10,000</Text>
+                <Text style={styles.sliderTitle}>₹ {moneyTextHelper(Math.max(Math.min(100000, maxLimit), 10000))}</Text>
             </View>
 
             <Text style={styles.cardTitle}>Adjusted limit: ₹ {value}</Text>
@@ -53,6 +54,8 @@ const SpendingLimitsPage = (props) => {
     const categories = [...spendingCategories];
     const selectedCategories = [0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0];
     const [selectedCategoriesLimits, setCategoriesLimits] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    const [maxLimit, setMaxLimit] = useState('');
+    const { WalletIcon } = icons;
 
     const [currentCategories, setCurrentCategories] = useState([]);
     useEffect(() => {
@@ -80,7 +83,26 @@ const SpendingLimitsPage = (props) => {
                     />
 
                     <View style={styles.bottomContainer}>
-                        <ScrollView style={{width: '100%', height: 480}}>
+
+                        <View style={{marginBottom: 20}}>
+                            <TextInput 
+                                style={styles.input}
+                                label="Max Limit (By default: ₹ 10,000)"
+                                value={maxLimit}
+                                onChangeText={(val) => { setMaxLimit(val) }}
+                                mode="outlined"
+                                outlineColor="transparent"
+                                underlineColor="transparent"
+                                activeOutlineColor={COLORS.gray2}
+                                activeUnderlineColor={COLORS.white3}
+                                selectionColor={COLORS.gray2}
+                                theme={{ roundness: 10 }}
+                                left={<TextInput.Icon icon={'wallet'} size={20} color={COLORS.gray2} style={{ marginTop: 15 }} />}
+                                
+                            />
+                        </View>
+
+                        <ScrollView style={{width: '100%', height: 400}}>
                             <View style={styles.cardsContainer}>
                                 {currentCategories.map((index) => (
                                     <CategoryCard
@@ -89,6 +111,7 @@ const SpendingLimitsPage = (props) => {
                                         title={categories[index].name}
                                         selectedCategoriesLimits={selectedCategoriesLimits}
                                         setCategoriesLimits={setCategoriesLimits}
+                                        maxLimit={maxLimit}
                                     />
                                 ))}
                             </View>

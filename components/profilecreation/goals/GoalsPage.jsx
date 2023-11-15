@@ -4,6 +4,7 @@ import CustomProgress from '../common/progress/CustomProgress';
 import { Checkbox } from 'react-native-paper';
 import { COLORS } from '../../../constants';
 import { useState } from 'react';
+import { userGoals } from '../../../utils';
 
 const GoalCard = ({goal, title, selectedGoals, setGoals}) => {
     return (
@@ -31,7 +32,7 @@ const GoalCard = ({goal, title, selectedGoals, setGoals}) => {
 
 const GoalsPage = (props) => {
 
-    const goals = ['Win at work', 'Have more money', 'Be productive', 'Build strong family', 'Have a healthy body', 'Love & be loved', 'Be happy', 'Improve social life'];
+    const goals = [...userGoals];
     const [selectedGoals, setGoals] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
 
     return (

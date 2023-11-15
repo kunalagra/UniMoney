@@ -70,3 +70,25 @@ export const spendingCategories = [
         image: images.travel
     },
 ];
+
+
+export const userGoals = ['Win at work', 'Have more money', 'Be productive', 'Build strong family', 'Have a healthy body', 'Love & be loved', 'Be happy', 'Improve social life'];
+
+export const moneyTextHelper = (money) => {
+    let resMoney = "";
+    let i = 0;
+    while (money > 0) {
+        resMoney += (money%10).toString();
+        i += 1;
+        if (i===3) {
+            i = 0;
+            resMoney += ',';
+        };
+        money = Math.floor(money / 10);
+    }
+
+    let res = resMoney.split('');
+    if (res[res.length - 1]===',') res.pop();
+
+    return res.reverse().join('');
+}

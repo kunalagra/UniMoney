@@ -6,6 +6,7 @@ import CustomProgress from '../common/progress/CustomProgress';
 import Slider from 'react-native-slider';
 import { COLORS } from '../../../constants';
 import { useEffect, useState } from 'react';
+import { userGoals } from '../../../utils';
 
 const GoalCard = ({goal, title, selectedGoalsProgress, setGoalsProgress}) => {
 
@@ -47,7 +48,7 @@ const GoalCard = ({goal, title, selectedGoalsProgress, setGoalsProgress}) => {
 
 const GoalsProgressPage = (props) => {
 
-    const goals = ['Win at work', 'Have more money', 'Be productive', 'Build strong family', 'Have a healthy body', 'Love & be loved', 'Be happy', 'Improve social life'];
+    const goals = [...userGoals];
     const [selectedGoalsProgress, setGoalsProgress] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
     const selectedGoals = [0, 1, 0, 0, 1, 1, 0, 0];
 

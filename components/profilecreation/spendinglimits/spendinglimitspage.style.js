@@ -4,7 +4,8 @@ import { COLORS, FONT, SIZES } from "../../../constants";
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: COLORS.white2
+        backgroundColor: COLORS.white2,
+        justifyContent: 'space-between'
     },
 
     mainContainer: {
@@ -12,6 +13,15 @@ const styles = StyleSheet.create({
         width: '100%', 
         justifyContent: 'space-between', 
         paddingTop: 10
+    },
+
+    input: {
+        backgroundColor: COLORS.white3,
+        alignSelf: 'center',
+        width: '100%',
+        height: 45,
+        fontSize: SIZES.small,
+        fontFamily: FONT.regular
     },
 
     bottomContainer: {
