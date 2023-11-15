@@ -60,7 +60,7 @@ const Login = (props) => {
                         />
                         <TouchableHighlight
                             style={styles.loginbtu}
-                            onPress={() => { props.navigation.navigate('ProfileCreation') }}
+                            onPress={() => { props.navigation.navigate('GenderPage') }}
                             underlayColor='#1DE2C1'
                         >
                             <Text style={styles.logintext}>

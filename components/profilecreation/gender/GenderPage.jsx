@@ -1,7 +1,8 @@
-import {Text, View, TouchableOpacity } from 'react-native';
+import {Text, View, TouchableOpacity, SafeAreaView, StatusBar } from 'react-native';
 import { COLORS, icons } from '../../../constants';
 import styles from './genderpage.style';
 import CustomProgress from '../common/progress/CustomProgress';
+import { useState } from 'react';
 
 const GenderCard = ({Icon, gender, selectedGender, setSelectedGender}) => {
     return (
@@ -21,54 +22,62 @@ const GenderCard = ({Icon, gender, selectedGender, setSelectedGender}) => {
     )
 }
 
-const GenderPage = ({ selectedGender, setSelectedGender, setCurrentScreen }) => {
+const GenderPage = (props) => {
+
+    const [selectedGender, setSelectedGender] = useState('Male');
 
     const { MaleIcon, FemaleIcon, TransgenderIcon } = icons;
 
     return (
-        <View style={styles.container}>
-            <View style={styles.mainContainer}>
-                <CustomProgress
-                    title1={'About you'}
-                    title2={'Select your Gender'}
-                    progress={'50%'}
-                    currentPageNum={1}
-                    first={true}
-                />
+        <SafeAreaView style={{backgroundColor: COLORS.white2}}>
+            <StatusBar
+                barStyle={'dark-content'}
+                backgroundColor={COLORS.white2}
+            />
+            <View style={styles.container}>
+                <View style={styles.mainContainer}>
+                    <CustomProgress
+                        title1={'About you'}
+                        title2={'Select your Gender'}
+                        progress={'50%'}
+                        currentPageNum={1}
+                        first={true}
+                    />
 
-                <View style={styles.bottomContainer}>
-                    <View style={styles.cardsContainer}>
-                        <GenderCard 
-                            Icon={MaleIcon} 
-                            gender={"Male"} 
-                            selectedGender={selectedGender} 
-                            setSelectedGender={setSelectedGender}
+                    <View style={styles.bottomContainer}>
+                        <View style={styles.cardsContainer}>
+                            <GenderCard 
+                                Icon={MaleIcon} 
+                                gender={"Male"} 
+                                selectedGender={selectedGender} 
+                                setSelectedGender={setSelectedGender}
+                                />
+                            <GenderCard 
+                                Icon={FemaleIcon} 
+                                gender={"Female"} 
+                                selectedGender={selectedGender} 
+                                setSelectedGender={setSelectedGender}
+                                />
+                            <GenderCard 
+                                Icon={TransgenderIcon} 
+                                gender={"Other"} 
+                                selectedGender={selectedGender} 
+                                setSelectedGender={setSelectedGender}
                             />
-                        <GenderCard 
-                            Icon={FemaleIcon} 
-                            gender={"Female"} 
-                            selectedGender={selectedGender} 
-                            setSelectedGender={setSelectedGender}
-                            />
-                        <GenderCard 
-                            Icon={TransgenderIcon} 
-                            gender={"Other"} 
-                            selectedGender={selectedGender} 
-                            setSelectedGender={setSelectedGender}
-                        />
-                    </View>
-                    <View>
-                        <TouchableOpacity
-                            style={styles.buttonContainer}
-                            activeOpacity={0.6}
-                            onPress={() => setCurrentScreen(1)}
-                        >
-                            <Text style={styles.buttonTitle}>Continue</Text>
-                        </TouchableOpacity>
+                        </View>
+                        <View>
+                            <TouchableOpacity
+                                style={styles.buttonContainer}
+                                activeOpacity={0.6}
+                                onPress={() => { props.navigation.navigate('AgePage') }}
+                            >
+                                <Text style={styles.buttonTitle}>Continue</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </View>
-        </View>
+        </SafeAreaView>
     )
 }
 

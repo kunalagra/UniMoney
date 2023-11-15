@@ -31,7 +31,7 @@ const GetStarted = (props) => {
         </View>
         <View>
           <TouchableOpacity
-            activeOpacity={1}
+            activeOpacity={0.6}
             underlayColor="Transparent"
             style={styles.getStartedButton}
             onPress={() => {props.navigation.navigate('Login')}}

@@ -1,7 +1,9 @@
-import {Text, View, TouchableOpacity, ScrollView, Image } from 'react-native';
+import {Text, View, TouchableOpacity, ScrollView, Image, SafeAreaView, StatusBar } from 'react-native';
 import styles from './spendingcategoriespage.style';
 import CustomProgress from '../common/progress/CustomProgress';
 import { COLORS } from '../../../constants';
+import { useState } from 'react';
+import { spendingCategories } from '../../../utils';
 
 const CategoryCard = ({title, category, image, selectedCategories, setCategories}) => {
     return (
@@ -26,52 +28,62 @@ const CategoryCard = ({title, category, image, selectedCategories, setCategories
     )
 }
 
-const SpendingCategoriesPage = ({ categories, selectedCategories, setCategories, setCurrentScreen }) => {
+const SpendingCategoriesPage = (props) => {
+
+    const categories = [...spendingCategories];
+    const [selectedCategories, setCategories] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 
     return (
-        <View style={styles.container}>
-            <View style={styles.mainContainer}>
-                <CustomProgress
-                    title1={'Conservation'}
-                    title2={'Where you spend the most?'}
-                    title3={'Choose at least one category'}
-                    progress={'50%'}
-                    currentPageNum={3}
-                />
+        <SafeAreaView style={{backgroundColor: COLORS.white2}}>
+            <StatusBar
+                barStyle={'dark-content'}
+                backgroundColor={COLORS.white2}
+            />
+            <View style={styles.container}>
+                <View style={styles.mainContainer}>
+                    <CustomProgress
+                        title1={'Conservation'}
+                        title2={'Where you spend the most?'}
+                        title3={'Choose at least one category'}
+                        progress={'50%'}
+                        currentPageNum={3}
+                    />
 
-                <View style={styles.bottomContainer}>
-                    <ScrollView style={{width: '100%', height: 380}}>
-                        <View style={styles.cardsContainer}>
-                            {categories.map((category, index) => (
-                                <CategoryCard
-                                    key={index}
-                                    category={index}
-                                    title={category.name}
-                                    image={category.image}
-                                    selectedCategories={selectedCategories}
-                                    setCategories={setCategories}
-                                />
-                            ))}
+                    <View style={styles.bottomContainer}>
+                        <ScrollView style={{width: '100%', height: 380}}>
+                            <View style={styles.cardsContainer}>
+                                {categories.map((category, index) => (
+                                    <CategoryCard
+                                        key={index}
+                                        category={index}
+                                        title={category.name}
+                                        image={category.image}
+                                        selectedCategories={selectedCategories}
+                                        setCategories={setCategories}
+                                    />
+                                ))}
+                            </View>
+                        </ScrollView>
+                        <View style={styles.buttonsContainer}>
+                            <TouchableOpacity
+                                style={[styles.buttonContainer, { backgroundColor: COLORS.gray1 }]}
+                                activeOpacity={0.6}
+                                onPress={() => { props.navigation.navigate('SpendingLimitsPage') }}
+                            >
+                                <Text style={styles.buttonTitle}>Skip</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.buttonContainer}
+                                activeOpacity={0.6}
+                                onPress={() => { props.navigation.navigate('SpendingLimitsPage') }}
+                            >
+                                <Text style={styles.buttonTitle}>Continue</Text>
+                            </TouchableOpacity>
                         </View>
-                    </ScrollView>
-                    <View style={styles.buttonsContainer}>
-                        <TouchableOpacity
-                            style={[styles.buttonContainer, { backgroundColor: COLORS.gray1 }]}
-                            activeOpacity={0.6}
-                        >
-                            <Text style={styles.buttonTitle}>Skip</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.buttonContainer}
-                            activeOpacity={0.6}
-                            onPress={() => setCurrentScreen(5)}
-                        >
-                            <Text style={styles.buttonTitle}>Continue</Text>
-                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
-        </View>
+        </SafeAreaView>
     )
 }
 

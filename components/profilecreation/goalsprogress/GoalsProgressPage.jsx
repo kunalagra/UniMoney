@@ -1,4 +1,6 @@
-import {Text, View, TouchableOpacity, ScrollView } from 'react-native';
+'use strict'
+
+import {Text, View, TouchableOpacity, ScrollView, SafeAreaView, StatusBar } from 'react-native';
 import styles from './goalsprogresspage.style';
 import CustomProgress from '../common/progress/CustomProgress';
 import Slider from 'react-native-slider';
@@ -43,7 +45,11 @@ const GoalCard = ({goal, title, selectedGoalsProgress, setGoalsProgress}) => {
     )
 }
 
-const GoalsProgressPage = ({ goals, selectedGoals, selectedGoalsProgress, setGoalsProgress, setCurrentScreen }) => {
+const GoalsProgressPage = (props) => {
+
+    const goals = ['Win at work', 'Have more money', 'Be productive', 'Build strong family', 'Have a healthy body', 'Love & be loved', 'Be happy', 'Improve social life'];
+    const [selectedGoalsProgress, setGoalsProgress] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
+    const selectedGoals = [0, 1, 0, 0, 1, 1, 0, 0];
 
     const [currentGoals, setCurrentGoals] = useState([]);
     useEffect(() => {
@@ -56,41 +62,47 @@ const GoalsProgressPage = ({ goals, selectedGoals, selectedGoalsProgress, setGoa
     }, []);
 
     return (
-        <View style={styles.container}>
-            <View style={styles.mainContainer}>
-                <CustomProgress
-                    title1={'Aspiration'}
-                    title2={'What are your progress in these goals so far?'}
-                    progress={'100%'}
-                    currentPageNum={2}
-                />
+        <SafeAreaView style={{backgroundColor: COLORS.white2}}>
+            <StatusBar
+                barStyle={'dark-content'}
+                backgroundColor={COLORS.white2}
+            />
+            <View style={styles.container}>
+                <View style={styles.mainContainer}>
+                    <CustomProgress
+                        title1={'Aspiration'}
+                        title2={'What are your progress in these goals so far?'}
+                        progress={'100%'}
+                        currentPageNum={2}
+                    />
 
-                <View style={styles.bottomContainer}>
-                    <ScrollView style={{width: '100%', height: 480}}>
-                        <View style={styles.cardsContainer}>
-                            {currentGoals.map((index) => (
-                                <GoalCard
-                                    key={index}
-                                    goal={index}
-                                    title={goals[index]}
-                                    selectedGoalsProgress={selectedGoalsProgress}
-                                    setGoalsProgress={setGoalsProgress}
-                                />
-                            ))}
+                    <View style={styles.bottomContainer}>
+                        <ScrollView style={{width: '100%', height: 480}}>
+                            <View style={styles.cardsContainer}>
+                                {currentGoals.map((index) => (
+                                    <GoalCard
+                                        key={index}
+                                        goal={index}
+                                        title={goals[index]}
+                                        selectedGoalsProgress={selectedGoalsProgress}
+                                        setGoalsProgress={setGoalsProgress}
+                                    />
+                                ))}
+                            </View>
+                        </ScrollView>
+                        <View>
+                            <TouchableOpacity
+                                style={styles.buttonContainer}
+                                activeOpacity={0.6}
+                                onPress={() => { props.navigation.navigate('SpendingCategoriesPage') }}
+                            >
+                                <Text style={styles.buttonTitle}>Continue</Text>
+                            </TouchableOpacity>
                         </View>
-                    </ScrollView>
-                    <View>
-                        <TouchableOpacity
-                            style={styles.buttonContainer}
-                            activeOpacity={0.6}
-                            onPress={() => setCurrentScreen(4)}
-                        >
-                            <Text style={styles.buttonTitle}>Continue</Text>
-                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
-        </View>
+        </SafeAreaView>
     )
 }
 

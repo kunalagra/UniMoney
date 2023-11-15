@@ -1,11 +1,12 @@
 'use strict'
 
-import {Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import {Text, View, TouchableOpacity, ScrollView, SafeAreaView, StatusBar } from 'react-native';
 import styles from './spendinglimitspage.style';
 import CustomProgress from '../common/progress/CustomProgress';
 import Slider from 'react-native-slider';
 import { COLORS } from '../../../constants';
 import { useEffect, useState } from 'react';
+import { spendingCategories } from '../../../utils';
 
 const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesLimits}) => {
 
@@ -47,7 +48,11 @@ const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesL
     )
 }
 
-const SpendingLimitsPage = ({ categories, selectedCategories, selectedCategoriesLimits, setCategoriesLimits, printData }) => {
+const SpendingLimitsPage = (props) => {
+
+    const categories = [...spendingCategories];
+    const selectedCategories = [0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0];
+    const [selectedCategoriesLimits, setCategoriesLimits] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 
     const [currentCategories, setCurrentCategories] = useState([]);
     useEffect(() => {
@@ -60,41 +65,47 @@ const SpendingLimitsPage = ({ categories, selectedCategories, selectedCategories
     }, []);
 
     return (
-        <View style={styles.container}>
-            <View style={styles.mainContainer}>
-                <CustomProgress
-                    title1={'Conservation'}
-                    title2={'Adjust your spending limits'}
-                    progress={'100%'}
-                    currentPageNum={3}
-                />
+        <SafeAreaView style={{backgroundColor: COLORS.white2}}>
+            <StatusBar
+                barStyle={'dark-content'}
+                backgroundColor={COLORS.white2}
+            />
+            <View style={styles.container}>
+                <View style={styles.mainContainer}>
+                    <CustomProgress
+                        title1={'Conservation'}
+                        title2={'Adjust your spending limits'}
+                        progress={'100%'}
+                        currentPageNum={3}
+                    />
 
-                <View style={styles.bottomContainer}>
-                    <ScrollView style={{width: '100%', height: 480}}>
-                        <View style={styles.cardsContainer}>
-                            {currentCategories.map((index) => (
-                                <CategoryCard
-                                    key={index}
-                                    category={index}
-                                    title={categories[index].name}
-                                    selectedCategoriesLimits={selectedCategoriesLimits}
-                                    setCategoriesLimits={setCategoriesLimits}
-                                />
-                            ))}
+                    <View style={styles.bottomContainer}>
+                        <ScrollView style={{width: '100%', height: 480}}>
+                            <View style={styles.cardsContainer}>
+                                {currentCategories.map((index) => (
+                                    <CategoryCard
+                                        key={index}
+                                        category={index}
+                                        title={categories[index].name}
+                                        selectedCategoriesLimits={selectedCategoriesLimits}
+                                        setCategoriesLimits={setCategoriesLimits}
+                                    />
+                                ))}
+                            </View>
+                        </ScrollView>
+                        <View>
+                            <TouchableOpacity
+                                style={styles.buttonContainer}
+                                activeOpacity={0.6}
+                                onPress={() => {}}
+                            >
+                                <Text style={styles.buttonTitle}>Continue</Text>
+                            </TouchableOpacity>
                         </View>
-                    </ScrollView>
-                    <View>
-                        <TouchableOpacity
-                            style={styles.buttonContainer}
-                            activeOpacity={0.6}
-                            onPress={() => printData()}
-                        >
-                            <Text style={styles.buttonTitle}>Continue</Text>
-                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
-        </View>
+        </SafeAreaView>
     )
 }
 
