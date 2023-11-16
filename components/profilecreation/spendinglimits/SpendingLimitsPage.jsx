@@ -13,6 +13,16 @@ const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesL
 
     const [value, setValue] = useState(1000);
 
+    useEffect(() => {
+        const mxl = Number(maxLimit);
+        if (!isNaN(mxl) && value >= 10000 && mxl < value) {
+            setValue(mxl);
+            let tmp = [...selectedCategoriesLimits];
+            tmp[category] = mxl;
+            setCategoriesLimits([...tmp]);
+        }
+    }, [maxLimit]);
+
     return (
         <View style={styles.categoryCardContainer}>
 
@@ -28,7 +38,7 @@ const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesL
                         setValue(value);
                     }} 
                     step={100}
-                    minimumValue={1000}
+                    minimumValue={100}
                     maximumValue={Math.max(Math.min(100000, Number(maxLimit)), 10000)}
                     maximumTrackTintColor={COLORS.white4}
                     minimumTrackTintColor={COLORS.main3}
@@ -39,7 +49,7 @@ const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesL
             </View>
 
             <View style={styles.sliderTitlesContainer}>
-                <Text style={styles.sliderTitle}>₹ 1,000</Text>
+                <Text style={styles.sliderTitle}>₹ 100</Text>
                 <Text style={styles.sliderTitle}>₹ {moneyTextHelper(Math.max(Math.min(100000, maxLimit), 10000))}</Text>
             </View>
 
@@ -87,9 +97,15 @@ const SpendingLimitsPage = (props) => {
                         <View style={{marginBottom: 20}}>
                             <TextInput 
                                 style={styles.input}
+                                textContentType='telephoneNumber'
+                                keyboardType='number-pad'
                                 label="Max Limit (By default: ₹ 10,000)"
                                 value={maxLimit}
-                                onChangeText={(val) => { setMaxLimit(val) }}
+                                onChangeText={(val) => { 
+                                    if (isNaN(val))
+                                        setMaxLimit('');
+                                    else setMaxLimit(val);
+                                }}
                                 mode="outlined"
                                 outlineColor="transparent"
                                 underlineColor="transparent"
