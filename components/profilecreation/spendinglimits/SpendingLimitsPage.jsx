@@ -136,7 +136,7 @@ const SpendingLimitsPage = (props) => {
                         <View style={{ marginTop: 20 }}>
                             <CustomButton
                                 title="Continue"
-                                handlePress={() => {}}
+                                handlePress={() => props.navigation.navigate('MessageSyncPage')}
                             />
                         </View>
                     </View>

@@ -1,98 +1,106 @@
 import React, { useState } from "react";
 
-import { View, Text, Image, TouchableHighlight } from "react-native";
-import { images, icons } from "../../constants";
+import { View, Text, Image, TouchableOpacity } from "react-native";
+import { images, icons, COLORS } from "../../constants";
 import { TextInput } from "react-native-paper";
 import styles from "./login.style";
 
 const Login = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [passvis, setPassvis] = useState(true);
+    const [passwordVisible, setPasswordVisible] = useState(true);
 
     const { GoogleIcon } = icons;
 
     return (
-        <View style={styles.mainContainer}>
-            <View style={styles.frame}>
-                <View style={{ flexDirection: "column", justifyContent: "flex-end", gap: 30 }}>
-                    <View style={{ flexDirection: "column", alignItems: "center", gap: 17.2 }}>
-                        <View style={styles.header}>
+        <View style={styles.container}>
+            <View style={styles.mainContainer}>
+                <View style={styles.logoNloginBlock}>
+                    <View style={styles.logoContainer}>
+                        <View style={styles.imageContainer}>
                             <Image
                                 source={images.logo2}
-                                style={{
-                                    resizeMode: 'cover',
-                                    height: 48,
-                                    width: 48,
-                                }}
+                                style={styles.image}
                             />
-                            <Text style={styles.heading}>
-                                UNI{'\n'}MONEY
-                            </Text>
                         </View>
+                        <Text style={styles.logoText}>
+                            UNI{'\n'}MONEY
+                        </Text>
+                    </View>
+                    <View style={styles.loginContainer}>
                         <TextInput style={styles.input}
                             label="Email address"
                             value={email}
-                            onChangeText={(e) => { setEmail(e) }}
                             mode="outlined"
-                            outlineColor="transparent"
+                            onChangeText={(e) => { setEmail(e) }}
+                            outlineColor={COLORS.gray1}
                             underlineColor="transparent"
-                            activeOutlineColor="#444262"
-                            activeUnderlineColor="#EDEDED"
-                            selectionColor="#00B899"
-                            theme={{ roundness: 10, }}
-
+                            activeOutlineColor={COLORS.gray2}
+                            activeUnderlineColor={COLORS.gray2}
+                            selectionColor={COLORS.gray2}
+                            textColor={COLORS.gray2}
+                            theme={{ roundness: 8 }}
                         />
                         <TextInput style={styles.input}
                             label="Password"
                             value={password}
-                            secureTextEntry={passvis}
-                            onChangeText={(e) => { setPassword(e) }}
+                            secureTextEntry={passwordVisible}
                             mode="outlined"
-                            outlineColor="transparent"
+                            onChangeText={(e) => { setPassword(e) }}
+                            outlineColor={COLORS.gray1}
                             underlineColor="transparent"
-                            activeOutlineColor="#444262"
-                            activeUnderlineColor="#EDEDED"
-                            selectionColor="#00B899"
-                            theme={{ roundness: 10 }}
-                            right={passvis ? <TextInput.Icon icon={'eye'} size={20} color={'#444262'} style={{ marginTop: 10 }} onPress={() => { setPassvis(false) }} /> : <TextInput.Icon icon={'eye-off'} size={20} color={'#444262'} style={{ marginTop: 10 }} onPress={() => { setPassvis(true) }} />}
-
+                            activeOutlineColor={COLORS.gray2}
+                            activeUnderlineColor={COLORS.gray2}
+                            selectionColor={COLORS.gray2}
+                            textColor={COLORS.gray2}
+                            theme={{ roundness: 8 }}
+                            right={
+                                passwordVisible ? 
+                                <TextInput.Icon icon={'eye'} size={20} color={COLORS.gray1} style={{ marginTop: 13 }} onPress={() => { setPasswordVisible(false) }} /> : 
+                                <TextInput.Icon icon={'eye-off'} size={20} color={COLORS.gray1} style={{ marginTop: 13 }} onPress={() => { setPasswordVisible(true) }} />
+                            }
                         />
-                        <TouchableHighlight
-                            style={styles.loginbtu}
+                        <TouchableOpacity
+                            style={styles.loginbtn}
                             onPress={() => { props.navigation.navigate('GenderPage') }}
-                            underlayColor='#1DE2C1'
+                            activeOpacity={0.7}
                         >
-                            <Text style={styles.logintext}>
+                            <Text style={styles.loginText}>
                                 Login
                             </Text>
-
-                        </TouchableHighlight>
+                        </TouchableOpacity>
                     </View>
-                    <View style={styles.break}>
-                        <View style={{ height: 1, width: 80, backgroundColor: "#83829A" }}>
-                        </View>
-                        <Text style={{ color: "#83829A", fontSize: 12, fontWeight: "500", paddingHorizontal: 10 }}>or via</Text>
-                        <View style={{ height: 1, width: 80, backgroundColor: "#83829A" }}>
-                        </View>
+                </View>
+                <View style={styles.loginOptionsContainer}>
+                    <View style={styles.orViaLineContainer}>
+                        <View style={styles.orViaLine} />
+                        <Text style={styles.orViaText}>or via</Text>
+                        <View style={styles.orViaLine} />
                     </View>
-                    <TouchableHighlight
-                        style={styles.btu}
-                    >
-                        <View style={styles.googelbtu}>
+                    <View style={styles.loginOptions}>
+                        <TouchableOpacity
+                            style={styles.loginOption}
+                            activeOpacity={0.8}
+                        >
                             <GoogleIcon
                                 height={20}
                                 width={20}
-                                style={{ alignSelf: 'center' }}
                             ></GoogleIcon>
-                            <Text style={{ color: "#000", fontSize: 13, fontWeight: "500", alignSelf: 'center' }}>Google</Text>
-                        </View>
-                    </TouchableHighlight>
+                            <Text style={styles.loginOptionText}>Google</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <Text style={styles.acctext}
-                    onPress={() => { props.navigation.navigate('SignUp') }}
-                >New to UniMoney? Create an Account</Text>
-
+                <View>
+                    <Text 
+                        style={styles.signupText}
+                        onPress={() => { props.navigation.navigate('SignUp') }}
+                    >
+                        New to UniMoney?{' '}
+                        <Text style={styles.textDecorate}>
+                            Create an account
+                        </Text>
+                    </Text>
+                </View>
             </View>
         </View>
     );

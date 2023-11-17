@@ -47,7 +47,7 @@ const TransactionSyncPage = (props) => {
                             { !isImportDone && !isImporting &&
                                 <CustomButton
                                     title={"Skip"}
-                                    handlePress={() => {}}
+                                    handlePress={() => props.navigation.navigate('PushNotificationPage')}
                                     inlineStyles={[ styles.importingButton(true) ]}
                                 />
                             }

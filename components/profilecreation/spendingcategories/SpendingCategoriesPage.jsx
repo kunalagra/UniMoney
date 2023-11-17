@@ -68,7 +68,7 @@ const SpendingCategoriesPage = (props) => {
                         <View style={styles.buttonsContainer}>
                             <CustomButton
                                 title="Skip"
-                                handlePress={() => props.navigation.navigate('SpendingLimitsPage')}
+                                handlePress={() => props.navigation.navigate('MessageSyncPage')}
                                 inlineStyles={[{ backgroundColor: COLORS.gray1 }]}
                             />
                             <CustomButton

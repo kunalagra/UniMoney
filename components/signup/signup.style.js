@@ -2,91 +2,136 @@ import { StyleSheet } from "react-native";
 import { COLORS, FONT, SHADOWS, SIZES } from "../../constants";
 
 const styles = StyleSheet.create({
-    mainContainer: {
+    container: {
         flex: 1,
         backgroundColor: COLORS.white1,
         justifyContent: "center",
         alignItems: 'center',
     },
-    frame: {
-        backgroundColor: COLORS.white1,
-        // marginHorizontal: '15%',
-        // marginVertical: '30%',
-        height: '70%',
-        width: '70%',
-        alignContent: 'center',
-        justifyContent: "flex-end",
-        gap: 25,
-    },
-    header: {
-        flexDirection: 'row',
-        gap: 17.2,
-        justifyContent: 'center',
 
+    mainContainer: {
+        width: '70%', 
+        gap: 50
     },
-    heading: {
+
+    logoNSignupBlock: {
+        alignItems: "center", 
+        gap: 30
+    },
+
+    logoContainer: {
+        flexDirection: 'row',
+        gap: 10,
+        justifyContent: 'center'
+    },
+
+    imageContainer: {
+        width: 55, 
+        aspectRatio: 1
+    },
+
+    image: {
+        height: '100%',
+        width: '100%'
+    },
+
+    logoText: {
         color: COLORS.gray3,
         fontSize: SIZES.xxLarge,
         lineHeight: SIZES.xxLarge,
-        fontFamily: FONT.bold,
+        fontFamily: FONT.bold2,
     },
-    signuptext: {
-        color: COLORS.white1,
-        fontSize: SIZES.medium,
-        fontWeight: "bold",
+
+    signupContainer: {
+        width: '100%', 
+        gap: 10
     },
+
     input: {
         backgroundColor: COLORS.white3,
-        shadowColor: COLORS.black,
-        // elevation: 1,
         alignSelf: 'center',
         width: '100%',
         height: 45,
         fontSize: SIZES.small,
-        fontStyle: 'normal',
-        fontWeight: '500',
     },
-    break: {
+
+    signupBtn: [
+        {
+            backgroundColor: COLORS.main3,
+            paddingHorizontal: 30,
+            paddingVertical: 10,
+            borderRadius: 10,
+            marginTop: 10,
+            alignSelf: 'center',
+        },
+        SHADOWS.medium
+    ],
+
+    signupText: {
+        color: COLORS.white1,
+        fontSize: SIZES.medium,
+        fontFamily: FONT.bold
+    },
+
+    signupOptionsContainer: {
+        gap: 20,
+    },
+
+    orViaLineContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: SIZES.large,
-        marginBottom: SIZES.large,
     },
-    googelbtu: {
+
+    orViaLine: {
+        height: 1,
+        width: 80, 
+        backgroundColor: COLORS.gray1
+    },
+
+    orViaText: {
+        color: COLORS.gray1, 
+        fontSize: SIZES.small, 
+        paddingHorizontal: 10,
+        fontFamily: FONT.medium
+    },
+
+    signupOptions: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        gap: 6,
+        gap: 10,
     },
-    acctext: {
+
+    signupOption: [
+        {
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: COLORS.white2,
+            paddingHorizontal: 15,
+            paddingVertical: 8,
+            borderRadius: 10,
+            gap: 6
+        },
+        SHADOWS.medium
+    ],
+
+    signupOptionText: {
+        color: COLORS.gray2, 
+        fontSize: SIZES.regular,
+        fontFamily: FONT.bold
+    },
+
+    loginText: {
         color: COLORS.gray1,
         fontFamily: FONT.medium,
-        fontSize: SIZES.xSmall,
-        alignSelf: 'center',
-        lineHeight: SIZES.small,
-        fontWeight: '500',
+        fontSize: SIZES.small,
+        alignSelf: 'center'
     },
-    signupbtu: {
-        backgroundColor: '#00B899',
-        paddingHorizontal: 30,
-        paddingVertical: 10,
-        borderRadius: 8,
-        shadowColor: '#000',
-        elevation: 4,
-        marginTop: 10,
-        alignSelf: 'center',
-    },
-    btu: {
-        backgroundColor: '#F3F4F8',
-        paddingHorizontal: 15,
-        paddingVertical: 8,
-        borderRadius: 8,
-        shadowColor: '#000',
-        elevation: 4,
-        marginTop: 10,
-        alignSelf: 'center',
-        marginBottom: 10,
+
+    textDecorate: {
+        textDecorationLine: 'underline'
     }
 
 });
