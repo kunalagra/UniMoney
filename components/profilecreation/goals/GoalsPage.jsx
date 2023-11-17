@@ -5,6 +5,7 @@ import { Checkbox } from 'react-native-paper';
 import { COLORS } from '../../../constants';
 import { useState } from 'react';
 import { userGoals } from '../../../utils';
+import CustomButton from '../common/button/CustomButton';
 
 const GoalCard = ({goal, title, selectedGoals, setGoals}) => {
     return (
@@ -67,20 +68,15 @@ const GoalsPage = (props) => {
                             </View>
                         </ScrollView>
                         <View style={styles.buttonsContainer}>
-                            <TouchableOpacity
-                                style={[styles.buttonContainer, { backgroundColor: COLORS.gray1 }]}
-                                activeOpacity={0.6}
-                                onPress={() => { props.navigation.navigate('SpendingCategoriesPage') }}
-                            >
-                                <Text style={styles.buttonTitle}>Skip</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={styles.buttonContainer}
-                                activeOpacity={0.6}
-                                onPress={() => { props.navigation.navigate('GoalsProgressPage') }}
-                            >
-                                <Text style={styles.buttonTitle}>Continue</Text>
-                            </TouchableOpacity>
+                            <CustomButton
+                                title="Skip"
+                                handlePress={() => props.navigation.navigate('SpendingCategoriesPage')}
+                                inlineStyles={[{ backgroundColor: COLORS.gray1 }]}
+                            />
+                            <CustomButton
+                                title="Continue"
+                                handlePress={() => props.navigation.navigate('GoalsProgressPage')}
+                            />
                         </View>
                     </View>
                 </View>

@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from 'react-native';
 
-import { GetStarted, Login, SignUp, GenderPage, AgePage, GoalsPage, GoalsProgressPage, SpendingCategoriesPage, SpendingLimitsPage } from './components'
+import { GetStarted, Login, SignUp, GenderPage, AgePage, GoalsPage, GoalsProgressPage, SpendingCategoriesPage, SpendingLimitsPage, MessageSyncPage, TransactionSyncPage, PushNotificationPage, SettingUpPage } from './components'
 import { COLORS } from './constants';
 
 const Stack = createNativeStackNavigator();
@@ -63,6 +63,26 @@ function AppRoutes () {
           }}
         />
         <Stack.Screen name="SpendingLimitsPage" component={SpendingLimitsPage} 
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="MessageSyncPage" component={MessageSyncPage} 
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="TransactionSyncPage" component={TransactionSyncPage} 
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="PushNotificationPage" component={PushNotificationPage} 
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="SettingUpPage" component={SettingUpPage} 
           options={{
             headerShown: false,
           }}

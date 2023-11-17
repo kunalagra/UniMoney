@@ -7,6 +7,10 @@ import GoalsPage from "./profilecreation/goals/GoalsPage";
 import GoalsProgressPage from "./profilecreation/goalsprogress/GoalsProgressPage";
 import SpendingCategoriesPage from "./profilecreation/spendingcategories/SpendingCategoriesPage";
 import SpendingLimitsPage from "./profilecreation/spendinglimits/SpendingLimitsPage";
+import MessageSyncPage from "./profilecreation/messagesync/MessageSyncPage";
+import TransactionSyncPage from "./profilecreation/transactionsync/TransactionSyncPage";
+import PushNotificationPage from "./profilecreation/pushnotification/PushNotificationPage";
+import SettingUpPage from "./profilecreation/settingup/SettingUpPage";
 
 
 export {
@@ -18,5 +22,9 @@ export {
     GoalsPage,
     GoalsProgressPage,
     SpendingCategoriesPage,
-    SpendingLimitsPage
+    SpendingLimitsPage,
+    MessageSyncPage,
+    TransactionSyncPage,
+    PushNotificationPage,
+    SettingUpPage
 }

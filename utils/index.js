@@ -74,6 +74,21 @@ export const spendingCategories = [
 
 export const userGoals = ['Win at work', 'Have more money', 'Be productive', 'Build strong family', 'Have a healthy body', 'Love & be loved', 'Be happy', 'Improve social life'];
 
+export const pushNotificationOptions = [
+    {
+        title: 'Morning Learning',
+        desc: 'Get the reminder to repeat your goals and to catch up with your daily insight'
+    },
+    {
+        title: 'Stay on track',
+        desc: 'Never miss your daily saving goal'
+    },
+    {
+        title: 'Game on',
+        desc: 'Stay tuned to roll the dice and cross tiles, discover new friends on the Leaderboard'
+    },
+]
+
 export const moneyTextHelper = (money) => {
     let resMoney = "";
     let i = 0;

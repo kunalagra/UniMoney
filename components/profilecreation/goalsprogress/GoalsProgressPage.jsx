@@ -7,6 +7,7 @@ import Slider from 'react-native-slider';
 import { COLORS } from '../../../constants';
 import { useEffect, useState } from 'react';
 import { userGoals } from '../../../utils';
+import CustomButton from '../common/button/CustomButton';
 
 const GoalCard = ({goal, title, selectedGoalsProgress, setGoalsProgress}) => {
 
@@ -91,14 +92,11 @@ const GoalsProgressPage = (props) => {
                                 ))}
                             </View>
                         </ScrollView>
-                        <View>
-                            <TouchableOpacity
-                                style={styles.buttonContainer}
-                                activeOpacity={0.6}
-                                onPress={() => { props.navigation.navigate('SpendingCategoriesPage') }}
-                            >
-                                <Text style={styles.buttonTitle}>Continue</Text>
-                            </TouchableOpacity>
+                        <View style={{ marginTop: 20 }}>
+                            <CustomButton
+                                title="Continue"
+                                handlePress={() => props.navigation.navigate('SpendingCategoriesPage')}
+                            />
                         </View>
                     </View>
                 </View>

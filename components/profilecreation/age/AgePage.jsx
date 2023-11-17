@@ -3,6 +3,7 @@ import styles from './agepage.style';
 import CustomProgress from '../common/progress/CustomProgress';
 import { COLORS } from '../../../constants';
 import { useState } from 'react';
+import CustomButton from '../common/button/CustomButton';
 
 const AgeCard = ({ageGroup, selectedAgeGroup, setAgeGroup}) => {
     return (
@@ -68,14 +69,11 @@ const AgePage = (props) => {
                                 />
                             </View>
                         </ScrollView>
-                        <View>
-                            <TouchableOpacity
-                                style={styles.buttonContainer}
-                                activeOpacity={0.6}
-                                onPress={() => { props.navigation.navigate('GoalsPage') }}
-                            >
-                                <Text style={styles.buttonTitle}>Continue</Text>
-                            </TouchableOpacity>
+                        <View style={{ marginTop: 20 }}>
+                            <CustomButton
+                                title="Continue"
+                                handlePress={() => props.navigation.navigate('GoalsPage')}
+                            />
                         </View>
                     </View>
                 </View>

@@ -3,6 +3,7 @@ import { COLORS, icons } from '../../../constants';
 import styles from './genderpage.style';
 import CustomProgress from '../common/progress/CustomProgress';
 import { useState } from 'react';
+import CustomButton from '../common/button/CustomButton';
 
 const GenderCard = ({Icon, gender, selectedGender, setSelectedGender}) => {
     return (
@@ -65,14 +66,11 @@ const GenderPage = (props) => {
                                 setSelectedGender={setSelectedGender}
                             />
                         </View>
-                        <View>
-                            <TouchableOpacity
-                                style={styles.buttonContainer}
-                                activeOpacity={0.6}
-                                onPress={() => { props.navigation.navigate('AgePage') }}
-                            >
-                                <Text style={styles.buttonTitle}>Continue</Text>
-                            </TouchableOpacity>
+                        <View style={{ marginTop: 20 }}>
+                            <CustomButton
+                                title="Continue"
+                                handlePress={() => props.navigation.navigate('AgePage')}
+                            />
                         </View>
                     </View>
                 </View>

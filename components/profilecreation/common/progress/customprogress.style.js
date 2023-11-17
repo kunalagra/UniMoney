@@ -42,27 +42,27 @@ const styles = StyleSheet.create({
         fontFamily: FONT.regular
     },
     
-    currentProgressContainer: {
+    currentProgressContainer: (last) => ({
         width: '40%', 
         height: 5, 
-        backgroundColor: COLORS.white5, 
-        borderRadius: 100
-    },
-
-    currentProgress: (progress) => ({
-        width: progress, 
-        height: 5, 
-        backgroundColor: COLORS.gray1, 
+        backgroundColor: last? COLORS.white2 : COLORS.white5, 
         borderRadius: 100
     }),
 
-    nextCircle: {
+    currentProgress: (progress, last) => ({
+        width: progress, 
+        height: 5, 
+        backgroundColor: last? COLORS.white2 : COLORS.gray1, 
+        borderRadius: 100
+    }),
+
+    nextCircle: (last) => ({
         width: 12, 
         height: 24, 
-        backgroundColor: COLORS.white5, 
+        backgroundColor: last? COLORS.white2 : COLORS.white5, 
         borderTopLeftRadius: 100, 
         borderBottomLeftRadius: 100
-    },
+    }),
     
     currentPageTitleContainer: {
         flexDirection: 'row', 

@@ -4,6 +4,7 @@ import CustomProgress from '../common/progress/CustomProgress';
 import { COLORS } from '../../../constants';
 import { useState } from 'react';
 import { spendingCategories } from '../../../utils';
+import CustomButton from '../common/button/CustomButton';
 
 const CategoryCard = ({title, category, image, selectedCategories, setCategories}) => {
     return (
@@ -65,20 +66,15 @@ const SpendingCategoriesPage = (props) => {
                             </View>
                         </ScrollView>
                         <View style={styles.buttonsContainer}>
-                            <TouchableOpacity
-                                style={[styles.buttonContainer, { backgroundColor: COLORS.gray1 }]}
-                                activeOpacity={0.6}
-                                onPress={() => { props.navigation.navigate('SpendingLimitsPage') }}
-                            >
-                                <Text style={styles.buttonTitle}>Skip</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={styles.buttonContainer}
-                                activeOpacity={0.6}
-                                onPress={() => { props.navigation.navigate('SpendingLimitsPage') }}
-                            >
-                                <Text style={styles.buttonTitle}>Continue</Text>
-                            </TouchableOpacity>
+                            <CustomButton
+                                title="Skip"
+                                handlePress={() => props.navigation.navigate('SpendingLimitsPage')}
+                                inlineStyles={[{ backgroundColor: COLORS.gray1 }]}
+                            />
+                            <CustomButton
+                                title="Continue"
+                                handlePress={() => props.navigation.navigate('SpendingLimitsPage')}
+                            />
                         </View>
                     </View>
                 </View>

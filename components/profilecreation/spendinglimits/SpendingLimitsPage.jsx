@@ -8,6 +8,7 @@ import { COLORS, icons } from '../../../constants';
 import { useEffect, useState } from 'react';
 import { moneyTextHelper, spendingCategories } from '../../../utils';
 import { TextInput } from 'react-native-paper';
+import CustomButton from '../common/button/CustomButton';
 
 const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesLimits, maxLimit}) => {
 
@@ -132,14 +133,11 @@ const SpendingLimitsPage = (props) => {
                                 ))}
                             </View>
                         </ScrollView>
-                        <View>
-                            <TouchableOpacity
-                                style={styles.buttonContainer}
-                                activeOpacity={0.6}
-                                onPress={() => {}}
-                            >
-                                <Text style={styles.buttonTitle}>Continue</Text>
-                            </TouchableOpacity>
+                        <View style={{ marginTop: 20 }}>
+                            <CustomButton
+                                title="Continue"
+                                handlePress={() => {}}
+                            />
                         </View>
                     </View>
                 </View>
