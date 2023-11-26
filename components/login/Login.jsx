@@ -62,7 +62,7 @@ const Login = (props) => {
                         />
                         <TouchableOpacity
                             style={styles.loginbtn}
-                            onPress={() => { props.navigation.navigate('GenderPage') }}
+                            onPress={() => { props.navigation.navigate('Main') }}
                             activeOpacity={0.7}
                         >
                             <Text style={styles.loginText}>
