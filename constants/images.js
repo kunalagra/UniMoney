@@ -10,7 +10,7 @@ import coinstack from "../assets/images/coinsstack.png";
 import creditcards from "../assets/images/creditcards.png";
 import database from "../assets/images/database.png";
 import datasync from "../assets/images/datasync.png";
-import dice from "../assets/images/dice.png";
+import diceWithTiles from "../assets/images/dice_with_tiles.png";
 import dream11 from "../assets/images/dream11.png";
 import education from "../assets/images/education.png";
 import entertainment from "../assets/images/entertainment.png";
@@ -57,7 +57,7 @@ export default {
     creditcards,
     database,
     datasync,
-    dice,
+    diceWithTiles,
     dream11,
     education,
     entertainment,
