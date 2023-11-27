@@ -11,7 +11,7 @@ import MessageSyncPage from "./profilecreation/messagesync/MessageSyncPage";
 import TransactionSyncPage from "./profilecreation/transactionsync/TransactionSyncPage";
 import PushNotificationPage from "./profilecreation/pushnotification/PushNotificationPage";
 import SettingUpPage from "./profilecreation/settingup/SettingUpPage";
-import Main from "./main/Main";
+import MainPage from "./main/Main";
 
 
 export {
@@ -28,5 +28,5 @@ export {
     TransactionSyncPage,
     PushNotificationPage,
     SettingUpPage,
-    Main
+    MainPage,
 }

@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from 'react-native';
 
-import { GetStarted, Login, SignUp, GenderPage, AgePage, GoalsPage, GoalsProgressPage, SpendingCategoriesPage, SpendingLimitsPage, MessageSyncPage, TransactionSyncPage, PushNotificationPage, SettingUpPage, Main } from './components'
+import { GetStarted, Login, SignUp, GenderPage, AgePage, GoalsPage, GoalsProgressPage, SpendingCategoriesPage, SpendingLimitsPage, MessageSyncPage, TransactionSyncPage, PushNotificationPage, SettingUpPage, MainPage } from './components'
 import { COLORS } from './constants';
 
 const Stack = createNativeStackNavigator();
@@ -87,11 +87,11 @@ function AppRoutes () {
             headerShown: false,
           }}
         />
-        <Stack.Screen name="Main" component={Main} 
+        <Stack.Screen name="Main" component={MainPage} 
           options={{
             headerShown: false,
           }}
-        />
+        /> 
       </Stack.Navigator>
     </NavigationContainer>
   );

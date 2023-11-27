@@ -1,123 +1,76 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { icons } from '../../constants';
-import Home from '../main/home/HomePage';
-import Budget from '../main/budget/BudgetPage';
-import History from '../main/history/HistoryPage';
-import Insights from '../main/insights/InsightsPage';
-import Settings from '../main/settings/SettingsPage';
-import { COLORS } from '../../constants';
+import { icons, COLORS } from '../../constants';
+import HomePage from './home/HomePage';
+import HistoryPage from './history/HistoryPage';
+import InsightsPage from './insights/InsightsPage';
+import BudgetPage from './budget/BudgetPage';
+import styles from './mainpage.style';
 
 
 const Tab = createBottomTabNavigator();
 
-const Main = () => {
+const MainPage = () => {
 
-    const { HomeIcon, HistoryIcon, SettingsIcon, AnalysisIcon, SavingsIcon } = icons;
+    const { HomeIcon, HistoryIcon, AnalysisIcon, SavingsIcon } = icons;
 
     return (
         <Tab.Navigator
             backBehavior='none'
             screenOptions={{
-                tabBarStyle: {
-                    height: 55,
-                    borderRadius: 22,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                },
-                tabBarItemStyle: {
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    gap: -8,
-                    paddingBottom: 8,
-                },
-                tabBarLabelStyle: {
-                    fontSize: 11,
-                },
+                tabBarStyle: styles.tabBarStyle,
+                tabBarItemStyle: styles.tabBarItemStyle,
+                tabBarLabelStyle: styles.tabBarLabelStyle,
                 tabBarActiveTintColor: COLORS.main3,
-                tabBarInactiveTintColor: COLORS.black,
+                tabBarInactiveTintColor: COLORS.gray3,
+                headerShown: false
             }}
         >
-            <Tab.Screen name="Home" component={Home}
+            <Tab.Screen name="Home" component={HomePage}
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
                             <HomeIcon
                                 fill="transparent"
                                 resizeMode="contain"
-                                style={{
-                                    width: 25,
-                                    height: 25,
-                                    stroke: focused ? COLORS.main3 : COLORS.black,
-                                }}
-
+                                style={styles.iconStrokeStyle(25, 25, focused)}
                             ></HomeIcon>
                         )
                     },
-                    tabBarActiveTintColor: '#00B899',
                 }}
             />
-            <Tab.Screen name="History" component={History}
+            <Tab.Screen name="History" component={HistoryPage}
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
                             <HistoryIcon
                                 resizeMode="contain"
-                                style={{
-                                    width: 48,
-                                    height: 48,
-                                    stroke: focused ? COLORS.main3 : COLORS.black,
-                                }}
+                                style={styles.iconStrokeStyle(55, 55, focused)}
                             />
                         )
                     }
                 }}
             />
-            <Tab.Screen name="Budget" component={Budget}
+            <Tab.Screen name="Insights" component={InsightsPage}
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
                             <AnalysisIcon
                                 resizeMode="contain"
-                                style={{
-                                    width: 25,
-                                    height: 25,
-                                    fill: focused ? COLORS.main3 : COLORS.black,
-                                }}
+                                style={styles.iconFillStyle(25, 25, focused)}
                             />
                         )
                     }
                 }}
             />
-            <Tab.Screen name="Insights" component={Insights}
+            <Tab.Screen name="Budget" component={BudgetPage}
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
                             <SavingsIcon
                                 resizeMode="contain"
-                                style={{
-                                    width: 25,
-                                    height: 25,
-                                    fill: focused ? COLORS.main3 : COLORS.black,
-                                }}
+                                style={styles.iconFillStyle(25, 25, focused)}
                             />
-                        )
-                    }
-                }}
-            />
-            <Tab.Screen name="Settings" component={Settings}
-                options={{
-                    tabBarIcon: ({ focused }) => {
-                        return (
-                            <SettingsIcon
-                                fill="transparent"
-                                resizeMode="contain"
-                                style={{
-                                    width: 25,
-                                    height: 25,
-                                    stroke: focused ? COLORS.main3 : COLORS.black,
-                                }}
-                            ></SettingsIcon>
                         )
                     }
                 }}
@@ -129,4 +82,4 @@ const Main = () => {
 
 
 
-export default Main;
+export default MainPage;

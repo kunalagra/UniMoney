@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 
-const Insights = () => {
+const InsightsPage = () => {
     return (
         <View>
             <Text>Insights</Text>
@@ -10,4 +10,4 @@ const Insights = () => {
 }
 
 
-export default Insights
+export default InsightsPage;

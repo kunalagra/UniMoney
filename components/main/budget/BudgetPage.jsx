@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text } from 'react-native'
 
 
-const Budget = () => {
+const BudgetPage = () => {
     return (
         <View>
             <Text>Budget</Text>
@@ -11,4 +11,4 @@ const Budget = () => {
 }
 
 
-export default Budget
+export default BudgetPage

@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 
-const History = () => {
+const HistoryPage = () => {
     return (
         <View>
             <Text>History</Text>
@@ -9,4 +9,4 @@ const History = () => {
     )
 }
 
-export default History
+export default HistoryPage;

@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 
-const Settings = () => {
+const SettingsPage = () => {
     return (
         <View>
             <Text>Settings</Text>
@@ -10,4 +10,4 @@ const Settings = () => {
 }
 
 
-export default Settings
+export default SettingsPage

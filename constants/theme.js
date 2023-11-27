@@ -17,8 +17,11 @@ const COLORS = {
 
     orange1: "#FF7754",
 
-    gold1: "#FFA901",
-    gold2: "#FFC107",
+    gold1: "#FFC107",
+    gold2: "#FFA901",
+
+    lightGold1: '#FBE7AB',
+    lightGold2: '#FEDB71',
 
     green1: "#4CAF50",
 
