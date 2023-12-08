@@ -5,6 +5,8 @@ import { StatusBar } from 'react-native';
 
 import { GetStarted, Login, SignUp, GenderPage, AgePage, GoalsPage, GoalsProgressPage, SpendingCategoriesPage, SpendingLimitsPage, MessageSyncPage, TransactionSyncPage, PushNotificationPage, SettingUpPage, MainPage } from './components'
 import { COLORS } from './constants';
+import TransactionDetailsPage from './components/transaction-details/TransactionDetails';
+import AddTransactionPage from './components/add-transaction/AddTransaction';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +24,11 @@ function AppRoutes () {
         animation : 'slide_from_right',
        }}
       >
+        <Stack.Screen name="Main" component={MainPage} 
+          options={{
+            headerShown: false,
+          }}
+        />
         <Stack.Screen name="GetStarted" component={GetStarted} 
           options={{
             headerShown: false,
@@ -86,8 +93,13 @@ function AppRoutes () {
           options={{
             headerShown: false,
           }}
-        />
-        <Stack.Screen name="Main" component={MainPage} 
+        /> 
+        <Stack.Screen name="TransactionDetailsPage" component={TransactionDetailsPage} 
+          options={{
+            headerShown: false,
+          }}
+        /> 
+        <Stack.Screen name="AddTransactionPage" component={AddTransactionPage} 
           options={{
             headerShown: false,
           }}

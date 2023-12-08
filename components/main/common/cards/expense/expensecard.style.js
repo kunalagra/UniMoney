@@ -41,18 +41,15 @@ const styles = StyleSheet.create({
         gap: 20
     },
 
-    tabTextContainer: (isExpense) => ([
-    { 
-        backgroundColor: isExpense? COLORS.gold2 : 'transparent',
+    tabTextContainer: (isSelected) => ({
+        backgroundColor: isSelected? COLORS.gold2 : 'transparent',
         paddingVertical: 5,
         paddingHorizontal: 12,
         borderRadius: 7,
-    }, 
-        isExpense && SHADOWS.medium
-    ]),
+    }),
 
-    tabText: (isExpense) => ({
-        color: isExpense? COLORS.white1 : COLORS.gray3,
+    tabText: (isSelected) => ({
+        color: isSelected? COLORS.white1 : COLORS.gray3,
         fontFamily: FONT.bold,
         fontSize: SIZES.small
     }),

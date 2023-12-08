@@ -2,11 +2,12 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import { moneyTextHelper } from "../../../../../utils";
 import styles from "./transactioncard.style";
 
-const TransactionCard = ({ transaction }) => {
+const TransactionCard = ({ transaction, navigateTo }) => {
   return (
     <TouchableOpacity 
         style={styles.cardContainer}
         activeOpacity={0.6}
+        onPress={() => navigateTo('TransactionDetailsPage')}
     >
         <View style={styles.transactionDetailsContainer}>
             <Image

@@ -3,6 +3,7 @@ import { COLORS, images } from "../../../../../constants";
 import { Text, View, Image, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import styles from "./expensecard.style";
+import { moneyTextHelper } from "../../../../../utils";
 
 
 
@@ -30,26 +31,26 @@ const ExpenseCard = ({ item }) => {
                     <TouchableOpacity 
                         style={styles.tabTextContainer(isExpenseSelected)}
                         activeOpacity={0.85}
-                        onPress={() => setExpenseSelected(prev => !prev)}
+                        onPress={() => setExpenseSelected(true)}
                         >
                         <Text
                             style={styles.tabText(isExpenseSelected)}
-                        >Daily Expense</Text>
+                        >{item.mode} Expense</Text>
                     </TouchableOpacity>
                     <TouchableOpacity 
                         style={styles.tabTextContainer(!isExpenseSelected)}
                         activeOpacity={0.85}
-                        onPress={() => setExpenseSelected(prev => !prev)}
+                        onPress={() => setExpenseSelected(false)}
                         >
                         <Text
                             style={styles.tabText(!isExpenseSelected)}
-                        >Daily Income</Text>
+                        >{item.mode} Income</Text>
                     </TouchableOpacity>
                     
                 </View>
                 <View style={styles.amountContainer}>
-                    <Text style={styles.amountText(isExpenseSelected)}>
-                        ₹ 1,359
+                    <Text style={styles.amountText(isExpenseSelected)} numberOfLines={1}>
+                        ₹ {moneyTextHelper(isExpenseSelected? item.expense : item.income)}
                     </Text>
                 </View>
                 <View

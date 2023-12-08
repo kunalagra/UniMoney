@@ -7,11 +7,27 @@ import { transactionsData } from '../../../constants/fakeData';
 import TransactionCard from '../common/cards/transaction/TransactionCard';
 import styles from './homepage.style';
 
-const HomePage = () => {
+const HomePage = ({ navigateTo }) => {
 
     const { SettingsIcon } = icons;
 
-    const data = [1, 2, 3];
+    const data = [
+        {
+            mode: 'Daily',
+            expense: 523,
+            income: 179
+        },
+        {
+            mode: 'Monthly',
+            expense: 32300,
+            income: 47900
+        },
+        {
+            mode: 'Yearly',
+            expense: 830000,
+            income: 1200523
+        },
+    ];
 
     return (
         <SafeAreaView style={{backgroundColor: COLORS.white2}}>
@@ -45,19 +61,17 @@ const HomePage = () => {
                     </View>
 
                     <StreakBanner />
-
+ 
                     <View style={styles.expenseCardsContainer}>
-
-                        <FlatList
-                            data={data}
-                            renderItem={({ item }) => (
-                                <ExpenseCard item={item} />
-                            )}
-                            keyExtractor={item => item}
+                        <ScrollView
                             contentContainerStyle={styles.expenseCardsList}
                             showsHorizontalScrollIndicator={false}
                             horizontal
-                        />
+                        >
+                            {data.map((item, index) => (
+                                <ExpenseCard item={item} key={index} />
+                            ))}
+                        </ScrollView>
                     </View>
 
                     <View style={styles.recentTransactionsContainer}>
@@ -74,7 +88,7 @@ const HomePage = () => {
 
                         <View style={styles.transactionsContainer}>
                             {transactionsData.map((item, index) => (
-                                <TransactionCard transaction={item} key={index} />
+                                <TransactionCard transaction={item} key={index} navigateTo={navigateTo} />
                             ))}
                         </View>
 

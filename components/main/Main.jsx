@@ -10,7 +10,7 @@ import styles from './mainpage.style';
 
 const Tab = createBottomTabNavigator();
 
-const MainPage = () => {
+const MainPage = (props) => {
 
     const { HomeIcon, HistoryIcon, AnalysisIcon, SavingsIcon } = icons;
 
@@ -26,7 +26,7 @@ const MainPage = () => {
                 headerShown: false
             }}
         >
-            <Tab.Screen name="Home" component={HomePage}
+            <Tab.Screen name="Home" children={() => <HomePage navigateTo={props.navigation.navigate} />}
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
@@ -39,7 +39,7 @@ const MainPage = () => {
                     },
                 }}
             />
-            <Tab.Screen name="History" component={HistoryPage}
+            <Tab.Screen name="History" children={() => <HistoryPage navigateTo={props.navigation.navigate} />}
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
