@@ -47,12 +47,29 @@ const styles = StyleSheet.create({
         gap: 10
     },
 
+    inputOuterContainerStyle: {
+        width: '100%', 
+        paddingHorizontal: 0, 
+        height: 49
+    },
+
+    inputInnerContainerStyle: {
+        width: '100%', 
+        borderColor: COLORS.gray1, 
+        borderRadius: 8, 
+        borderWidth: 1, 
+        backgroundColor: 
+        COLORS.white3
+    },
+
     input: {
-        backgroundColor: COLORS.white3,
-        alignSelf: 'center',
-        width: '100%',
-        height: 45,
-        fontSize: SIZES.small,
+        alignSelf: 'center', 
+        width: '100%', 
+        height: 45, 
+        fontSize: SIZES.small, 
+        color: COLORS.gray2, 
+        fontFamily: FONT.regular, 
+        paddingHorizontal: 15
     },
 
     signupBtn: [

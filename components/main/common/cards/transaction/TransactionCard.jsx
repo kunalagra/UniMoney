@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import { moneyTextHelper } from "../../../../../utils";
 import styles from "./transactioncard.style";
 
-const TransactionCard = ({ transaction, navigateTo }) => {
+const TransactionCard = ({ name, image, description, amount, isExpense, navigateTo }) => {
   return (
     <TouchableOpacity 
         style={styles.cardContainer}
@@ -11,29 +11,29 @@ const TransactionCard = ({ transaction, navigateTo }) => {
     >
         <View style={styles.transactionDetailsContainer}>
             <Image
-                source={transaction.image}
+                source={image}
                 style={styles.transactionImage}
             />
             <View style={styles.detailsContainer}>
                 <Text numberOfLines={1} style={styles.transactionTitle}>
-                    {transaction.name}
+                    {name}
                 </Text>
                 <Text numberOfLines={1} style={styles.transactionTime}>
-                    {transaction.time}
+                    {description}
                 </Text>
             </View>
         </View>
         <View style={styles.amountDetailsContainer}>
             <View style={styles.amountContainer}>
-                <Text numberOfLines={1} style={styles.amountText(transaction.isExpense)}>
+                <Text numberOfLines={1} style={styles.amountText(isExpense)}>
                     {'₹ '}
                 </Text>
-                <Text numberOfLines={1} style={styles.amountText(transaction.isExpense)}>
-                    {moneyTextHelper(transaction.amount)}
+                <Text numberOfLines={1} style={styles.amountText(isExpense)}>
+                    {moneyTextHelper(amount)}
                 </Text>
             </View>
             <View>
-                <Text style={styles.amountText(transaction.isExpense)}>
+                <Text style={styles.amountText(isExpense)}>
                     {'>'}
                 </Text>
             </View>

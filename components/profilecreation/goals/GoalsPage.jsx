@@ -1,31 +1,40 @@
 import {Text, View, TouchableOpacity, ScrollView, SafeAreaView, StatusBar } from 'react-native';
 import styles from './goalspage.style';
 import CustomProgress from '../common/progress/CustomProgress';
-import { Checkbox } from 'react-native-paper';
+import { CheckBox } from '@rneui/themed';
 import { COLORS } from '../../../constants';
 import { useState } from 'react';
 import { userGoals } from '../../../utils';
 import CustomButton from '../common/button/CustomButton';
 
 const GoalCard = ({goal, title, selectedGoals, setGoals}) => {
+    
+    const handleToggle = () => {
+        let tmp = [...selectedGoals];
+        tmp[goal] = selectedGoals[goal]===1? 0 : 1;
+        setGoals([...tmp]);
+    }
+
     return (
         <TouchableOpacity 
             style={styles.goalCardContainer(selectedGoals[goal])}
-            onPress={() => {
-                let tmp = [...selectedGoals];
-                tmp[goal] = selectedGoals[goal]===1? 0 : 1;
-                setGoals([...tmp]);
-            }}
+            onPress={handleToggle}
             activeOpacity={0.6}
         >
             <View style={styles.cardBackground(selectedGoals[goal])}/>
 
             <Text style={styles.cardTitle}>{title}</Text>
 
-            <Checkbox 
-                status={selectedGoals[goal]===1? 'checked' : 'unchecked'}
-                color={COLORS.main3}
+            <CheckBox 
+                checked={selectedGoals[goal]===1}
+                checkedColor={COLORS.main3}
                 uncheckedColor={COLORS.white4}
+                onPress={handleToggle}
+                iconType="material-community"
+                checkedIcon="checkbox-marked"
+                uncheckedIcon="checkbox-blank-outline"
+                wrapperStyle={{backgroundColor: 'transparent'}}
+                containerStyle={{backgroundColor: 'transparent'}}
             />
         </TouchableOpacity>
     )

@@ -1,13 +1,13 @@
-import { View, Text, SafeAreaView, StatusBar, ScrollView, TouchableOpacity, RefreshControl } from 'react-native'
+import { View, Text, SafeAreaView, StatusBar, ScrollView, TouchableOpacity, RefreshControl, Image } from 'react-native'
 import styles from './historypage.style';
 import { transactionsData } from '../../../constants/fakeData';
 import TransactionCard from '../common/cards/transaction/TransactionCard';
-import { icons, COLORS } from '../../../constants';
-import React, { useState, useCallback } from 'react'
+import { icons, COLORS, images } from '../../../constants';
+import React, { useState, useCallback } from 'react';
 
 const HistoryPage = ({ navigateTo }) => {
 
-    const { ArrowleftIcon, CalendarIcon, FilterIcon } = icons;
+    const { ArrowleftIcon } = icons;
 
     const [refreshing, setRefreshing] = useState(false);
 
@@ -45,7 +45,9 @@ const HistoryPage = ({ navigateTo }) => {
                                     {'<'}
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {}}
+                            >
                                 <Text style={styles.dateHeading}>
                                     October
                                 </Text>
@@ -56,13 +58,17 @@ const HistoryPage = ({ navigateTo }) => {
                                         {'>'}
                                     </Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity>
-                                    <CalendarIcon 
+                                <TouchableOpacity
+                                    onPress={() => {}}
+                                >
+                                    <Image
+                                        source={images.calendar} 
                                         style={styles.calendarIcon}
                                     />
                                 </TouchableOpacity>
                                 <TouchableOpacity>
-                                    <FilterIcon 
+                                    <Image 
+                                        source={images.filter}
                                         style={styles.filterIcon}
                                     />
                                 </TouchableOpacity>
@@ -77,7 +83,15 @@ const HistoryPage = ({ navigateTo }) => {
                         >
                             <View style={styles.transactionsContainer}>
                                 {transactionsData.map((item, index) => (
-                                    <TransactionCard transaction={item} key={index} navigateTo={navigateTo} />
+                                    <TransactionCard 
+                                        key={index} 
+                                        name={item.name}
+                                        image={item.image}
+                                        description={item.time}
+                                        amount={item.amount}
+                                        isExpense={item.isExpense}
+                                        navigateTo={navigateTo}  
+                                    />
                                 ))}
                             </View>
                         </ScrollView>

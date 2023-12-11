@@ -43,7 +43,9 @@ const TransactionDetailsPage = (props) => {
             <ScrollView style={{width: '100%'}} showsVerticalScrollIndicator={false}>
                 <View style={styles.upperContainer}>
                     <View style={styles.navbar}>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => props.navigation.pop()}
+                        >
                             <ArrowleftIcon
                                 style={styles.arrowleftIcon}
                                 fill={COLORS.white1}

@@ -24,17 +24,17 @@ function AppRoutes () {
         animation : 'slide_from_right',
        }}
       >
-        <Stack.Screen name="Main" component={MainPage} 
-          options={{
-            headerShown: false,
-          }}
-        />
         <Stack.Screen name="GetStarted" component={GetStarted} 
           options={{
             headerShown: false,
           }}
         />
         <Stack.Screen name="Login" component={Login} 
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="Main" component={MainPage} 
           options={{
             headerShown: false,
           }}

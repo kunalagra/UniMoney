@@ -15,13 +15,42 @@ const styles = StyleSheet.create({
         paddingTop: 10
     },
 
+
+    inputOuterContainerStyle: {
+        width: '100%', 
+        paddingHorizontal: 0, 
+        height: 49
+    },
+
+    inputInnerContainerStyle: {
+        width: '100%', 
+        borderColor: COLORS.gray1, 
+        borderRadius: 8, 
+        borderWidth: 1, 
+        backgroundColor: COLORS.white3
+    },
+
     input: {
-        backgroundColor: COLORS.white3,
-        alignSelf: 'center',
-        width: '100%',
-        height: 45,
-        fontSize: SIZES.small,
-        fontFamily: FONT.regular
+        alignSelf: 'center', 
+        width: '100%', 
+        height: 45, 
+        fontSize: SIZES.small, 
+        color: COLORS.gray2, 
+        fontFamily: FONT.regular, 
+        paddingHorizontal: 15
+    },
+
+    inputLeftIconContainer: {
+        flexDirection: 'row', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        gap: 5
+    },
+
+    inputLeftIconText: {
+        fontFamily: FONT.medium, 
+        fontSize: SIZES.regular, 
+        color: COLORS.gray1
     },
 
     bottomContainer: {

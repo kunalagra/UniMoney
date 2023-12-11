@@ -68,12 +68,14 @@ const styles = StyleSheet.create({
 
     calendarIcon: {
         width: 24, 
-        height: 24
+        height: 24,
+        tintColor: COLORS.main3
     },
 
     filterIcon: {
         width: 28, 
-        height: 28
+        height: 28,
+        tintColor: COLORS.main3
     },
 
     transactionsContainer: {

@@ -1,14 +1,14 @@
 'use strict'
 
-import {Text, View, TouchableOpacity, ScrollView, SafeAreaView, StatusBar } from 'react-native';
+import {Text, View, ScrollView, SafeAreaView, StatusBar } from 'react-native';
 import styles from './spendinglimitspage.style';
 import CustomProgress from '../common/progress/CustomProgress';
 import Slider from 'react-native-slider';
 import { COLORS, icons } from '../../../constants';
 import { useEffect, useState } from 'react';
 import { moneyTextHelper, spendingCategories } from '../../../utils';
-import { TextInput } from 'react-native-paper';
 import CustomButton from '../common/button/CustomButton';
+import { Input, Icon } from '@rneui/themed';
 
 const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesLimits, maxLimit}) => {
 
@@ -96,27 +96,33 @@ const SpendingLimitsPage = (props) => {
                     <View style={styles.bottomContainer}>
 
                         <View style={{marginBottom: 20}}>
-                            <TextInput 
+
+                            <Input
+                                containerStyle={styles.inputOuterContainerStyle}
+                                inputContainerStyle={styles.inputInnerContainerStyle}
                                 style={styles.input}
-                                textContentType='telephoneNumber'
-                                keyboardType='number-pad'
-                                label="Max Limit (By default: ₹ 10,000)"
+                                inputMode="numeric"
+                                placeholder="(At least ₹ 10,000)"
                                 value={maxLimit}
                                 onChangeText={(val) => { 
                                     if (isNaN(val))
                                         setMaxLimit('');
                                     else setMaxLimit(val);
                                 }}
-                                mode="outlined"
-                                outlineColor="transparent"
-                                underlineColor="transparent"
-                                activeOutlineColor={COLORS.gray2}
-                                activeUnderlineColor={COLORS.white3}
+                                underlineColorAndroid="transparent"
                                 selectionColor={COLORS.gray2}
-                                theme={{ roundness: 10 }}
-                                left={<TextInput.Icon icon={'wallet'} size={20} color={COLORS.gray2} style={{ marginTop: 15 }} />}
-                                
+                                placeholderTextColor={COLORS.gray2}
+                                leftIconContainerStyle={{ paddingLeft: 10 }}
+                                leftIcon={
+                                    <View style={styles.inputLeftIconContainer}>
+                                        <Icon name="currency-rupee" color={COLORS.gray1} size={17} /> 
+                                        <Text style={styles.inputLeftIconText}>
+                                            Max Limit
+                                        </Text>
+                                    </View>
+                                }
                             />
+
                         </View>
 
                         <ScrollView style={{width: '100%', height: 400}}>

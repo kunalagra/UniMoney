@@ -88,7 +88,15 @@ const HomePage = ({ navigateTo }) => {
 
                         <View style={styles.transactionsContainer}>
                             {transactionsData.map((item, index) => (
-                                <TransactionCard transaction={item} key={index} navigateTo={navigateTo} />
+                                <TransactionCard 
+                                    key={index} 
+                                    name={item.name}
+                                    image={item.image}
+                                    description={item.time}
+                                    amount={item.amount}
+                                    isExpense={item.isExpense}
+                                    navigateTo={navigateTo} 
+                                />
                             ))}
                         </View>
 

@@ -4,14 +4,15 @@ import CustomProgress from '../common/progress/CustomProgress';
 import { COLORS, images } from '../../../constants';
 import { useState } from 'react';
 import CustomButton from '../common/button/CustomButton';
-import { Modal, Portal } from 'react-native-paper';
+import { Dialog } from '@rneui/themed';
 
 const ConfirmDialog = ({ visible, setVisibility, handleSync}) => {
     return (
-        <Modal 
-            visible={visible} 
+        <Dialog
+            isVisible={visible}
             onDismiss={() => setVisibility(false)} 
-            contentContainerStyle={styles.modalStyles}
+            onBackdropPress={() => setVisibility(false)}
+            overlayStyle={styles.modalStyles}
         >
           <Text style={styles.modalText}>Allow to sync SMS messages</Text>
           <View style={styles.modalButtonsContainer}>
@@ -26,7 +27,7 @@ const ConfirmDialog = ({ visible, setVisibility, handleSync}) => {
                 inlineStyles={[ styles.modalButton ]}
             />
           </View>
-        </Modal>
+        </Dialog>
     )
 }
 
@@ -51,13 +52,11 @@ const MessageSyncPage = (props) => {
                 barStyle={'dark-content'}
                 backgroundColor={COLORS.white2}
             />
-            <Portal>
-                <ConfirmDialog 
-                    visible={modalVisible}
-                    setVisibility={setModalVisible}
-                    handleSync={handleSync}
-                />
-            </Portal>
+            <ConfirmDialog 
+                visible={modalVisible}
+                setVisibility={setModalVisible}
+                handleSync={handleSync}
+            />
             <View style={styles.container}>
                 <View style={styles.mainContainer}>
                     <CustomProgress

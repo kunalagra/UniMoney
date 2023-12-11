@@ -1,18 +1,19 @@
 import {Text, View, SafeAreaView, StatusBar, Switch } from 'react-native';
 import styles from './pushnotificationpage.style';
 import CustomProgress from '../common/progress/CustomProgress';
-import { COLORS, FONT, SIZES, images } from '../../../constants';
+import { COLORS } from '../../../constants';
 import { useState } from 'react';
 import CustomButton from '../common/button/CustomButton';
-import { Modal, Portal } from 'react-native-paper';
 import { pushNotificationOptions } from '../../../utils';
+import { Dialog } from '@rneui/themed';
 
 const ConfirmDialog = ({ visible, setVisibility, setNudgesAllowed }) => {
     return (
-        <Modal 
-            visible={visible} 
+        <Dialog
+            isVisible={visible} 
             onDismiss={() => setVisibility(false)} 
-            contentContainerStyle={styles.modalStyles}
+            onBackdropPress={() => setVisibility(false)}
+            overlayStyle={styles.modalStyles}
         >
             <Text style={styles.modalText}>Push Notifications?</Text>
             <View style={styles.modalButtonsContainer}>
@@ -27,7 +28,7 @@ const ConfirmDialog = ({ visible, setVisibility, setNudgesAllowed }) => {
                     inlineStyles={[ styles.modalButton ]}
                 />
             </View>
-        </Modal>
+        </Dialog>
     )
 }
 
@@ -66,13 +67,11 @@ const PushNotificationPage = (props) => {
                 barStyle={'dark-content'}
                 backgroundColor={COLORS.white2}
             />
-            <Portal>
-                <ConfirmDialog 
-                    visible={modalVisible}
-                    setVisibility={setModalVisible}
-                    setNudgesAllowed={setNudgesAllowed}
-                />
-            </Portal>
+            <ConfirmDialog 
+                visible={modalVisible}
+                setVisibility={setModalVisible}
+                setNudgesAllowed={setNudgesAllowed}
+            />
             <View style={styles.container}>
                 <View style={styles.mainContainer}>
                     <CustomProgress

@@ -4,6 +4,7 @@ import app_logo from "../assets/images/app_logo.png";
 import bill from "../assets/images/bill.png";
 import bank from "../assets/images/bank.png";
 import calculator from "../assets/images/calculator.png";
+import calendar from "../assets/images/calendar.png";
 import cart_shopping from "../assets/images/cart_shopping.png";
 import cash_withdrawal from "../assets/images/cash_withdrawal.png";
 import coinstack from "../assets/images/coinsstack.png";
@@ -14,6 +15,7 @@ import diceWithTiles from "../assets/images/dice_with_tiles.png";
 import dream11 from "../assets/images/dream11.png";
 import education from "../assets/images/education.png";
 import entertainment from "../assets/images/entertainment.png";
+import filter from "../assets/images/filter.png";
 import food from "../assets/images/food.png";
 import footerwave1 from "../assets/images/footerwave1.png";
 import fuel from "../assets/images/fuel.png";
@@ -51,6 +53,7 @@ export default {
     bill,
     bank,
     calculator,
+    calendar,
     cart_shopping,
     cash_withdrawal,
     coinstack,
@@ -61,6 +64,7 @@ export default {
     dream11,
     education,
     entertainment,
+    filter,
     food,
     footerwave1,
     fuel,

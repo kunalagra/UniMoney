@@ -2,13 +2,13 @@ import React, { useState } from "react";
 
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { images, icons, COLORS } from "../../constants";
-import { TextInput } from "react-native-paper";
+import { Input, Icon } from '@rneui/themed';
 import styles from "./login.style";
 
 const Login = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [passwordVisible, setPasswordVisible] = useState(true);
+    const [passwordVisible, setPasswordVisible] = useState(false);
 
     const { GoogleIcon } = icons;
 
@@ -28,37 +28,30 @@ const Login = (props) => {
                         </Text>
                     </View>
                     <View style={styles.loginContainer}>
-                        <TextInput style={styles.input}
-                            label="Email address"
+                        <Input
+                            containerStyle={styles.inputOuterContainerStyle}
+                            inputContainerStyle={styles.inputInnerContainerStyle}
+                            style={styles.input}
+                            placeholder='Email address'
                             value={email}
-                            mode="outlined"
-                            onChangeText={(e) => { setEmail(e) }}
-                            outlineColor={COLORS.gray1}
-                            underlineColor="transparent"
-                            activeOutlineColor={COLORS.gray2}
-                            activeUnderlineColor={COLORS.gray2}
+                            onChangeText={(e) => setEmail(e)}
+                            underlineColorAndroid="transparent"
                             selectionColor={COLORS.gray2}
-                            textColor={COLORS.gray2}
-                            theme={{ roundness: 8 }}
+                            placeholderTextColor={COLORS.gray2}
                         />
-                        <TextInput style={styles.input}
-                            label="Password"
+                        <Input
+                            containerStyle={styles.inputOuterContainerStyle}
+                            inputContainerStyle={styles.inputInnerContainerStyle}
+                            style={styles.input}
+                            placeholder='Password'
                             value={password}
-                            secureTextEntry={passwordVisible}
-                            mode="outlined"
-                            onChangeText={(e) => { setPassword(e) }}
-                            outlineColor={COLORS.gray1}
-                            underlineColor="transparent"
-                            activeOutlineColor={COLORS.gray2}
-                            activeUnderlineColor={COLORS.gray2}
+                            onChangeText={(e) => setPassword(e)}
+                            underlineColorAndroid="transparent"
                             selectionColor={COLORS.gray2}
-                            textColor={COLORS.gray2}
-                            theme={{ roundness: 8 }}
-                            right={
-                                passwordVisible ? 
-                                <TextInput.Icon icon={'eye'} size={20} color={COLORS.gray1} style={{ marginTop: 13 }} onPress={() => { setPasswordVisible(false) }} /> : 
-                                <TextInput.Icon icon={'eye-off'} size={20} color={COLORS.gray1} style={{ marginTop: 13 }} onPress={() => { setPasswordVisible(true) }} />
-                            }
+                            placeholderTextColor={COLORS.gray2}
+                            secureTextEntry={!passwordVisible}
+                            rightIconContainerStyle={{ paddingRight: 15 }}
+                            rightIcon={<Icon name={passwordVisible? "visibility-off" : "visibility"} color={COLORS.gray1} size={20} onPress={() => setPasswordVisible(prev => !prev)} />}
                         />
                         <TouchableOpacity
                             style={styles.loginbtn}
