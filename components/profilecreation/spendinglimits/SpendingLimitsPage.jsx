@@ -1,9 +1,7 @@
-'use strict'
-
 import {Text, View, ScrollView, SafeAreaView, StatusBar } from 'react-native';
 import styles from './spendinglimitspage.style';
 import CustomProgress from '../common/progress/CustomProgress';
-import Slider from 'react-native-slider';
+import { Slider } from '@rneui/themed';
 import { COLORS, icons } from '../../../constants';
 import { useEffect, useState } from 'react';
 import { moneyTextHelper, spendingCategories } from '../../../utils';

@@ -1,9 +1,7 @@
-'use strict'
-
-import {Text, View, TouchableOpacity, ScrollView, SafeAreaView, StatusBar } from 'react-native';
+import {Text, View, ScrollView, SafeAreaView, StatusBar } from 'react-native';
 import styles from './goalsprogresspage.style';
 import CustomProgress from '../common/progress/CustomProgress';
-import Slider from 'react-native-slider';
+import { Slider } from '@rneui/themed';
 import { COLORS } from '../../../constants';
 import { useEffect, useState } from 'react';
 import { userGoals } from '../../../utils';
