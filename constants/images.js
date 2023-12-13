@@ -7,6 +7,8 @@ import calculator from "../assets/images/calculator.png";
 import calendar from "../assets/images/calendar.png";
 import cart_shopping from "../assets/images/cart_shopping.png";
 import cash_withdrawal from "../assets/images/cash_withdrawal.png";
+import chaticon from "../assets/images/chaticon.png";
+import closeicon from "../assets/images/close.png";
 import coinstack from "../assets/images/coinsstack.png";
 import creditcards from "../assets/images/creditcards.png";
 import database from "../assets/images/database.png";
@@ -36,6 +38,7 @@ import payments from "../assets/images/payments.png";
 import pie_graph from "../assets/images/pie_graph.png";
 import rupeecoin from "../assets/images/rupeecoin.png";
 import saving_in_wallet from "../assets/images/saving_in_wallet.png";
+import sendicon from "../assets/images/sendicon.png";
 import shampoo from "../assets/images/shampoo.png";
 import shopping from "../assets/images/shopping.png";
 import smssync from "../assets/images/smssync.png";
@@ -56,6 +59,8 @@ export default {
     calendar,
     cart_shopping,
     cash_withdrawal,
+    chaticon,
+    closeicon,
     coinstack,
     creditcards,
     database,
@@ -85,6 +90,7 @@ export default {
     pie_graph,
     rupeecoin,
     saving_in_wallet,
+    sendicon,
     shampoo,
     shopping,
     smssync,

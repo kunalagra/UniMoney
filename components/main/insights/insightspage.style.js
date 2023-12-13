@@ -204,6 +204,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
 
+    lineChartAxisText: {
+        fontFamily: FONT.regular, 
+        fontSize: SIZES.regular, 
+        color: COLORS.gray3
+    },
+
     lineLegend: {
         flexDirection: 'row', 
         alignItems: 'center', 

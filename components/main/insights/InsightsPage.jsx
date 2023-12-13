@@ -7,6 +7,17 @@ import React, { useState, useCallback } from 'react';
 import { moneyTextHelper } from '../../../utils';
 import { LineChart, PieChart } from 'react-native-gifted-charts';
 
+const getMaxPortion = (categories) => {
+    let res = {category: categories[0].name, value: categories[0].amount};
+    for(let i=0; i<categories.length; i++) {
+        if (categories[i].amount > res.value) {
+            res.value = categories[i].amount;
+            res.category = categories[i].name;
+        }
+    }
+    return res;
+}
+
 const InsightsPage = (props) => {
 
     const { ArrowleftIcon } = icons;
@@ -14,12 +25,15 @@ const InsightsPage = (props) => {
     const totalSpends = 26371;
     const totalIncome = 31270;
     const [isExpenseSelected, setIsExpenseSelected] = useState(true);
+    const maxExpense = getMaxPortion(spendsData);
+    const maxIncome = getMaxPortion(incomeData);
 
     const expenseSplitData = spendsData.map((item, index) => {
         return {
             name: item.name,
             value: item.amount,
-            color: chartColors[index]
+            color: chartColors[index],
+            focused: maxExpense.value==item.amount
           };
     });
 
@@ -27,22 +41,10 @@ const InsightsPage = (props) => {
         return {
             name: item.name,
             value: item.amount,
-            color: chartColors[index]
+            color: chartColors[index],
+            focused: maxIncome.value==item.amount
           };
     });
-
-    const getMaxPortion = () => {
-        const categories = isExpenseSelected? spendsData : incomeData;
-        let res = {category: categories[0].name, value: categories[0].amount};
-        for(let i=0; i<categories.length; i++) {
-            if (categories[i].amount > res.value) {
-                res.value = categories[i].amount;
-                res.category = categories[i].name;
-            }
-        }
-        res.value = Math.round((res.value/(isExpenseSelected? totalSpends : totalIncome)).toFixed(2) * 100);
-        return res;
-    }
 
     const [refreshing, setRefreshing] = useState(false);
 
@@ -184,12 +186,12 @@ const InsightsPage = (props) => {
                                             innerRadius={60}
                                             innerCircleColor={'#232B5D'}
                                             centerLabelComponent={() => {
-                                                const item = getMaxPortion();
+                                                const item = isExpenseSelected? maxExpense : maxIncome;
                                                 return (
                                                 <View style={styles.pieCenterContainer}>
                                                     <Text
                                                     style={styles.pieCenterText1}>
-                                                        {item.value}%
+                                                        {Math.round((item.value/(isExpenseSelected? totalSpends : totalIncome)).toFixed(2) * 100)}%
                                                     </Text>
                                                     <Text style={styles.pieCenterText2}>
                                                         {item.category}
@@ -215,7 +217,7 @@ const InsightsPage = (props) => {
                                             )) : 
                                             incomeSplitData.map((item, index) => (
                                                 <View key={index} style={styles.pieLegend} >
-                                                    <View style={styles.pieLegendDot} />
+                                                    <View style={styles.pieLegendDot(item.color)} />
                                                     <Text style={styles.pieLegendText}>
                                                         {item.name}: {Math.round((item.value/totalSpends).toFixed(2) * 100)}%
                                                     </Text>
@@ -237,8 +239,8 @@ const InsightsPage = (props) => {
                                             color2={COLORS.main3}
                                             dataPointsColor1={COLORS.gray1}
                                             dataPointsColor2={COLORS.main3}
-                                            yAxisTextStyle={{fontFamily: FONT.regular, fontSize: SIZES.regular, color: COLORS.gray3}}
-                                            xAxisLabelTextStyle={{fontFamily: FONT.regular, fontSize: SIZES.regular, color: COLORS.gray3}}
+                                            yAxisTextStyle={styles.lineChartAxisText}
+                                            xAxisLabelTextStyle={styles.lineChartAxisText}
                                             maxValue={50}
                                             noOfSections={5}
                                             spacing={40}
