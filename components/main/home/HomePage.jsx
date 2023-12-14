@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { View, Text, SafeAreaView, StatusBar, Image, ScrollView, FlatList, TouchableOpacity } from 'react-native'
+import React, { useState } from 'react';
+import { View, Text, SafeAreaView, StatusBar, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { COLORS, FONT, SIZES, icons, images } from '../../../constants'
 import ExpenseCard from '../common/cards/expense/ExpenseCard';
 import StreakBanner from './streakbanner/StreakBanner';
@@ -18,13 +18,11 @@ const ChatModal = ({visible, setVisibility}) => {
             isVisible={visible} 
             onDismiss={() => setVisibility(false)} 
             onBackdropPress={() => setVisibility(false)}
-            overlayStyle={{
-                backgroundColor: COLORS.white2, width: '90%', height: '90%', alignSelf: 'center', borderRadius: 12, justifyContent: 'space-between', alignItems: 'center', padding: 10, gap: 10
-            }}
+            overlayStyle={styles.chatModal}
         >
-            <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 10}}>
-                <View style={{width: '50%', flexGrow: 1}}>
-                    <Text style={{color: COLORS.gray3, fontFamily: FONT.medium, fontSize: SIZES.medium, textAlign: 'center'}}>
+            <View style={styles.chatModalHeader}>
+                <View style={styles.chatModalHeadingContainer}>
+                    <Text style={styles.chatModalHeading}>
                         Wanna chat?
                     </Text>
                 </View>
@@ -33,40 +31,40 @@ const ChatModal = ({visible, setVisibility}) => {
                 >
                     <Image 
                         source={images.closeicon}
-                        style={{width: 20, height: 20, tintColor: COLORS.gray1}}
+                        style={styles.chatModalCloseIcon}
                     />
                 </TouchableOpacity>
             </View>
-            <View style={{width: '100%', backgroundColor: COLORS.white3, borderWidth: 1, borderColor: COLORS.white5, flexGrow: 1, borderRadius: 8, height: '10%'}}>
+            <View style={styles.chatContainer}>
                 <ScrollView 
                 >
                     {messagesA.map((item, index) => (
                         <View
-                            style={{backgroundColor: COLORS.main3, alignSelf: 'flex-end', padding: 8, marginHorizontal: 5, marginVertical: 2, borderRadius: 10, borderBottomRightRadius: 0}}
+                            style={styles.userMessage}
                             key={index}
                         >
-                            <Text style={{color: COLORS.white1, fontFamily: FONT.regular, fontSize: SIZES.regular}}>
+                            <Text style={styles.chatMessageText}>
                                 {item}
                             </Text>
                         </View>
                     ))}
                     {messagesB.map((item, index) => (
                         <View
-                            style={{backgroundColor: COLORS.gray1, alignSelf: 'flex-start', padding: 8, marginHorizontal: 5, marginVertical: 2, borderRadius: 10, borderBottomLeftRadius: 0}}
+                            style={styles.chatbotMessage}
                             key={index}
                         >
-                            <Text style={{color: COLORS.white1, fontFamily: FONT.regular, fontSize: SIZES.regular}}>
+                            <Text style={styles.chatMessageText}>
                                 {item}
                             </Text>
                         </View>
                     ))}
                 </ScrollView>
             </View>
-            <View style={{width: '100%', height: 52, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 5}}>
+            <View style={styles.userInputContainer}>
                 <Input
-                    containerStyle={{width: '80%', paddingHorizontal: 0, height: 50, flexGrow: 1}}
-                    inputContainerStyle={{borderColor: COLORS.white5, borderRadius: 8, borderWidth: 1, backgroundColor: COLORS.white3}}
-                    style={{fontSize: SIZES.medium-2, color: COLORS.gray2, fontFamily: FONT.regular, paddingHorizontal: 15}}
+                    containerStyle={styles.inputOuterContainer}
+                    inputContainerStyle={styles.inputInnerContainer}
+                    style={styles.inputStyle}
                     placeholder="Wanna say something..."
                     underlineColorAndroid="transparent"
                     selectionColor={COLORS.gray3}
@@ -74,11 +72,11 @@ const ChatModal = ({visible, setVisibility}) => {
                     numberOfLines={1}
                 />
                 <TouchableOpacity
-                    style={{backgroundColor: COLORS.main3, paddingVertical: 12, paddingHorizontal: 12, borderRadius: 8}}
+                    style={styles.inputSendButton}
                 >
                     <Image
                         source={images.sendicon}
-                        style={{width: 24, height: 24, tintColor: COLORS.white1}}
+                        style={styles.inputSendIcon}
                     />
                 </TouchableOpacity>
             </View>
@@ -116,21 +114,21 @@ const HomePage = ({ navigateTo }) => {
                 backgroundColor={COLORS.white2}
             />
 
-            <View style={{position: 'relative'}}>
+            <View style={styles.container}>
 
                 {
                     !isChatModalOpen && 
                     <View 
-                        style={{position: 'absolute', bottom: 10, right: 10, zIndex: 1}}
+                        style={styles.chatButtonContainer}
                     >
                         <TouchableOpacity
-                            style={{backgroundColor: COLORS.main3, borderRadius: 20, justifyContent: 'center', alignItems: 'center', padding: 8}}
+                            style={styles.chatButton}
                             activeOpacity={0.85}
                             onPress={() => setIsChatModalOpen(true)}
                         >
                             <Image 
                                 source={images.chaticon}
-                                style={{width: 40, height: 40, tintColor: COLORS.white1}}
+                                style={styles.chatIcon}
                             />
                         </TouchableOpacity>
                     </View>

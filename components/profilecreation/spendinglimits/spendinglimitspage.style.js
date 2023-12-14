@@ -34,9 +34,9 @@ const styles = StyleSheet.create({
         alignSelf: 'center', 
         width: '100%', 
         height: 45, 
-        fontSize: SIZES.small, 
+        fontSize: SIZES.regular, 
         color: COLORS.gray2, 
-        fontFamily: FONT.regular, 
+        fontFamily: FONT.medium, 
         paddingHorizontal: 15
     },
 

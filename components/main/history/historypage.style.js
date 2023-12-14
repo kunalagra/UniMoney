@@ -100,7 +100,8 @@ const styles = StyleSheet.create({
 
     addButtonText: {
         fontFamily: FONT.medium, 
-        color: COLORS.white1
+        color: COLORS.white1,
+        fontSize: SIZES.regular
     }
 
 });

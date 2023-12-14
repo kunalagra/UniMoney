@@ -1,8 +1,8 @@
-import { View, Text, SafeAreaView, StatusBar, ScrollView, TouchableOpacity, RefreshControl, Image, useWindowDimensions } from 'react-native'
+import { View, Text, SafeAreaView, StatusBar, ScrollView, TouchableOpacity, RefreshControl, Image } from 'react-native'
 import styles from './insightspage.style';
 import { chartColors, incomeData, monthlyExpense, monthlyIncome, spendsData } from '../../../constants/fakeData';
 import TransactionCard from '../common/cards/transaction/TransactionCard';
-import { icons, COLORS, images, FONT, SIZES } from '../../../constants';
+import { icons, COLORS, images } from '../../../constants';
 import React, { useState, useCallback } from 'react';
 import { moneyTextHelper } from '../../../utils';
 import { LineChart, PieChart } from 'react-native-gifted-charts';
@@ -184,7 +184,7 @@ const InsightsPage = (props) => {
                                             radius={90}
                                             toggleFocusOnPress
                                             innerRadius={60}
-                                            innerCircleColor={'#232B5D'}
+                                            innerCircleColor={COLORS.darkblue1}
                                             centerLabelComponent={() => {
                                                 const item = isExpenseSelected? maxExpense : maxIncome;
                                                 return (

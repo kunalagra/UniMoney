@@ -76,7 +76,6 @@ export const transactionsData = [
     },
 ];
 
-
 export const spendsData = [
     {
         id: 1,
@@ -155,6 +154,51 @@ export const monthlyIncome = [
     { label: 'Oct', value: 31.270, dataPointText: '31.2K'},
     { label: 'Nov', value: 29.300, dataPointText: '29.3K'},
     { label: 'Dec', value: 32.000, dataPointText: '32.0K'},
+];
+
+export const budgetModeCategories = [
+    {
+        title: 'Shopping',
+        image: images.shopping,
+        currentSpend: 1000,
+        budgetSet: 5000
+    },
+    {
+        title: 'Entertainment',
+        image: images.entertainment,
+        currentSpend: 4000,
+        budgetSet: 5000
+    },
+    {
+        title: 'Food & drinks',
+        image: images.food,
+        currentSpend: 2000,
+        budgetSet: 5000
+    },
+    {
+        title: 'Groceries',
+        image: images.cart_shopping,
+        currentSpend: 3000,
+        budgetSet: 5000
+    },
+    {
+        title: 'Gadgets',
+        image: images.gadget,
+        currentSpend: 2500,
+        budgetSet: 5000
+    },
+    {
+        title: 'Bills',
+        image: images.bill,
+        currentSpend: 1500,
+        budgetSet: 5000
+    },
+    {
+        title: 'Fuel',
+        image: images.fuel,
+        currentSpend: 800,
+        budgetSet: 5000
+    },
 ];
 
 export const chartColors = [
