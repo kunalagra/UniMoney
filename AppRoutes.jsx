@@ -7,11 +7,13 @@ import { GetStarted, Login, SignUp, GenderPage, AgePage, GoalsPage, GoalsProgres
 import { COLORS } from './constants';
 import TransactionDetailsPage from './components/transaction-details/TransactionDetails';
 import AddTransactionPage from './components/add-transaction/AddTransaction';
+import AddCategory from './components/add-category/AddCategory';
+import AddBill from './components/add-bill/AddBill';
 
 const Stack = createNativeStackNavigator();
 
 
-function AppRoutes () {
+function AppRoutes() {
 
   return (
     <NavigationContainer>
@@ -20,90 +22,100 @@ function AppRoutes () {
         backgroundColor={COLORS.white1}
       />
       <Stack.Navigator
-       screenOptions={{
-        animation : 'slide_from_right',
-       }}
+        screenOptions={{
+          animation: 'slide_from_right',
+        }}
       >
-        <Stack.Screen name="GetStarted" component={GetStarted} 
+        <Stack.Screen name="GetStarted" component={GetStarted}
           options={{
             headerShown: false,
           }}
         />
-        <Stack.Screen name="Login" component={Login} 
+        <Stack.Screen name="Login" component={Login}
           options={{
             headerShown: false,
           }}
         />
-        <Stack.Screen name="Main" component={MainPage} 
+        <Stack.Screen name="Main" component={MainPage}
           options={{
             headerShown: false,
           }}
         />
-        <Stack.Screen name="SignUp" component={SignUp} 
+        <Stack.Screen name="SignUp" component={SignUp}
           options={{
             headerShown: false,
           }}
         />
-        <Stack.Screen name="GenderPage" component={GenderPage} 
+        <Stack.Screen name="GenderPage" component={GenderPage}
           options={{
             headerShown: false,
           }}
         />
-        <Stack.Screen name="AgePage" component={AgePage} 
+        <Stack.Screen name="AgePage" component={AgePage}
           options={{
             headerShown: false,
           }}
         />
-        <Stack.Screen name="GoalsPage" component={GoalsPage} 
+        <Stack.Screen name="GoalsPage" component={GoalsPage}
           options={{
             headerShown: false,
           }}
         />
-        <Stack.Screen name="GoalsProgressPage" component={GoalsProgressPage} 
+        <Stack.Screen name="GoalsProgressPage" component={GoalsProgressPage}
           options={{
             headerShown: false,
           }}
         />
-        <Stack.Screen name="SpendingCategoriesPage" component={SpendingCategoriesPage} 
+        <Stack.Screen name="SpendingCategoriesPage" component={SpendingCategoriesPage}
           options={{
             headerShown: false,
           }}
         />
-        <Stack.Screen name="SpendingLimitsPage" component={SpendingLimitsPage} 
+        <Stack.Screen name="SpendingLimitsPage" component={SpendingLimitsPage}
           options={{
             headerShown: false,
           }}
         />
-        <Stack.Screen name="MessageSyncPage" component={MessageSyncPage} 
+        <Stack.Screen name="MessageSyncPage" component={MessageSyncPage}
           options={{
             headerShown: false,
           }}
         />
-        <Stack.Screen name="TransactionSyncPage" component={TransactionSyncPage} 
+        <Stack.Screen name="TransactionSyncPage" component={TransactionSyncPage}
           options={{
             headerShown: false,
           }}
         />
-        <Stack.Screen name="PushNotificationPage" component={PushNotificationPage} 
+        <Stack.Screen name="PushNotificationPage" component={PushNotificationPage}
           options={{
             headerShown: false,
           }}
         />
-        <Stack.Screen name="SettingUpPage" component={SettingUpPage} 
+        <Stack.Screen name="SettingUpPage" component={SettingUpPage}
           options={{
             headerShown: false,
           }}
-        /> 
-        <Stack.Screen name="TransactionDetailsPage" component={TransactionDetailsPage} 
+        />
+        <Stack.Screen name="TransactionDetailsPage" component={TransactionDetailsPage}
           options={{
             headerShown: false,
           }}
-        /> 
-        <Stack.Screen name="AddTransactionPage" component={AddTransactionPage} 
+        />
+        <Stack.Screen name="AddTransactionPage" component={AddTransactionPage}
           options={{
             headerShown: false,
           }}
-        /> 
+        />
+        <Stack.Screen name="AddCategoryPage" component={AddCategory}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="AddBillPage" component={AddBill}
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

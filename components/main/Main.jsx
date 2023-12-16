@@ -63,7 +63,7 @@ const MainPage = (props) => {
                     }
                 }}
             />
-            <Tab.Screen name="Budget" component={BudgetPage}
+            <Tab.Screen name="Budget" children={() => <BudgetPage navigateTo={props.navigation.navigate} />}
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (

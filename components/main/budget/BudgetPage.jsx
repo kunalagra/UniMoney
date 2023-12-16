@@ -8,7 +8,7 @@ import BudgetDetailsBar from './budgetdetailsbar/BudgetDetailsBar';
 import AmountBottomBar from './amountbottombar/AmountBottomBar';
 
 
-const BudgetPage = (props) => {
+const BudgetPage = ({ navigateTo }) => {
 
     const { ArrowleftIcon } = icons;
     const [isBudgetMode, setIsBudgetMode] = useState(true);
@@ -23,7 +23,7 @@ const BudgetPage = (props) => {
     }, []);
 
     return (
-        <SafeAreaView style={{backgroundColor: COLORS.white2}}>
+        <SafeAreaView style={{ backgroundColor: COLORS.white2 }}>
             <StatusBar
                 barStyle={'dark-content'}
                 backgroundColor={COLORS.white2}
@@ -31,7 +31,7 @@ const BudgetPage = (props) => {
 
             <View style={styles.sectionContainer}>
 
-                <BudgetDetailsBar 
+                <BudgetDetailsBar
                     visible={isBottomBarOpen}
                     setVisibility={setIsBottomBarOpen}
                     selectedCategory={selectedCategory}
@@ -56,9 +56,9 @@ const BudgetPage = (props) => {
                     <View style={styles.mainContainer}>
                         <View style={styles.navbar}>
                             <TouchableOpacity
-                                onPress={() => {}}
+                                onPress={() => { }}
                             >
-                                <ArrowleftIcon 
+                                <ArrowleftIcon
                                     style={styles.arrowLeftIcon}
                                     fill={COLORS.gray3}
                                 />
@@ -73,23 +73,23 @@ const BudgetPage = (props) => {
                                 Budget mode
                             </Text>
                             <Switch
-                                trackColor={{false: COLORS.gray1, true: COLORS.main4}}
+                                trackColor={{ false: COLORS.gray1, true: COLORS.main4 }}
                                 thumbColor={isBudgetMode ? COLORS.main3 : COLORS.white4}
                                 onValueChange={() => setIsBudgetMode(prev => !prev)}
                                 value={isBudgetMode}
                             />
                         </View>
 
-                        {isBudgetMode && 
+                        {isBudgetMode &&
                             <View style={styles.cardsContainer}>
 
-                                <BudgetCard 
-                                    currentSpends={8000} 
-                                    budgetSet={20000} 
+                                <BudgetCard
+                                    currentSpends={8000}
+                                    budgetSet={20000}
                                     handlePress={() => {
                                         setIsBottomBarOpen(true);
-                                        setSelectedCategory({title: "Monthly Budget", image: null, currentSpend: 8000, budgetSet: 20000});
-                                    }} 
+                                        setSelectedCategory({ title: "Monthly Budget", image: null, currentSpend: 8000, budgetSet: 20000 });
+                                    }}
                                 />
 
                                 <Text style={styles.cardsHeader}>
@@ -97,12 +97,12 @@ const BudgetPage = (props) => {
                                 </Text>
 
                                 {budgetModeCategories.map((item, index) => (
-                                    <BudgetCard 
+                                    <BudgetCard
                                         key={index}
-                                        title={item.title} 
-                                        image={item.image} 
-                                        currentSpends={item.currentSpend} 
-                                        budgetSet={item.budgetSet} 
+                                        title={item.title}
+                                        image={item.image}
+                                        currentSpends={item.currentSpend}
+                                        budgetSet={item.budgetSet}
                                         handlePress={() => {
                                             setIsBottomBarOpen(true);
                                             setSelectedCategory(item);
@@ -115,13 +115,13 @@ const BudgetPage = (props) => {
 
                     </View>
                 </ScrollView>
-                
-                { isBudgetMode && 
+
+                {isBudgetMode &&
                     <View style={styles.addButtonContainer}>
-                        <TouchableOpacity 
-                            activeOpacity={0.85} 
-                            style={styles.addButton} 
-                            onPress={() => {}}
+                        <TouchableOpacity
+                            activeOpacity={0.85}
+                            style={styles.addButton}
+                            onPress={() => navigateTo('AddCategoryPage')}
                         >
                             <Text style={styles.buttonText}>
                                 Add Category
