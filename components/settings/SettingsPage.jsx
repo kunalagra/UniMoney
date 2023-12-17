@@ -50,7 +50,7 @@ const SettingsPage = (props) => {
             title: "Custom Import",
             image: images.databaseicon,
             desc: "Import data using .csv/.xlsx from your local device",
-            handlePress: () => {},
+            handlePress: () => {props.navigation.navigate('CustomImportPage')},
         },
         {
             title: "Reset app data",

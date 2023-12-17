@@ -11,6 +11,7 @@ import AddCategory from './components/add-category/AddCategory';
 import AddBill from './components/bills/add-bill/AddBill';
 import SettingsPage from './components/settings/SettingsPage';
 import BillsPage from './components/bills/BillsPage';
+import CustomImport from './components/custom-import/CustomImport';
 
 const Stack = createNativeStackNavigator();
 
@@ -124,6 +125,11 @@ function AppRoutes() {
           }}
         />
         <Stack.Screen name="BillsPage" component={BillsPage}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="CustomImportPage" component={CustomImport}
           options={{
             headerShown: false,
           }}
