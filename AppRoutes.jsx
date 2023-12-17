@@ -5,10 +5,11 @@ import { StatusBar } from 'react-native';
 
 import { GetStarted, Login, SignUp, GenderPage, AgePage, GoalsPage, GoalsProgressPage, SpendingCategoriesPage, SpendingLimitsPage, MessageSyncPage, TransactionSyncPage, PushNotificationPage, SettingUpPage, MainPage } from './components'
 import { COLORS } from './constants';
-import TransactionDetailsPage from './components/transaction-details/TransactionDetails';
-import AddTransactionPage from './components/add-transaction/AddTransaction';
+import TransactionDetailsPage from './components/transaction/transaction-details/TransactionDetails';
+import AddTransactionPage from './components/transaction/add-transaction/AddTransaction';
 import AddCategory from './components/add-category/AddCategory';
-import AddBill from './components/add-bill/AddBill';
+import AddBill from './components/bills/add-bill/AddBill';
+import SettingsPage from './components/settings/SettingsPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -112,6 +113,11 @@ function AppRoutes() {
           }}
         />
         <Stack.Screen name="AddBillPage" component={AddBill}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="SettingsPage" component={SettingsPage}
           options={{
             headerShown: false,
           }}

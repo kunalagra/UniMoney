@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
         stroke: COLORS.gray1
     },
 
-    profileImage: {
+    navIcon: {
         width: 32, 
         height: 32, 
         resizeMode: 'contain',

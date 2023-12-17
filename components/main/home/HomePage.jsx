@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, SafeAreaView, StatusBar, Image, ScrollView, TouchableOpacity } from 'react-native';
-import { COLORS, FONT, SIZES, icons, images } from '../../../constants'
+import { COLORS, images } from '../../../constants'
 import ExpenseCard from '../common/cards/expense/ExpenseCard';
 import StreakBanner from './streakbanner/StreakBanner';
 import { transactionsData } from '../../../constants/fakeData';
@@ -86,7 +86,6 @@ const ChatModal = ({visible, setVisibility}) => {
 
 const HomePage = ({ navigateTo }) => {
 
-    const { SettingsIcon } = icons;
     const [isChatModalOpen, setIsChatModalOpen] = useState(false);
 
     const data = [
@@ -141,15 +140,17 @@ const HomePage = ({ navigateTo }) => {
                     <View style={styles.mainContainer}>
                         <View style={styles.navbar}>
                             <TouchableOpacity>
-                                <SettingsIcon 
-                                    style={styles.settingsIcon}
-                                    fill={COLORS.gray1}
+                                <Image
+                                    source={images.alarm_fill}
+                                    style={styles.navIcon}
                                 />
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => navigateTo('SettingsPage')}
+                            >
                                 <Image
                                     source={images.profileicon}
-                                    style={styles.profileImage}
+                                    style={styles.navIcon}
                                 />
                             </TouchableOpacity>
                         </View>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import { images, icons, COLORS } from "../../constants";
+import { images, icons, COLORS } from "../../../constants";
 import styles from "./signup.style";
 import { Icon, Input } from "@rneui/themed";
 

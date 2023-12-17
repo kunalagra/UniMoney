@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import { images, icons, COLORS } from "../../constants";
+import { images, icons, COLORS } from "../../../constants";
 import { Input, Icon } from '@rneui/themed';
 import styles from "./login.style";
 

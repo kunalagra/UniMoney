@@ -16,6 +16,7 @@ const BudgetPage = ({ navigateTo }) => {
     const [isBottomBarOpen, setIsBottomBarOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState({});
     const [isAmountBarOpen, setIsAmountBarOpen] = useState(false);
+    const [isAddCategory, setIsAddCategory] = useState(false);
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
@@ -35,10 +36,13 @@ const BudgetPage = ({ navigateTo }) => {
                     visible={isBottomBarOpen}
                     setVisibility={setIsBottomBarOpen}
                     selectedCategory={selectedCategory}
+                    setSelectedCategory={setSelectedCategory}
                     handleBudgetPress={() => {
                         setIsBottomBarOpen(false);
                         setIsAmountBarOpen(true);
                     }}
+                    isAddCategory={isAddCategory}
+                    setIsAddCategory={setIsAddCategory}
                 />
 
                 <AmountBottomBar
@@ -87,8 +91,8 @@ const BudgetPage = ({ navigateTo }) => {
                                     currentSpends={8000}
                                     budgetSet={20000}
                                     handlePress={() => {
-                                        setIsBottomBarOpen(true);
                                         setSelectedCategory({ title: "Monthly Budget", image: null, currentSpend: 8000, budgetSet: 20000 });
+                                        setIsBottomBarOpen(true);
                                     }}
                                 />
 
@@ -104,8 +108,8 @@ const BudgetPage = ({ navigateTo }) => {
                                         currentSpends={item.currentSpend}
                                         budgetSet={item.budgetSet}
                                         handlePress={() => {
-                                            setIsBottomBarOpen(true);
                                             setSelectedCategory(item);
+                                            setIsBottomBarOpen(true);
                                         }}
                                     />
                                 ))}
@@ -121,7 +125,7 @@ const BudgetPage = ({ navigateTo }) => {
                         <TouchableOpacity
                             activeOpacity={0.85}
                             style={styles.addButton}
-                            onPress={() => navigateTo('AddCategoryPage')}
+                            onPress={() => {setIsAddCategory(true); setIsBottomBarOpen(true);}}
                         >
                             <Text style={styles.buttonText}>
                                 Add Category

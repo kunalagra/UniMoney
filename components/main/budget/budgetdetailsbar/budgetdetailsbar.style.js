@@ -35,6 +35,33 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
 
+    newCategoryContainer: {
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        gap: 10
+    },
+
+    categoryTitle: {
+        fontFamily: FONT.medium, 
+        fontSize: SIZES.regular + 1, 
+        color: COLORS.white1
+    },
+
+    dropdownStyle: {
+        backgroundColor: COLORS.white2, 
+        borderColor: COLORS.white5, 
+        borderWidth: 1, 
+        borderRadius: 8, 
+        paddingHorizontal: 8, 
+        width: 180
+    },
+
+    dropdownText: {
+        fontFamily: FONT.regular, 
+        fontSize: SIZES.medium-2, 
+        color: COLORS.gray3
+    },
+
     optionsContainer: {
         backgroundColor: COLORS.white1, 
         paddingVertical: 30, 

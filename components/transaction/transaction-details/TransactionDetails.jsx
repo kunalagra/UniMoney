@@ -1,9 +1,9 @@
 import {Text, View, TouchableOpacity, ScrollView, Image, SafeAreaView, StatusBar } from 'react-native';
 import styles from './transactiondetails.style';
-import { COLORS, icons } from '../../constants';
+import { COLORS, icons } from '../../../constants';
 import { useState } from 'react';
-import { spendingCategories } from '../../utils';
-import { transactionsData } from '../../constants/fakeData';
+import { spendingCategories } from '../../../utils';
+import { transactionsData } from '../../../constants/fakeData';
 
 
 const CategoryCard = ({id, category, selectedCategory, setSelectedCategory}) => {

@@ -19,7 +19,7 @@ const AddCategory = (props) => {
 
 
 
-    chooseImage = () => {
+    const chooseImage = () => {
         let options = {
             mediaType: 'photo',
             maxWidth: 300,
@@ -29,7 +29,6 @@ const AddCategory = (props) => {
             saveToPhotos: true,
         };
         launchImageLibrary(options, (response) => {
-            console.log('Response = ', response);
             if (response.didCancel) {
                 console.log('User cancelled image picker');
             } else if (response.errorCode == 'camera_unavailable') {
@@ -93,7 +92,7 @@ const AddCategory = (props) => {
                         </Text>
                         <View style={styles.imageContainer}>
                             <Image
-                                source={imageUri ? { uri: imageUri } : images.sendicon}
+                                source={imageUri ? { uri: imageUri } : images.category}
                                 resizeMode="contain"
                                 style={styles.imageStyle}
                             />
