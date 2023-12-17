@@ -1,5 +1,5 @@
 import { SafeAreaView, View, Text, ScrollView, StatusBar, TouchableOpacity, Image, Switch } from "react-native";
-import { COLORS, FONT, SIZES, icons, images } from "../../constants";
+import { COLORS, icons, images } from "../../constants";
 import { useState } from "react";
 import styles from "./settingspage.style";
 

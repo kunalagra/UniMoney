@@ -139,7 +139,9 @@ const HomePage = ({ navigateTo }) => {
 
                     <View style={styles.mainContainer}>
                         <View style={styles.navbar}>
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => navigateTo('BillsPage')}
+                            >
                                 <Image
                                     source={images.alarm_fill}
                                     style={styles.navIcon}

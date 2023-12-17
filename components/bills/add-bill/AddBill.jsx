@@ -50,6 +50,15 @@ const AddTransactionPage = (props) => {
         { label: "Travel", value: "travel" },
     ];
 
+    const reminderList = [
+        {label: "Does not repeat", value: "does-not-repeat"},
+        {label: "Monthly", value: "monthly"},
+        {label: "Bi-Monthly", value: "bi-monthly"},
+        {label: "Quarterly", value: "quarterly"},
+        {label: "Every 6 months", value: "every-6-months"},
+        {label: "Yearly", value: "yearly"},
+    ]
+
     const [desc, setDesc] = useState("");
     const [category, setCategory] = useState(categoryList[0].label);
     const [date, setDate] = useState(new Date());
@@ -77,7 +86,7 @@ const AddTransactionPage = (props) => {
                         </TouchableOpacity>
                         <View>
                             <Text style={styles.navHeading}>
-                                Add Bill
+                                Add Reminder
                             </Text>
                         </View>
                     </View>
@@ -161,7 +170,7 @@ const AddTransactionPage = (props) => {
                             <Text style={styles.rowHeader}>
                                 Reminder
                             </Text>
-                            <CustomDropdown data={categoryList} value={reminder} setValue={setReminder} />
+                            <CustomDropdown data={reminderList} value={reminder} setValue={setReminder} />
                         </View>
 
                         <View style={styles.rowField}>
@@ -194,7 +203,7 @@ const AddTransactionPage = (props) => {
                                 onCancel={() => {
                                     setIsDateModalOpen(false);
                                 }}
-                                maximumDate={new Date()}
+                                minimumDate={new Date()}
                             />
                         </View>
 
