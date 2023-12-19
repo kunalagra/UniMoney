@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
         gap: 40,
         paddingHorizontal: 20,
         marginTop: 10,
+        marginBottom: 200,
         flex: 1,
     },
 
@@ -67,6 +68,12 @@ const styles = StyleSheet.create({
         borderStyle: 'dashed'
     },
 
+    downloadButton: {
+        backgroundColor: COLORS.gray1,
+        padding: 12,
+        borderRadius: 8,
+    },
+
     fileButton: {
         backgroundColor: COLORS.white5,
         borderRadius: 8,
@@ -98,9 +105,8 @@ const styles = StyleSheet.create({
 
     importButton: {
         backgroundColor: COLORS.main3,
-        paddingVertical: 12,
+        padding: 12,
         borderRadius: 8,
-        width: "50%",
     },
 
     buttonText: {

@@ -83,71 +83,86 @@ const CustomImport = (props) => {
                 barStyle={'dark-content'}
                 backgroundColor={COLORS.white2}
             />
-            <View style={styles.container}>
-                <View style={styles.navbar}>
-                    <TouchableOpacity
-                        onPress={() => props.navigation.pop()}
-                    >
-                        <ArrowleftIcon
-                            style={styles.arrowleftIcon}
-                            fill={COLORS.gray3}
-                        />
-                    </TouchableOpacity>
-                    <View>
-                        <Text style={styles.navHeading}>
-                            Custom Import
-                        </Text>
-                    </View>
-                </View>
+            <ScrollView>
 
-                <View style={styles.mainContainer}>
-
-                    <Text style={styles.messageText}>
-
-                        This feature allows you to import transactions from your local file, bank statement or a file exported from other money management apps.{'\n\n'}
-                        Steps to import your data:{'\n\n'}
-                        1. Download SAMPLE FILE from <Text onPress={downloadSampleFile} style={styles.sampleFileLink}>here</Text>.{'\n'}
-                        2. Find your file at device's download directory named 'unimoney_sample_file.csv'. 
-                        3. Prepare your input file as per guidelines given inside the SAMPLE FILE.{'\n'}
-                        4. Copy the input file to your phone.{'\n'}
-                        5. Use Import option and start the Import process.
-
-                    </Text>
-
-                    <View style={styles.fileContainer}>
-                        <Text style={styles.fileContainerHeading}>
-                            To import data, select a .csv/.xlsx file
-                        </Text>
-                        <View style={styles.fileContainerDetails}>
-                            <TouchableOpacity
-                                style={styles.fileButton}
-                                activeOpacity={0.5}
-                                onPress={() => {chooseFile()}}
-                            >
-                                <Text style={styles.fileButtonText}>
-                                    Select file
-                                </Text>
-                            </TouchableOpacity>
-                            <Text style={styles.fileName(fileData.name)} numberOfLines={1}>
-                                {fileData.name ? fileData.name : 'No file selected'}
+                <View style={styles.container}>
+                    <View style={styles.navbar}>
+                        <TouchableOpacity
+                            onPress={() => props.navigation.pop()}
+                        >
+                            <ArrowleftIcon
+                                style={styles.arrowleftIcon}
+                                fill={COLORS.gray3}
+                            />
+                        </TouchableOpacity>
+                        <View>
+                            <Text style={styles.navHeading}>
+                                Custom Import
                             </Text>
                         </View>
                     </View>
 
-                </View>
+                    <View style={styles.mainContainer}>
 
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                        style={styles.importButton}
-                        activeOpacity={0.85}
-                        onPress={() => { }}
-                    >
-                        <Text style={styles.buttonText}>
-                            Import selected file
+                        <Text style={styles.messageText}>
+
+                            This feature allows you to import transactions from your local file, bank statement or a file exported from other money management apps.{'\n\n'}
+                            Steps to import your data:{'\n\n'}
+                            1. Download SAMPLE FILE from <Text onPress={downloadSampleFile} style={styles.sampleFileLink}>here</Text>.{'\n'}
+                            2. Find your file at device's download directory named 'unimoney_sample_file.csv'. 
+                            3. Prepare your input file as per guidelines given inside the SAMPLE FILE.{'\n'}
+                            4. Copy the input file to your phone.{'\n'}
+                            5. Use Import option and start the Import process.
+
                         </Text>
-                    </TouchableOpacity>
+
+                        <View>
+                            <TouchableOpacity
+                                onPress={downloadSampleFile}
+                                style={styles.downloadButton}
+                                activeOpacity={0.5}
+                            >
+                                <Text style={styles.buttonText}>
+                                    Download sample file
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        <View style={styles.fileContainer}>
+                            <Text style={styles.fileContainerHeading}>
+                                To import data, select a .csv/.xlsx file
+                            </Text>
+                            <View style={styles.fileContainerDetails}>
+                                <TouchableOpacity
+                                    style={styles.fileButton}
+                                    activeOpacity={0.5}
+                                    onPress={() => {chooseFile()}}
+                                >
+                                    <Text style={styles.fileButtonText}>
+                                        Select file
+                                    </Text>
+                                </TouchableOpacity>
+                                <Text style={styles.fileName(fileData.name)} numberOfLines={1}>
+                                    {fileData.name ? fileData.name : 'No file selected'}
+                                </Text>
+                            </View>
+                        </View>
+
+                    </View>
+
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity
+                            style={styles.importButton}
+                            activeOpacity={0.85}
+                            onPress={() => { }}
+                        >
+                            <Text style={styles.buttonText}>
+                                Import selected file
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
+            </ScrollView>
 
         </SafeAreaView>
     )
