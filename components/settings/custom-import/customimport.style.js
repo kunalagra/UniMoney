@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, FONT, SIZES } from "../../constants";
+import { COLORS, FONT, SIZES } from "../../../constants";
 
 
 const styles = StyleSheet.create({
@@ -30,8 +30,7 @@ const styles = StyleSheet.create({
     },
 
     mainContainer: {
-        gap: 20,
-        height: "40%",
+        gap: 30,
     },
 
     messageText: {
@@ -40,9 +39,12 @@ const styles = StyleSheet.create({
         color: COLORS.gray1,
     },
 
+    sampleFileLink: {
+        textDecorationLine: 'underline'
+    },
+
     fileContainer: {
         width: "100%",
-        height: "40%",
         flexDirection: "column",
         justifyContent: "center",
         gap: 10,
@@ -50,41 +52,45 @@ const styles = StyleSheet.create({
 
     fileContainerHeading: {
         fontFamily: FONT.regular,
-        fontSize: SIZES.medium,
+        fontSize: SIZES.medium - 1,
         color: COLORS.gray3,
     },
 
     fileContainerDetails: {
         flexDirection: "row",
         gap: 15,
-        margin:4,
+        padding: 4,
+        backgroundColor: COLORS.white3,
+        borderRadius: 8,
+        borderColor: COLORS.white5,
+        borderWidth: 1,
+        borderStyle: 'dashed'
     },
 
     fileButton: {
-        backgroundColor: COLORS.white4,
-        borderRadius: 10,
-        width: "40%",
-        height: 40,
+        backgroundColor: COLORS.white5,
+        borderRadius: 8,
         justifyContent: "center",
+        paddingHorizontal: 20,
+        paddingVertical: 10
     },
 
     fileButtonText: {
-        color: COLORS.gray3,
+        color: COLORS.gray2,
         textAlign: 'center',
         fontFamily: FONT.regular,
         fontSize: SIZES.regular
     },
 
-    fileText: {
+    fileName: (exists) => ({
         fontFamily: FONT.regular,
         fontSize: SIZES.regular,
-        color: COLORS.gray2,
+        color: exists? COLORS.gray3 : COLORS.gray1,
         alignSelf: "center",
         width: "50%",
-    },
+    }),
 
-    buttonsContainer: {
-        gap: 5,
+    buttonContainer: {
         width: "100%",
         flexDirection: "row",
         justifyContent:"center"

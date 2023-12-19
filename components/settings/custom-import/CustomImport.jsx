@@ -1,10 +1,10 @@
-import { SafeAreaView, View, Text, ScrollView, StatusBar, TouchableOpacity, Image } from "react-native";
-import { COLORS, icons } from "../../constants";
-import { useState } from "react";
+import { SafeAreaView, View, Text, ScrollView, StatusBar, TouchableOpacity, Image, Share, ToastAndroid, PermissionsAndroid } from "react-native";
+import { COLORS, icons, images } from "../../../constants";
+import { useEffect, useState } from "react";
 import styles from "./customimport.style";
 import DocumentPicker from 'react-native-document-picker';
-
-
+import RNFS from "react-native-fs";
+import FileViewer from "react-native-file-viewer";
 
 const CustomImport = (props) => {
 
@@ -31,6 +31,52 @@ const CustomImport = (props) => {
             });
     }
 
+    const downloadSampleFile = async () => {
+
+        deleteFile();
+        
+        const url = "https://ganesh-utla.github.io/Ganesh_Utla_Resume.pdf"; // replace this url with csv url
+        const filePath = RNFS.DownloadDirectoryPath + "/unimoney_sample_file.pdf";
+
+        RNFS.downloadFile({
+            fromUrl: url,
+            toFile: filePath,
+            background: true,
+            discretionary: true, 
+            progress: (res) => {
+              const progress = (res.bytesWritten / res.contentLength) * 100;
+            //   console.log(`Progress: ${progress.toFixed(2)}%`);
+            },
+          })
+        .promise.then((response) => {
+            // console.log('File downloaded!', response);
+            ToastAndroid.show('File downloaded successfully at ' + RNFS.DownloadDirectoryPath, ToastAndroid.LONG);
+            FileViewer.open(filePath)
+                .then(() => {
+                    // console.log('Success');
+                })
+                .catch(err => {
+                    // console.log(err.message);
+                });
+        })
+        .catch((err) => {
+            // console.log('Download error:', err.message);
+        });
+
+    }
+
+    const deleteFile = async () => {
+        var path = RNFS.DownloadDirectoryPath + '/unimoney_sample_file.pdf';
+        return RNFS.unlink(path)
+        .then(() => {
+            // console.log('FILE DELETED');
+        })
+        .catch((err) => {
+            // console.log(err.message);
+        });
+    };
+
+
     return (
         <SafeAreaView style={{ backgroundColor: COLORS.white2, flex: 1 }}>
             <StatusBar
@@ -49,7 +95,7 @@ const CustomImport = (props) => {
                     </TouchableOpacity>
                     <View>
                         <Text style={styles.navHeading}>
-                            Add Category
+                            Custom Import
                         </Text>
                     </View>
                 </View>
@@ -58,12 +104,13 @@ const CustomImport = (props) => {
 
                     <Text style={styles.messageText}>
 
-                        This feature allows you to import transactions from your local file, bank statement or a file exported from other money management apps.{'\n'}{'\n'}
-                        Steps to import your data:{'\n'}
-                        1. Download SAMPLE FILE from here.{'\n'}
-                        2. Prepare your input file as per guidelines given inside the SAMPLE FILE.{'\n'}
-                        3. Copy the input file to your phone.{'\n'}
-                        4. Use Import option and start the Import process.
+                        This feature allows you to import transactions from your local file, bank statement or a file exported from other money management apps.{'\n\n'}
+                        Steps to import your data:{'\n\n'}
+                        1. Download SAMPLE FILE from <Text onPress={downloadSampleFile} style={styles.sampleFileLink}>here</Text>.{'\n'}
+                        2. Find your file at device's download directory named 'unimoney_sample_file.csv'. 
+                        3. Prepare your input file as per guidelines given inside the SAMPLE FILE.{'\n'}
+                        4. Copy the input file to your phone.{'\n'}
+                        5. Use Import option and start the Import process.
 
                     </Text>
 
@@ -74,14 +121,14 @@ const CustomImport = (props) => {
                         <View style={styles.fileContainerDetails}>
                             <TouchableOpacity
                                 style={styles.fileButton}
-                                activeOpacity={0.85}
+                                activeOpacity={0.5}
                                 onPress={() => {chooseFile()}}
                             >
                                 <Text style={styles.fileButtonText}>
                                     Select file
                                 </Text>
                             </TouchableOpacity>
-                            <Text style={styles.fileText}>
+                            <Text style={styles.fileName(fileData.name)} numberOfLines={1}>
                                 {fileData.name ? fileData.name : 'No file selected'}
                             </Text>
                         </View>
@@ -89,7 +136,7 @@ const CustomImport = (props) => {
 
                 </View>
 
-                <View style={styles.buttonsContainer}>
+                <View style={styles.buttonContainer}>
                     <TouchableOpacity
                         style={styles.importButton}
                         activeOpacity={0.85}
