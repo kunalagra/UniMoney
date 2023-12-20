@@ -5,38 +5,9 @@ import { COLORS } from '../../../constants';
 import { useState } from 'react';
 import CustomButton from '../common/button/CustomButton';
 import { pushNotificationOptions } from '../../../utils';
-import { Dialog } from '@rneui/themed';
 
-const ConfirmDialog = ({ visible, setVisibility, setNudgesAllowed }) => {
-    return (
-        <Dialog
-            isVisible={visible} 
-            onDismiss={() => setVisibility(false)} 
-            onBackdropPress={() => setVisibility(false)}
-            overlayStyle={styles.modalStyles}
-        >
-            <Text style={styles.modalText}>Push Notifications?</Text>
-            <View style={styles.modalButtonsContainer}>
-                <CustomButton 
-                    title="No"
-                    handlePress={() => setVisibility(false)}
-                    inlineStyles={[ styles.modalButton, { backgroundColor: COLORS.gray1} ]}
-                />
-                <CustomButton 
-                    title="Yes"
-                    handlePress={() => { setVisibility(false); setNudgesAllowed(true) }}
-                    inlineStyles={[ styles.modalButton ]}
-                />
-            </View>
-        </Dialog>
-    )
-}
-
-
-const PushOption = ({ title, description }) => {
+const PushOption = ({ title, description, index, setIsPushed, isPushed }) => {
     
-    const [enable, setEnable] = useState(false);
-
     return (
         <View style={styles.optionContainer}>
             <View style={styles.optionContent}>
@@ -46,9 +17,13 @@ const PushOption = ({ title, description }) => {
             <View>
             <Switch
                 trackColor={{false: COLORS.gray1, true: COLORS.main4}}
-                thumbColor={enable ? COLORS.main3 : COLORS.white4}
-                onValueChange={() => setEnable(prev => !prev)}
-                value={enable}
+                thumbColor={isPushed[index] ? COLORS.main3 : COLORS.white4}
+                onValueChange={() => {
+                    const tmp = [...isPushed];
+                    tmp[index] = !isPushed[index];
+                    setIsPushed([...tmp]);
+                }}
+                value={isPushed[index]}
             />
             </View>
         </View>
@@ -58,8 +33,23 @@ const PushOption = ({ title, description }) => {
 
 const PushNotificationPage = (props) => {
 
-    const [modalVisible, setModalVisible] = useState(false);
-    const [isNudgesAllowed, setNudgesAllowed] = useState(false);
+    const [isGranted, setIsGranted] = useState(false);
+    const [isPushed, setIsPushed] = useState([false, false, false]);
+
+    const requestPostNudgePermission = async () => {
+        try {
+            const res = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+                {
+                    title: "Unimoney",
+                    message: "Allow us to push notifications"
+                }
+            );  
+            setIsGranted(res === PermissionsAndroid.RESULTS.GRANTED);
+          } catch (err) {
+            // console.log(err.message);
+          }
+    }
 
     return (
         <SafeAreaView style={{backgroundColor: COLORS.white2}}>
@@ -67,11 +57,7 @@ const PushNotificationPage = (props) => {
                 barStyle={'dark-content'}
                 backgroundColor={COLORS.white2}
             />
-            <ConfirmDialog 
-                visible={modalVisible}
-                setVisibility={setModalVisible}
-                setNudgesAllowed={setNudgesAllowed}
-            />
+
             <View style={styles.container}>
                 <View style={styles.mainContainer}>
                     <CustomProgress
@@ -91,8 +77,11 @@ const PushNotificationPage = (props) => {
                             {pushNotificationOptions.map((item, index) => (
                                 <PushOption 
                                     key={index}
+                                    index={index}
                                     title={item.title}
                                     description={item.desc}
+                                    setIsPushed={setIsPushed}
+                                    isPushed={isPushed}
                                 />
                             ))}
                         </View>
@@ -102,7 +91,12 @@ const PushNotificationPage = (props) => {
                         <View style={styles.buttonsContainer}>
                             <CustomButton
                                 title={'Continue'}
-                                handlePress={() => isNudgesAllowed? props.navigation.navigate('SettingUpPage') : setModalVisible(true)}
+                                handlePress={() => {
+                                    if (isGranted || isPushed.filter(p => p===true).length===0)
+                                        props.navigation.navigate('SettingUpPage')
+                                    else 
+                                        requestPostNudgePermission()
+                                }}
                             />
                         </View>
                     </View>

@@ -1,9 +1,10 @@
+import { useContext } from 'react';
 import {Text, View, TouchableOpacity, SafeAreaView, StatusBar } from 'react-native';
 import { COLORS, icons } from '../../../constants';
-import styles from './genderpage.style';
 import CustomProgress from '../common/progress/CustomProgress';
-import { useState } from 'react';
 import CustomButton from '../common/button/CustomButton';
+import styles from './genderpage.style';
+import profileCreationContext from '../../../contexts/profilecreation/profileCreationContext';
 
 const GenderCard = ({Icon, gender, selectedGender, setSelectedGender}) => {
     return (
@@ -25,7 +26,7 @@ const GenderCard = ({Icon, gender, selectedGender, setSelectedGender}) => {
 
 const GenderPage = (props) => {
 
-    const [selectedGender, setSelectedGender] = useState('Male');
+    const { gender, setGender } = useContext(profileCreationContext);
 
     const { MaleIcon, FemaleIcon, TransgenderIcon } = icons;
 
@@ -50,20 +51,20 @@ const GenderPage = (props) => {
                             <GenderCard 
                                 Icon={MaleIcon} 
                                 gender={"Male"} 
-                                selectedGender={selectedGender} 
-                                setSelectedGender={setSelectedGender}
+                                selectedGender={gender} 
+                                setSelectedGender={setGender}
                                 />
                             <GenderCard 
                                 Icon={FemaleIcon} 
                                 gender={"Female"} 
-                                selectedGender={selectedGender} 
-                                setSelectedGender={setSelectedGender}
+                                selectedGender={gender} 
+                                setSelectedGender={setGender}
                                 />
                             <GenderCard 
                                 Icon={TransgenderIcon} 
                                 gender={"Other"} 
-                                selectedGender={selectedGender} 
-                                setSelectedGender={setSelectedGender}
+                                selectedGender={gender} 
+                                setSelectedGender={setGender}
                             />
                         </View>
                         <View style={{ marginTop: 20 }}>

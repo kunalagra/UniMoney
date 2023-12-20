@@ -3,9 +3,10 @@ import styles from './goalspage.style';
 import CustomProgress from '../common/progress/CustomProgress';
 import { CheckBox } from '@rneui/themed';
 import { COLORS } from '../../../constants';
-import { useState } from 'react';
+import { useContext } from 'react';
 import { userGoals } from '../../../utils';
 import CustomButton from '../common/button/CustomButton';
+import profileCreationContext from '../../../contexts/profilecreation/profileCreationContext';
 
 const GoalCard = ({goal, title, selectedGoals, setGoals}) => {
     
@@ -42,8 +43,7 @@ const GoalCard = ({goal, title, selectedGoals, setGoals}) => {
 
 const GoalsPage = (props) => {
 
-    const goals = [...userGoals];
-    const [selectedGoals, setGoals] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
+    const { goals, setGoals } = useContext(profileCreationContext);
 
     return (
         <SafeAreaView style={{backgroundColor: COLORS.white2}}>
@@ -65,12 +65,12 @@ const GoalsPage = (props) => {
                     <View style={styles.bottomContainer}>
                         <ScrollView style={{width: '100%', height: 380}}>
                             <View style={styles.cardsContainer}>
-                                {goals.map((title, index) => (
+                                {userGoals.map((title, index) => (
                                     <GoalCard
                                         key={index}
                                         goal={index}
                                         title={title}
-                                        selectedGoals={selectedGoals}
+                                        selectedGoals={goals}
                                         setGoals={setGoals}
                                     />
                                 ))}
@@ -85,6 +85,7 @@ const GoalsPage = (props) => {
                             <CustomButton
                                 title="Continue"
                                 handlePress={() => props.navigation.navigate('GoalsProgressPage')}
+                                disable={goals.filter((g) => g===1).length===0}
                             />
                         </View>
                     </View>

@@ -17,8 +17,6 @@ const AddCategory = (props) => {
     const [imageData, setImageData] = useState('');
     const [imageUri, setImageUri] = useState('');
 
-
-
     const chooseImage = () => {
         let options = {
             mediaType: 'photo',

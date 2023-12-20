@@ -2,8 +2,31 @@ import { View, SafeAreaView, StatusBar, Text, Image } from 'react-native';
 import styles from './settinguppage.style';
 import CustomProgress from '../common/progress/CustomProgress';
 import { COLORS, images } from '../../../constants';
+import { useEffect, useState } from 'react';
+import { useNavigation } from "@react-navigation/native";
 
-const SettingUpPage = (props) => {
+let i = 0;
+const SettingUpPage = () => {
+
+    const [progress, setProgress] = useState(0);
+    const progressList = [5, 15, 28, 47, 65, 89, 98, 100];
+    const navigation = useNavigation();
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (progress===100) {
+                clearInterval(interval);
+                navigation.reset({
+                    index: 0,
+                    routes: [{name: 'Main'}],
+                });
+            } else {
+                setProgress(progressList[i]);
+                i++;
+            }
+        }, 1000);
+        return () => clearInterval(interval);
+    }, [progress]);
 
     return (
         <SafeAreaView style={{backgroundColor: COLORS.white2}}>
@@ -37,11 +60,11 @@ const SettingUpPage = (props) => {
                                         Setting goals
                                     </Text>
                                     <Text style={styles.progressPercentage}>
-                                        43%
+                                        {progress}%
                                     </Text>
                                 </View>
                                 <View style={styles.progressBlock}>
-                                    <View style={styles.currentProgress('43%')} />
+                                    <View style={styles.currentProgress(progress)} />
                                 </View>
                             </View>
                             <View style={styles.imageBlock}>

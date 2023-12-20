@@ -2,14 +2,15 @@ import {Text, View, TouchableOpacity, ScrollView, SafeAreaView, StatusBar } from
 import styles from './agepage.style';
 import CustomProgress from '../common/progress/CustomProgress';
 import { COLORS } from '../../../constants';
-import { useState } from 'react';
+import { useContext } from 'react';
 import CustomButton from '../common/button/CustomButton';
+import profileCreationContext from '../../../contexts/profilecreation/profileCreationContext';
 
-const AgeCard = ({ageGroup, selectedAgeGroup, setAgeGroup}) => {
+const AgeCard = ({ageGroup, selectedAgeGroup, setSelectedAgeGroup}) => {
     return (
         <TouchableOpacity 
             style={styles.ageCardContainer(selectedAgeGroup, ageGroup)}
-            onPress={() => setAgeGroup(ageGroup)}
+            onPress={() => setSelectedAgeGroup(ageGroup)}
             activeOpacity={0.6}
         >
             <View style={styles.cardBackground(selectedAgeGroup, ageGroup)}/>
@@ -21,7 +22,7 @@ const AgeCard = ({ageGroup, selectedAgeGroup, setAgeGroup}) => {
 
 const AgePage = (props) => {
 
-    const [selectedAgeGroup, setAgeGroup] = useState('18-24');
+    const { ageGroup, setAgeGroup } = useContext(profileCreationContext);
 
     return (
         <SafeAreaView style={{backgroundColor: COLORS.white2}}>
@@ -44,28 +45,28 @@ const AgePage = (props) => {
                             <View style={styles.cardsContainer}>
                                 <AgeCard 
                                     ageGroup={'18-24'}
-                                    selectedAgeGroup={selectedAgeGroup} 
-                                    setAgeGroup={setAgeGroup}
+                                    selectedAgeGroup={ageGroup} 
+                                    setSelectedAgeGroup={setAgeGroup}
                                 />
                                 <AgeCard 
                                     ageGroup={'25-34'}
-                                    selectedAgeGroup={selectedAgeGroup} 
-                                    setAgeGroup={setAgeGroup}
+                                    selectedAgeGroup={ageGroup} 
+                                    setSelectedAgeGroup={setAgeGroup}
                                 />
                                 <AgeCard 
                                     ageGroup={'35-44'}
-                                    selectedAgeGroup={selectedAgeGroup} 
-                                    setAgeGroup={setAgeGroup}
+                                    selectedAgeGroup={ageGroup} 
+                                    setSelectedAgeGroup={setAgeGroup}
                                 />
                                 <AgeCard 
                                     ageGroup={'45-54'}
-                                    selectedAgeGroup={selectedAgeGroup} 
-                                    setAgeGroup={setAgeGroup}
+                                    selectedAgeGroup={ageGroup} 
+                                    setSelectedAgeGroup={setAgeGroup}
                                 />
                                 <AgeCard 
                                     ageGroup={'55+'}
-                                    selectedAgeGroup={selectedAgeGroup} 
-                                    setAgeGroup={setAgeGroup}
+                                    selectedAgeGroup={ageGroup} 
+                                    setSelectedAgeGroup={setAgeGroup}
                                 />
                             </View>
                         </ScrollView>

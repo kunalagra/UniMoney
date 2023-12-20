@@ -3,9 +3,10 @@ import styles from './goalsprogresspage.style';
 import CustomProgress from '../common/progress/CustomProgress';
 import { Slider } from '@rneui/themed';
 import { COLORS } from '../../../constants';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { userGoals } from '../../../utils';
 import CustomButton from '../common/button/CustomButton';
+import profileCreationContext from '../../../contexts/profilecreation/profileCreationContext';
 
 const GoalCard = ({goal, title, selectedGoalsProgress, setGoalsProgress}) => {
 
@@ -47,15 +48,13 @@ const GoalCard = ({goal, title, selectedGoalsProgress, setGoalsProgress}) => {
 
 const GoalsProgressPage = (props) => {
 
-    const goals = [...userGoals];
-    const [selectedGoalsProgress, setGoalsProgress] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
-    const selectedGoals = [0, 1, 0, 0, 1, 1, 0, 0];
+    const { goals, goalsProgress, setGoalsProgress } = useContext(profileCreationContext);
 
     const [currentGoals, setCurrentGoals] = useState([]);
     useEffect(() => {
         setCurrentGoals([]);
-        for (let i=0; i<selectedGoals.length; i++) {
-            if (selectedGoals[i]===1) {
+        for (let i=0; i<goals.length; i++) {
+            if (goals[i]===1) {
                 setCurrentGoals(prev => [...prev, i]);
             } 
         }
@@ -83,8 +82,8 @@ const GoalsProgressPage = (props) => {
                                     <GoalCard
                                         key={index}
                                         goal={index}
-                                        title={goals[index]}
-                                        selectedGoalsProgress={selectedGoalsProgress}
+                                        title={userGoals[index]}
+                                        selectedGoalsProgress={goalsProgress}
                                         setGoalsProgress={setGoalsProgress}
                                     />
                                 ))}

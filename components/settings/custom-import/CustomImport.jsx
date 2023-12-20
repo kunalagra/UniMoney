@@ -1,6 +1,6 @@
 import { SafeAreaView, View, Text, ScrollView, StatusBar, TouchableOpacity, Image, Share, ToastAndroid, PermissionsAndroid } from "react-native";
 import { COLORS, icons, images } from "../../../constants";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./customimport.style";
 import DocumentPicker from 'react-native-document-picker';
 import RNFS from "react-native-fs";
@@ -15,7 +15,7 @@ const CustomImport = (props) => {
 
     const chooseFile = () => {
         DocumentPicker.pick({
-            type: [DocumentPicker.types.allFiles],
+            type: [DocumentPicker.types.csv, DocumentPicker.types.xlsx],
         })
             .then((res) => {
                 setFileData(res[0]);

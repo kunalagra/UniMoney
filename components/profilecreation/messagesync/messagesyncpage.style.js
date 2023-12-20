@@ -61,10 +61,6 @@ const styles = StyleSheet.create({
         padding: 10,
     },
 
-    syncingButton: (isSyncing) => ({
-        backgroundColor: isSyncing? COLORS.gray1 : COLORS.main3
-    })
-
 });
 
 export default styles;

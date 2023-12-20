@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     
     currentProgress: (progress) => ({
         height: 12, 
-        width: progress, 
+        width: `${progress}%`, 
         backgroundColor: COLORS.main3,
         borderRadius: 20
     }),

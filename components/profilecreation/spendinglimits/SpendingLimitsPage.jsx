@@ -2,11 +2,12 @@ import {Text, View, ScrollView, SafeAreaView, StatusBar } from 'react-native';
 import styles from './spendinglimitspage.style';
 import CustomProgress from '../common/progress/CustomProgress';
 import { Slider } from '@rneui/themed';
-import { COLORS, icons } from '../../../constants';
-import { useEffect, useState } from 'react';
+import { COLORS } from '../../../constants';
+import { useContext, useEffect, useState } from 'react';
 import { moneyTextHelper, spendingCategories } from '../../../utils';
 import CustomButton from '../common/button/CustomButton';
 import { Input, Icon } from '@rneui/themed';
+import profileCreationContext from '../../../contexts/profilecreation/profileCreationContext';
 
 const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesLimits, maxLimit}) => {
 
@@ -36,8 +37,8 @@ const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesL
                         setCategoriesLimits([...tmp]);
                         setValue(value);
                     }} 
-                    step={100}
-                    minimumValue={100}
+                    step={500}
+                    minimumValue={1000}
                     maximumValue={Math.max(Math.min(100000, Number(maxLimit)), 10000)}
                     maximumTrackTintColor={COLORS.white4}
                     minimumTrackTintColor={COLORS.main3}
@@ -48,7 +49,7 @@ const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesL
             </View>
 
             <View style={styles.sliderTitlesContainer}>
-                <Text style={styles.sliderTitle}>₹ 100</Text>
+                <Text style={styles.sliderTitle}>₹ 1000</Text>
                 <Text style={styles.sliderTitle}>₹ {moneyTextHelper(Math.max(Math.min(100000, maxLimit), 10000))}</Text>
             </View>
 
@@ -60,17 +61,14 @@ const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesL
 
 const SpendingLimitsPage = (props) => {
 
-    const categories = [...spendingCategories];
-    const selectedCategories = [0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0];
-    const [selectedCategoriesLimits, setCategoriesLimits] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    const { categories, categoriesLimits, setCategoriesLimits } = useContext(profileCreationContext);
     const [maxLimit, setMaxLimit] = useState('');
-    const { WalletIcon } = icons;
 
     const [currentCategories, setCurrentCategories] = useState([]);
     useEffect(() => {
         setCurrentCategories([]);
-        for (let i=0; i<selectedCategories.length; i++) {
-            if (selectedCategories[i]===1) {
+        for (let i=0; i<categories.length; i++) {
+            if (categories[i]===1) {
                 setCurrentCategories(prev => [...prev, i]);
             } 
         }
@@ -105,6 +103,8 @@ const SpendingLimitsPage = (props) => {
                                 onChangeText={(val) => { 
                                     if (isNaN(val))
                                         setMaxLimit('');
+                                    else if (val >= 100000) 
+                                        setMaxLimit('100000');
                                     else setMaxLimit(val);
                                 }}
                                 underlineColorAndroid="transparent"
@@ -129,8 +129,8 @@ const SpendingLimitsPage = (props) => {
                                     <CategoryCard
                                         key={index}
                                         category={index}
-                                        title={categories[index].name}
-                                        selectedCategoriesLimits={selectedCategoriesLimits}
+                                        title={spendingCategories[index].name}
+                                        selectedCategoriesLimits={categoriesLimits}
                                         setCategoriesLimits={setCategoriesLimits}
                                         maxLimit={maxLimit}
                                     />

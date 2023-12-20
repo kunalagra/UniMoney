@@ -2,9 +2,10 @@ import {Text, View, TouchableOpacity, ScrollView, Image, SafeAreaView, StatusBar
 import styles from './spendingcategoriespage.style';
 import CustomProgress from '../common/progress/CustomProgress';
 import { COLORS } from '../../../constants';
-import { useState } from 'react';
+import { useContext } from 'react';
 import { spendingCategories } from '../../../utils';
 import CustomButton from '../common/button/CustomButton';
+import profileCreationContext from '../../../contexts/profilecreation/profileCreationContext';
 
 const CategoryCard = ({title, category, image, selectedCategories, setCategories}) => {
     return (
@@ -31,8 +32,9 @@ const CategoryCard = ({title, category, image, selectedCategories, setCategories
 
 const SpendingCategoriesPage = (props) => {
 
-    const categories = [...spendingCategories];
-    const [selectedCategories, setCategories] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    // const categories = [...spendingCategories];
+    // const [selectedCategories, setCategories] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    const { categories, setCategories } = useContext(profileCreationContext);
 
     return (
         <SafeAreaView style={{backgroundColor: COLORS.white2}}>
@@ -53,13 +55,13 @@ const SpendingCategoriesPage = (props) => {
                     <View style={styles.bottomContainer}>
                         <ScrollView style={{width: '100%', height: 380}}>
                             <View style={styles.cardsContainer}>
-                                {categories.map((category, index) => (
+                                {spendingCategories.map((category, index) => (
                                     <CategoryCard
                                         key={index}
                                         category={index}
                                         title={category.name}
                                         image={category.image}
-                                        selectedCategories={selectedCategories}
+                                        selectedCategories={categories}
                                         setCategories={setCategories}
                                     />
                                 ))}
@@ -74,6 +76,7 @@ const SpendingCategoriesPage = (props) => {
                             <CustomButton
                                 title="Continue"
                                 handlePress={() => props.navigation.navigate('SpendingLimitsPage')}
+                                disable={categories.filter(c => c===1).length===0}
                             />
                         </View>
                     </View>
