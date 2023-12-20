@@ -11,14 +11,19 @@ const MessageSyncPage = (props) => {
     
     const requestReadSmsPermission = async () => {
         try {
-            const res = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.READ_SMS,
-                {
-                    title: "Unimoney",
-                    message: "Allow us to read SMS messages"
-                }
-            );  
-            setIsGranted(res === PermissionsAndroid.RESULTS.GRANTED);
+            const permCheck = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_SMS);
+            if (permCheck===PermissionsAndroid.RESULTS.GRANTED) {
+                setIsGranted(true);
+            } else {
+                const permReq = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.READ_SMS,
+                    {
+                        title: "Unimoney",
+                        message: "Allow us to read SMS messages"
+                    }
+                );  
+                setIsGranted(permReq === PermissionsAndroid.RESULTS.GRANTED);
+            }
           } catch (err) {
             // console.log(err.message);
           }

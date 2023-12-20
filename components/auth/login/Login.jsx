@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { images, icons, COLORS } from "../../../constants";
 import { Input, Icon } from '@rneui/themed';
 import styles from "./login.style";
-
+import { useNavigation } from "@react-navigation/native";
+ 
 const Login = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordVisible, setPasswordVisible] = useState(false);
+    const navigation = useNavigation();
 
     const { GoogleIcon } = icons;
 
@@ -55,7 +56,12 @@ const Login = (props) => {
                         />
                         <TouchableOpacity
                             style={styles.loginbtn}
-                            onPress={() => { props.navigation.navigate('Main') }}
+                            onPress={() => { 
+                                navigation.reset({
+                                    index: 0,
+                                    routes: [{name: 'Main'}],
+                                }); 
+                            }}
                             activeOpacity={0.7}
                         >
                             <Text style={styles.loginText}>

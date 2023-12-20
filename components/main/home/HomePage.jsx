@@ -105,7 +105,7 @@ const HomePage = ({ navigateTo }) => {
             income: 1200523
         },
     ];
-
+ 
     return (
         <SafeAreaView style={{backgroundColor: COLORS.white2}}>
             <StatusBar

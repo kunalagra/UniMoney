@@ -1,4 +1,4 @@
-import {Text, View, SafeAreaView, StatusBar, Switch } from 'react-native';
+import {Text, View, SafeAreaView, StatusBar, Switch, PermissionsAndroid } from 'react-native';
 import styles from './pushnotificationpage.style';
 import CustomProgress from '../common/progress/CustomProgress';
 import { COLORS } from '../../../constants';
@@ -38,14 +38,20 @@ const PushNotificationPage = (props) => {
 
     const requestPostNudgePermission = async () => {
         try {
-            const res = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-                {
-                    title: "Unimoney",
-                    message: "Allow us to push notifications"
-                }
-            );  
-            setIsGranted(res === PermissionsAndroid.RESULTS.GRANTED);
+            const permCheck = await PermissionsAndroid.check(
+                PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+            if (permCheck===PermissionsAndroid.RESULTS.GRANTED) {
+                setIsGranted(true);
+            } else {
+                const permReq = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+                    {
+                        title: "Unimoney",
+                        message: "Allow us to push notifications"
+                    }
+                );  
+                setIsGranted(permReq === PermissionsAndroid.RESULTS.GRANTED);
+            }
           } catch (err) {
             // console.log(err.message);
           }
