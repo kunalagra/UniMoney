@@ -8,7 +8,7 @@ import CustomButton from '../common/button/CustomButton';
 const MessageSyncPage = (props) => {
 
     const [isGranted, setIsGranted] = useState(false);
-
+    
     const requestReadSmsPermission = async () => {
         try {
             const res = await PermissionsAndroid.request(

@@ -3,15 +3,25 @@ import styles from './spendinglimitspage.style';
 import CustomProgress from '../common/progress/CustomProgress';
 import { Slider } from '@rneui/themed';
 import { COLORS } from '../../../constants';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { moneyTextHelper, spendingCategories } from '../../../utils';
 import CustomButton from '../common/button/CustomButton';
 import { Input, Icon } from '@rneui/themed';
-import profileCreationContext from '../../../contexts/profilecreation/profileCreationContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCategoriesLimits } from '../../../store/profilecreation';
 
-const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesLimits, maxLimit}) => {
+const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesLimits, maxLimit, dispatch}) => {
 
     const [value, setValue] = useState(1000);
+
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            let tmp = [...selectedCategoriesLimits];
+            tmp[category] = value;
+            dispatch(setCategoriesLimits([...tmp]));
+        }, 500);
+        return () => clearTimeout(delayDebounceFn);
+      }, [value]);
 
     useEffect(() => {
         const mxl = Number(maxLimit);
@@ -19,7 +29,7 @@ const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesL
             setValue(mxl);
             let tmp = [...selectedCategoriesLimits];
             tmp[category] = mxl;
-            setCategoriesLimits([...tmp]);
+            dispatch(setCategoriesLimits([...tmp]));
         }
     }, [maxLimit]);
 
@@ -32,9 +42,6 @@ const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesL
                 <Slider
                     value={value}
                     onValueChange={(value) => {
-                        let tmp = [...selectedCategoriesLimits];
-                        tmp[category] = value;
-                        setCategoriesLimits([...tmp]);
                         setValue(value);
                     }} 
                     step={500}
@@ -61,7 +68,9 @@ const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesL
 
 const SpendingLimitsPage = (props) => {
 
-    const { categories, categoriesLimits, setCategoriesLimits } = useContext(profileCreationContext);
+    // const { categories, categoriesLimits, setCategoriesLimits } = useContext(profileCreationContext);
+    const dispatch = useDispatch();
+    const { categories, categoriesLimits } = useSelector(state => state.profilecreation);
     const [maxLimit, setMaxLimit] = useState('');
 
     const [currentCategories, setCurrentCategories] = useState([]);
@@ -133,6 +142,7 @@ const SpendingLimitsPage = (props) => {
                                         selectedCategoriesLimits={categoriesLimits}
                                         setCategoriesLimits={setCategoriesLimits}
                                         maxLimit={maxLimit}
+                                        dispatch={dispatch}
                                     />
                                 ))}
                             </View>

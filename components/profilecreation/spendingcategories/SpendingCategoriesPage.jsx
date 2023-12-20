@@ -2,19 +2,19 @@ import {Text, View, TouchableOpacity, ScrollView, Image, SafeAreaView, StatusBar
 import styles from './spendingcategoriespage.style';
 import CustomProgress from '../common/progress/CustomProgress';
 import { COLORS } from '../../../constants';
-import { useContext } from 'react';
 import { spendingCategories } from '../../../utils';
 import CustomButton from '../common/button/CustomButton';
-import profileCreationContext from '../../../contexts/profilecreation/profileCreationContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCategories } from '../../../store/profilecreation';
 
-const CategoryCard = ({title, category, image, selectedCategories, setCategories}) => {
+const CategoryCard = ({title, category, image, selectedCategories, setCategories, dispatch}) => {
     return (
         <TouchableOpacity 
             style={styles.categoryCardContainer}
             onPress={() => {
                 let tmp = [...selectedCategories];
                 tmp[category] = selectedCategories[category]===1? 0 : 1;
-                setCategories([...tmp]);
+                dispatch(setCategories([...tmp]));
             }}
             activeOpacity={0.6}
         >
@@ -32,9 +32,8 @@ const CategoryCard = ({title, category, image, selectedCategories, setCategories
 
 const SpendingCategoriesPage = (props) => {
 
-    // const categories = [...spendingCategories];
-    // const [selectedCategories, setCategories] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
-    const { categories, setCategories } = useContext(profileCreationContext);
+    const dispatch = useDispatch();
+    const { categories } = useSelector(state => state.profilecreation);
 
     return (
         <SafeAreaView style={{backgroundColor: COLORS.white2}}>
@@ -63,6 +62,7 @@ const SpendingCategoriesPage = (props) => {
                                         image={category.image}
                                         selectedCategories={categories}
                                         setCategories={setCategories}
+                                        dispatch={dispatch}
                                     />
                                 ))}
                             </View>

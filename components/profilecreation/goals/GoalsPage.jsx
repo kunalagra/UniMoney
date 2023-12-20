@@ -3,17 +3,17 @@ import styles from './goalspage.style';
 import CustomProgress from '../common/progress/CustomProgress';
 import { CheckBox } from '@rneui/themed';
 import { COLORS } from '../../../constants';
-import { useContext } from 'react';
 import { userGoals } from '../../../utils';
 import CustomButton from '../common/button/CustomButton';
-import profileCreationContext from '../../../contexts/profilecreation/profileCreationContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { setGoals } from '../../../store/profilecreation';
 
-const GoalCard = ({goal, title, selectedGoals, setGoals}) => {
+const GoalCard = ({goal, title, selectedGoals, setGoals, dispatch}) => {
     
     const handleToggle = () => {
         let tmp = [...selectedGoals];
         tmp[goal] = selectedGoals[goal]===1? 0 : 1;
-        setGoals([...tmp]);
+        dispatch(setGoals([...tmp]));
     }
 
     return (
@@ -43,7 +43,8 @@ const GoalCard = ({goal, title, selectedGoals, setGoals}) => {
 
 const GoalsPage = (props) => {
 
-    const { goals, setGoals } = useContext(profileCreationContext);
+    const dispatch = useDispatch();
+    const { goals } = useSelector(state => state.profilecreation);
 
     return (
         <SafeAreaView style={{backgroundColor: COLORS.white2}}>
@@ -72,6 +73,7 @@ const GoalsPage = (props) => {
                                         title={title}
                                         selectedGoals={goals}
                                         setGoals={setGoals}
+                                        dispatch={dispatch}
                                     />
                                 ))}
                             </View>

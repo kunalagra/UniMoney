@@ -1,14 +1,15 @@
 import React from 'react';
 
 import AppRoutes from './AppRoutes';
-import { ProfileCreationProvider } from './contexts/profilecreation/profileCreationContext';
+import { Provider } from 'react-redux';
+import store from './store';
 
 function App() {
 
   return (
-    <ProfileCreationProvider>
-      <AppRoutes />
-    </ProfileCreationProvider>
+    <Provider store={store}>
+        <AppRoutes />
+    </Provider>
   );
 }
 

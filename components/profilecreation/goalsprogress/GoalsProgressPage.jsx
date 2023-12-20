@@ -3,14 +3,24 @@ import styles from './goalsprogresspage.style';
 import CustomProgress from '../common/progress/CustomProgress';
 import { Slider } from '@rneui/themed';
 import { COLORS } from '../../../constants';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { userGoals } from '../../../utils';
 import CustomButton from '../common/button/CustomButton';
-import profileCreationContext from '../../../contexts/profilecreation/profileCreationContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { setGoalsProgress } from '../../../store/profilecreation';
 
-const GoalCard = ({goal, title, selectedGoalsProgress, setGoalsProgress}) => {
+const GoalCard = ({goal, title, selectedGoalsProgress, setGoalsProgress, dispatch}) => {
 
     const [value, setValue] = useState(0);
+
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            let tmp = [...selectedGoalsProgress];
+            tmp[goal] = value;
+            dispatch(setGoalsProgress([...tmp]));
+        }, 500);
+        return () => clearTimeout(delayDebounceFn);
+      }, [value]);
 
     return (
         <View style={styles.goalCardContainer}>
@@ -21,9 +31,6 @@ const GoalCard = ({goal, title, selectedGoalsProgress, setGoalsProgress}) => {
                 <Slider
                     value={value}
                     onValueChange={(value) => {
-                        let tmp = [...selectedGoalsProgress];
-                        tmp[goal] = value;
-                        setGoalsProgress([...tmp]);
                         setValue(value);
                     }} 
                     step={25}
@@ -48,7 +55,8 @@ const GoalCard = ({goal, title, selectedGoalsProgress, setGoalsProgress}) => {
 
 const GoalsProgressPage = (props) => {
 
-    const { goals, goalsProgress, setGoalsProgress } = useContext(profileCreationContext);
+    const dispatch = useDispatch();
+    const { goals, goalsProgress } = useSelector(state => state.profilecreation);
 
     const [currentGoals, setCurrentGoals] = useState([]);
     useEffect(() => {
@@ -85,6 +93,7 @@ const GoalsProgressPage = (props) => {
                                         title={userGoals[index]}
                                         selectedGoalsProgress={goalsProgress}
                                         setGoalsProgress={setGoalsProgress}
+                                        dispatch={dispatch}
                                     />
                                 ))}
                             </View>

@@ -1,16 +1,17 @@
-import { useContext } from 'react';
 import {Text, View, TouchableOpacity, SafeAreaView, StatusBar } from 'react-native';
 import { COLORS, icons } from '../../../constants';
 import CustomProgress from '../common/progress/CustomProgress';
 import CustomButton from '../common/button/CustomButton';
 import styles from './genderpage.style';
-import profileCreationContext from '../../../contexts/profilecreation/profileCreationContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { setGender } from '../../../store/profilecreation';
 
-const GenderCard = ({Icon, gender, selectedGender, setSelectedGender}) => {
+const GenderCard = ({Icon, gender, selectedGender, setSelectedGender, dispatch}) => {
+    
     return (
         <TouchableOpacity 
             style={styles.genderCardContainer(selectedGender, gender)}
-            onPress={() => setSelectedGender(gender)}
+            onPress={() => dispatch(setSelectedGender(gender))}
             activeOpacity={0.6}
         >
             <View style={styles.cardBackground(selectedGender, gender)}/>
@@ -26,8 +27,8 @@ const GenderCard = ({Icon, gender, selectedGender, setSelectedGender}) => {
 
 const GenderPage = (props) => {
 
-    const { gender, setGender } = useContext(profileCreationContext);
-
+    const dispatch = useDispatch();
+    const { gender } = useSelector(state => state.profilecreation);
     const { MaleIcon, FemaleIcon, TransgenderIcon } = icons;
 
     return (
@@ -53,18 +54,21 @@ const GenderPage = (props) => {
                                 gender={"Male"} 
                                 selectedGender={gender} 
                                 setSelectedGender={setGender}
-                                />
+                                dispatch={dispatch}
+                            />
                             <GenderCard 
                                 Icon={FemaleIcon} 
                                 gender={"Female"} 
                                 selectedGender={gender} 
                                 setSelectedGender={setGender}
-                                />
+                                dispatch={dispatch}
+                            />
                             <GenderCard 
                                 Icon={TransgenderIcon} 
                                 gender={"Other"} 
                                 selectedGender={gender} 
                                 setSelectedGender={setGender}
+                                dispatch={dispatch}
                             />
                         </View>
                         <View style={{ marginTop: 20 }}>
