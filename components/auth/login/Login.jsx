@@ -1,16 +1,37 @@
+"use strict";
 import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { images, icons, COLORS } from "../../../constants";
 import { Input, Icon } from '@rneui/themed';
 import styles from "./login.style";
 import { useNavigation } from "@react-navigation/native";
+import axios from 'axios';
+
  
 const Login = (props) => {
+    const navigation = useNavigation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [passwordVisible, setPasswordVisible] = useState(false);
-    const navigation = useNavigation();
+    
+    const handleLogin = async () => {
 
+        const options = {
+            method: 'GET',
+            url: 'http://192.168.0.10:3000/free',
+          };
+
+        try {
+            console.log("hello")
+            const response = await axios.request(options);
+            console.log(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+}
+
+            
+
+    const [passwordVisible, setPasswordVisible] = useState(false);
     const { GoogleIcon } = icons;
 
     return (
@@ -56,12 +77,7 @@ const Login = (props) => {
                         />
                         <TouchableOpacity
                             style={styles.loginbtn}
-                            onPress={() => { 
-                                navigation.reset({
-                                    index: 0,
-                                    routes: [{name: 'Main'}],
-                                }); 
-                            }}
+                            onPress={handleLogin}
                             activeOpacity={0.7}
                         >
                             <Text style={styles.loginText}>

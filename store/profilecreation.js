@@ -3,6 +3,9 @@ import { createSlice } from '@reduxjs/toolkit';
 const slice = createSlice({
   name: 'profilecreation',
   initialState: {
+    username: '',
+    email: '',
+    password: '',
     ageGroup: '18-24',
     gender: 'Male',
     goals: [0, 0, 0, 0, 0, 0, 0, 0],
@@ -11,6 +14,15 @@ const slice = createSlice({
     categoriesLimits: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   },
   reducers: {
+    setUsernameReducer: (state, action) => {
+      state.username = action.payload.username;
+    },
+    setEmailReducer: (state, action) => {
+      state.email = action.payload.email;
+    },
+    setPasswordReducer: (state, action) => {
+      state.password = action.payload.password;
+    },
     setAgeGroupReducer: (state, action) => {
       state.ageGroup = action.payload.ageGroup;
     },
@@ -35,7 +47,31 @@ const slice = createSlice({
 export default slice.reducer;
 
 // Actions
-const { setAgeGroupReducer, setGenderReducer, setGoalsReducer, setGoalsProgressReducer, setCategoriesReducer, setCategoriesLimitsReducer } = slice.actions;
+const { setUsernameReducer, setEmailReducer, setPasswordReducer, setAgeGroupReducer, setGenderReducer, setGoalsReducer, setGoalsProgressReducer, setCategoriesReducer, setCategoriesLimitsReducer } = slice.actions;
+
+export const setUsername = (username) => async dispatch => {
+  try {
+    dispatch(setUsernameReducer({ username }));
+  } catch (e) {
+    return console.error(e.message);
+  }
+}
+
+export const setEmail = (email) => async dispatch => {
+  try {
+    dispatch(setEmailReducer({ email }));
+  } catch (e) {
+    return console.error(e.message);
+  }
+}
+
+export const setPassword = (password) => async dispatch => {
+  try {
+    dispatch(setPasswordReducer({ password }));
+  } catch (e) {
+    return console.error(e.message);
+  }
+}
 
 export const setAgeGroup = (ageGroup) => async dispatch => {
   try {

@@ -1,16 +1,21 @@
 import React, { useState } from "react";
-
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { images, icons, COLORS } from "../../../constants";
 import styles from "./signup.style";
 import { Icon, Input } from "@rneui/themed";
+import { useDispatch, useSelector } from 'react-redux';
+import { setUsername, setEmail, setPassword } from '../../../store/profilecreation';
 
 const Login = (props) => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [passwordVisible, setPasswordVisible] = useState(false);
-    const [name, setName] = useState('');
+    const dispatch = useDispatch();
 
+    const { username, email, password } = useSelector(state => state.profilecreation);
+
+    // const [email, setEmail] = useState('');
+    // const [password, setPassword] = useState('');
+    // const [name, setName] = useState('');
+    
+    const [passwordVisible, setPasswordVisible] = useState(false);
     const { GoogleIcon } = icons;
 
     return (
@@ -34,8 +39,8 @@ const Login = (props) => {
                             inputContainerStyle={styles.inputInnerContainerStyle}
                             style={styles.input}
                             placeholder='Name'
-                            value={name}
-                            onChangeText={(e) => setName(e)}
+                            value={username}
+                            onChangeText={(e) => dispatch(setUsername(e))}
                             underlineColorAndroid="transparent"
                             selectionColor={COLORS.gray2}
                             placeholderTextColor={COLORS.gray2}
@@ -46,7 +51,7 @@ const Login = (props) => {
                             style={styles.input}
                             placeholder='Email address'
                             value={email}
-                            onChangeText={(e) => setEmail(e)}
+                            onChangeText={(e) => dispatch(setEmail(e))}
                             underlineColorAndroid="transparent"
                             selectionColor={COLORS.gray2}
                             placeholderTextColor={COLORS.gray2}
@@ -57,7 +62,7 @@ const Login = (props) => {
                             style={styles.input}
                             placeholder='Password'
                             value={password}
-                            onChangeText={(e) => setPassword(e)}
+                            onChangeText={(e) => dispatch(setPassword(e))}
                             underlineColorAndroid="transparent"
                             selectionColor={COLORS.gray2}
                             placeholderTextColor={COLORS.gray2}
