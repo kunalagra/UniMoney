@@ -1,9 +1,11 @@
-import { View, SafeAreaView, StatusBar, Text, Image } from 'react-native';
+import { View, SafeAreaView, StatusBar, Text, Image, Alert } from 'react-native';
 import styles from './settinguppage.style';
 import CustomProgress from '../common/progress/CustomProgress';
 import { COLORS, images } from '../../../constants';
 import { useEffect, useState } from 'react';
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 let i = 0;
 const SettingUpPage = () => {
@@ -11,16 +13,83 @@ const SettingUpPage = () => {
     const [progress, setProgress] = useState(0);
     const progressList = [5, 15, 28, 47, 65, 89, 98, 100];
     const navigation = useNavigation();
+    const { username, email, password, ageGroup, gender, goals, goalsProgress, categories, categoriesLimits } = useSelector(state => state.profilecreation);
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (progress===100) {
+    useEffect( () => {
+
+        const options = {
+            method: 'POST',
+            url: 'https://unimoney-backend.onrender.com/auth/register',
+            data : {
+                username: username,
+                email: email,
+                password: password,
+                ageGroup: ageGroup,
+                gender: gender,
+                goals: goals,
+                goalsProgress: goalsProgress,
+                categories: categories,
+                categoriesLimits: categoriesLimits
+            }
+        };
+
+        const interval = setInterval( async () => {
+            if (progress===98) {
                 clearInterval(interval);
-                navigation.reset({
-                    index: 0,
-                    routes: [{name: 'Main'}],
-                });
-            } else {
+                try {
+                    console.log(options)
+                    const response = await axios.request(options);
+                    if (response.status === 201) {
+                        setProgress(100);
+                        setTimeout(() => {
+                            const login = (async () => {
+                                const options = {
+                                    method: 'POST',
+                                    url: 'https://unimoney-backend.onrender.com/auth/login',
+                                    data: {
+                                        email: email,
+                                        password: password
+                                    }
+                                };
+                        
+                                try {
+                                    const response = await axios.request(options);
+                                    if (response.status === 200) {
+                                        AsyncStorage.setItem('token', response.data.token);
+                                        navigation.reset({
+                                            index: 0,
+                                            routes: [{ name: 'Main' }],
+                                        });
+                                    }
+                                } catch (error) {
+                                    console.log(error);
+                                    if (error.response.status === 401) {
+                                        alert('Invalid email or password');
+                                    }
+                                }
+                            });
+                            login();
+                        }, 1000);
+                    }
+                } catch (error) {
+                    console.log(error);
+                    Alert.alert(
+                        "Error",
+                        "Something went wrong. Please try again later.",
+                        [
+                            {
+                                text: "OK",
+                                onPress: () => navigation.reset({
+                                    index: 0,
+                                    routes: [{ name: 'SignUp' }],
+                                }),
+                                style: "cancel"
+                            }
+                        ]
+                    );
+                }
+
+            }else {
                 setProgress(progressList[i]);
                 i++;
             }

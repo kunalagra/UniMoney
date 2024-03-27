@@ -5,8 +5,11 @@ import styles from "./signup.style";
 import { Icon, Input } from "@rneui/themed";
 import { useDispatch, useSelector } from 'react-redux';
 import { setUsername, setEmail, setPassword } from '../../../store/profilecreation';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
-const Login = (props) => {
+
+
+const SignUp = (props) => {
     const dispatch = useDispatch();
 
     const { username, email, password } = useSelector(state => state.profilecreation);
@@ -17,6 +20,32 @@ const Login = (props) => {
     
     const [passwordVisible, setPasswordVisible] = useState(false);
     const { GoogleIcon } = icons;
+
+    const googleSignIn = async () => {
+        GoogleSignin.configure({
+            webClientId : '589151002205-7mn00hpmf6ujttmos9v12dg5d6oqahll.apps.googleusercontent.com',
+            offlineAccess: true,
+            forceCodeForRefreshToken: true,
+            androidClientId: '589151002205-a8qcs5utili313q108ghmed3e5vbi847.apps.googleusercontent.com',
+        });
+        try {
+            await GoogleSignin.hasPlayServices();
+            const userInfo = await GoogleSignin.signIn();
+            if (userInfo) {
+                dispatch(setUsername(userInfo.user.name));
+                dispatch(setEmail(userInfo.user.email));
+                dispatch(setPassword('google'));
+                props.navigation.navigate('GenderPage');
+            }else {
+                console.log('error');
+                alert('Google Signin failed');
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 
     return (
         <View style={styles.container}>
@@ -91,6 +120,7 @@ const Login = (props) => {
                         <TouchableOpacity
                             style={styles.signupOption}
                             activeOpacity={0.8}
+                            onPress={googleSignIn}
                         >
                             <GoogleIcon
                                 height={20}
@@ -117,4 +147,4 @@ const Login = (props) => {
 };
 
 
-export default Login;
+export default SignUp;

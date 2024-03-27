@@ -1,12 +1,15 @@
+"use strict";
 import { SafeAreaView, View, Text, ScrollView, StatusBar, TouchableOpacity, Image, Switch } from "react-native";
 import { COLORS, icons, images } from "../../constants";
 import { useState } from "react";
 import styles from "./settingspage.style";
-
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SettingsPage = (props) => {
 
     const { ArrowleftIcon } = icons;
+    const navigation = useNavigation();
 
     const [isBudgetMode, setIsBudgetMode] = useState(false);
     const [isPushNotifications, setIsPushNotifications] = useState(false);
@@ -80,7 +83,10 @@ const SettingsPage = (props) => {
             title: "Logout",
             image: images.poweroff_icon,
             desc: "Logout from this device",
-            handlePress: () => {},
+            handlePress: async () => {
+                console.log(await AsyncStorage.getItem('token'))
+                AsyncStorage.removeItem('token');
+            }
         },
     ]
 

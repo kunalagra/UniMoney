@@ -16,7 +16,7 @@ import CustomImport from './components/settings/custom-import/CustomImport';
 const Stack = createNativeStackNavigator();
 
 
-function AppRoutes() {
+function AppRoutes({ token }) {
 
   return (
     <NavigationContainer>
@@ -24,21 +24,22 @@ function AppRoutes() {
         barStyle={'dark-content'}
         backgroundColor={COLORS.white1}
       />
+      
       <Stack.Navigator
         screenOptions={{
           animation: 'slide_from_right',
         }}
       >
-        <Stack.Screen name="GetStarted" component={GetStarted}
+        {!token && <Stack.Screen name="GetStarted" component={GetStarted}
           options={{
             headerShown: false,
           }}
-        />
-        <Stack.Screen name="Login" component={Login}
+        />}
+        {!token && <Stack.Screen name="Login" component={Login}
           options={{
             headerShown: false,
           }}
-        />
+        />}
         <Stack.Screen name="Main" component={MainPage}
           options={{
             headerShown: false,

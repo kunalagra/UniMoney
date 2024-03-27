@@ -12,6 +12,7 @@ const slice = createSlice({
     goalsProgress: [0, 0, 0, 0, 0, 0, 0, 0],
     categories: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     categoriesLimits: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    token: '',
   },
   reducers: {
     setUsernameReducer: (state, action) => {
@@ -40,6 +41,9 @@ const slice = createSlice({
     },
     setCategoriesLimitsReducer: (state, action) =>  {
       state.categoriesLimits = [...action.payload.categoriesLimits];
+    },
+    setTokenReducer: (state, action) => {
+      state.token = action.payload.token;
     },
   },
 });
