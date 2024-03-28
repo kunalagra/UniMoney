@@ -5,11 +5,14 @@ import { useState } from "react";
 import styles from "./settingspage.style";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector } from "react-redux";
 
 const SettingsPage = (props) => {
 
     const { ArrowleftIcon } = icons;
     const navigation = useNavigation();
+
+    const { username, email } = useSelector(state => state.profilecreation);
 
     const [isBudgetMode, setIsBudgetMode] = useState(false);
     const [isPushNotifications, setIsPushNotifications] = useState(false);
@@ -84,7 +87,7 @@ const SettingsPage = (props) => {
             image: images.poweroff_icon,
             desc: "Logout from this device",
             handlePress: async () => {
-                console.log(await AsyncStorage.getItem('token'))
+                // console.log(await AsyncStorage.getItem('token'))
                 AsyncStorage.removeItem('token');
                 navigation.reset({
                     index: 0,
@@ -156,10 +159,10 @@ const SettingsPage = (props) => {
                                 />
                                 <View style={styles.profileTitleContainer}>
                                     <Text style={styles.profileName}>
-                                        John Doe
+                                        {username}
                                     </Text>
                                     <Text style={styles.profileEmail}>
-                                        john.doe@gmail.com
+                                        {email}
                                     </Text>
                                 </View>
                             </View>

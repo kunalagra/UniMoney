@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, SafeAreaView, StatusBar, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { COLORS, images } from '../../../constants'
 import ExpenseCard from '../common/cards/expense/ExpenseCard';
@@ -7,6 +7,10 @@ import { transactionsData } from '../../../constants/fakeData';
 import TransactionCard from '../common/cards/transaction/TransactionCard';
 import styles from './homepage.style';
 import { Dialog, Input } from '@rneui/themed';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { setUsername, setEmail } from '../../../store/profilecreation';
+import { useDispatch } from 'react-redux';
 
 const ChatModal = ({visible, setVisibility}) => {
 
@@ -86,7 +90,30 @@ const ChatModal = ({visible, setVisibility}) => {
 
 const HomePage = ({ navigateTo }) => {
 
+    const dispatch = useDispatch();
+
     const [isChatModalOpen, setIsChatModalOpen] = useState(false);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const options = {
+                method: 'GET',
+                url: 'https://unimoney-backend.onrender.com/auth/profile',
+                headers: {
+                    "Content-type": "application/json",
+                    "Authorization": "Bearer " + await AsyncStorage.getItem('token')
+                }
+            };
+            try {
+                const response = await axios.request(options);
+                dispatch(setUsername(response.data.user.username));
+                dispatch(setEmail(response.data.user.email));
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchData();
+    }, [])
 
     const data = [
         {
