@@ -11,6 +11,7 @@ import MessageSyncPage from "./profilecreation/messagesync/MessageSyncPage";
 import TransactionSyncPage from "./profilecreation/transactionsync/TransactionSyncPage";
 import PushNotificationPage from "./profilecreation/pushnotification/PushNotificationPage";
 import SettingUpPage from "./profilecreation/settingup/SettingUpPage";
+import DublicateGetStarted from "./getstarted/DublicateGetStrated";
 import MainPage from "./main/Main";
 
 
@@ -29,4 +30,5 @@ export {
     PushNotificationPage,
     SettingUpPage,
     MainPage,
+    DublicateGetStarted,
 }

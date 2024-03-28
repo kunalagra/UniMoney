@@ -86,6 +86,10 @@ const SettingsPage = (props) => {
             handlePress: async () => {
                 console.log(await AsyncStorage.getItem('token'))
                 AsyncStorage.removeItem('token');
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'DublicateGetStarted' }],
+                });
             }
         },
     ]

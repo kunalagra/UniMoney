@@ -8,6 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import axios from 'axios';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { REACT_APP_GOOGLE_CLIENT_ID, REACT_APP_ANDROID_CLIENT_ID} from '@env';
 
 
 const Login = (props) => {
@@ -15,15 +16,16 @@ const Login = (props) => {
     const navigation = useNavigation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const handleLogin = async () => {
-
+    const handleLogin = async ({gemail, gpassword}) => {
+        setLoading(true);
         const options = {
             method: 'POST',
             url: 'https://unimoney-backend.onrender.com/auth/login',
             data: {
-                email: email,
-                password: password
+                email: email ? email : gemail,
+                password: password ? password : gpassword
             }
         };
 
@@ -31,6 +33,7 @@ const Login = (props) => {
             const response = await axios.request(options);
             if (response.status === 200) {
                 AsyncStorage.setItem('token', response.data.token);
+                setLoading(false);
                 navigation.reset({
                     index: 0,
                     routes: [{ name: 'Main' }],
@@ -39,6 +42,7 @@ const Login = (props) => {
         } catch (error) {
             console.log(error);
             setPassword('');
+            setEmail('');
             if (error.response.status === 401) {
                 alert('Invalid email or password done');
             }
@@ -46,19 +50,19 @@ const Login = (props) => {
     }
 
     const googleSignIn = async () => {
+        setLoading(true);
         GoogleSignin.configure({
-            webClientId: '589151002205-7mn00hpmf6ujttmos9v12dg5d6oqahll.apps.googleusercontent.com',
+            webClientId: REACT_APP_GOOGLE_CLIENT_ID,
             offlineAccess: true,
             forceCodeForRefreshToken: true,
-            androidClientId: '589151002205-a8qcs5utili313q108ghmed3e5vbi847.apps.googleusercontent.com',
+            offlineAccess: true,
+            androidClientId: REACT_APP_ANDROID_CLIENT_ID,
         });
         try {
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
             if (userInfo) {
-                setEmail(userInfo.user.email);
-                setPassword('google');
-                handleLogin();
+                handleLogin({gemail: userInfo.user.email, gpassword: 'google'});
             } else {
                 console.log('error');
                 alert('Google Signin failed');
@@ -72,7 +76,7 @@ const Login = (props) => {
 
 
     const [passwordVisible, setPasswordVisible] = useState(false);
-    const { GoogleIcon } = icons;
+    const { GoogleIcon, Loader } = icons;
 
     return (
         <View style={styles.container}>
@@ -119,10 +123,20 @@ const Login = (props) => {
                             style={styles.loginbtn}
                             onPress={handleLogin}
                             activeOpacity={0.7}
+                            disabled={loading}
                         >
+                            { loading ? (
+                                <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap:10}}>
+                                <Loader height={20} width={20}></Loader>
+                                <Text style={styles.loginText}>
+                                    Logging in...
+                                </Text>
+                            </View>
+                            ) : (
                             <Text style={styles.loginText}>
                                 Login
                             </Text>
+                            )}
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -137,6 +151,7 @@ const Login = (props) => {
                             style={styles.loginOption}
                             activeOpacity={0.8}
                             onPress={googleSignIn}
+                            disabled={loading}
                         >
                             <GoogleIcon
                                 height={20}

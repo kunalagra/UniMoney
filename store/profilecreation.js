@@ -51,7 +51,7 @@ const slice = createSlice({
 export default slice.reducer;
 
 // Actions
-const { setUsernameReducer, setEmailReducer, setPasswordReducer, setAgeGroupReducer, setGenderReducer, setGoalsReducer, setGoalsProgressReducer, setCategoriesReducer, setCategoriesLimitsReducer } = slice.actions;
+const { setUsernameReducer, setEmailReducer, setPasswordReducer, setAgeGroupReducer, setGenderReducer, setGoalsReducer, setGoalsProgressReducer, setCategoriesReducer, setCategoriesLimitsReducer, setTokenReducer } = slice.actions;
 
 export const setUsername = (username) => async dispatch => {
   try {
@@ -120,6 +120,14 @@ export const setCategories = (categories) => async dispatch => {
 export const setCategoriesLimits = (categoriesLimits) => async dispatch => {
   try {
     return dispatch(setCategoriesLimitsReducer({ categoriesLimits }));
+  } catch (e) {
+    return console.error(e.message);
+  }
+}
+
+export const setToken = (token) => async dispatch => {
+  try {
+    return dispatch(setTokenReducer({ token }));
   } catch (e) {
     return console.error(e.message);
   }

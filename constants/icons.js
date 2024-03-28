@@ -19,6 +19,7 @@ import CoinstackIcon from "../assets/icons/coinstack.svg";
 import TickIcon from "../assets/icons/tick.svg";
 import VisibilityIcon from "../assets/icons/visibility.svg";
 import WalletIcon from "../assets/icons/wallet.svg";
+import Loader from "../assets/icons/loader.svg";
 
 export default {
     AddIcon,
@@ -42,4 +43,5 @@ export default {
     TickIcon,
     VisibilityIcon,
     WalletIcon,
+    Loader
 }

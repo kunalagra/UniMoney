@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from 'react-native';
 
-import { GetStarted, Login, SignUp, GenderPage, AgePage, GoalsPage, GoalsProgressPage, SpendingCategoriesPage, SpendingLimitsPage, MessageSyncPage, TransactionSyncPage, PushNotificationPage, SettingUpPage, MainPage } from './components'
+import { GetStarted, Login, SignUp, GenderPage, AgePage, GoalsPage, GoalsProgressPage, SpendingCategoriesPage, SpendingLimitsPage, MessageSyncPage, TransactionSyncPage, PushNotificationPage, SettingUpPage, MainPage, DublicateGetStarted } from './components'
 import { COLORS } from './constants';
 import TransactionDetailsPage from './components/transaction/transaction-details/TransactionDetails';
 import AddTransactionPage from './components/transaction/add-transaction/AddTransaction';
@@ -34,13 +34,13 @@ function AppRoutes({ token }) {
           options={{
             headerShown: false,
           }}
-        />}
-        {!token && <Stack.Screen name="Login" component={Login}
-          options={{
-            headerShown: false,
-          }}
-        />}
-        <Stack.Screen name="Main" component={MainPage}
+          />}
+          <Stack.Screen name="Main" component={MainPage}
+            options={{
+              headerShown: false,
+            }}
+          />
+        <Stack.Screen name="Login" component={Login}
           options={{
             headerShown: false,
           }}
@@ -131,6 +131,11 @@ function AppRoutes({ token }) {
           }}
         />
         <Stack.Screen name="CustomImportPage" component={CustomImport}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="DublicateGetStarted" component={DublicateGetStarted}
           options={{
             headerShown: false,
           }}
