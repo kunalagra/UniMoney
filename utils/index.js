@@ -91,19 +91,22 @@ export const pushNotificationOptions = [
 
 export const moneyTextHelper = (money) => {
     let resMoney = "";
-    let i = 0;
-    while (money > 0) {
-        resMoney += (money%10).toString();
-        i += 1;
-        if (i===3) {
-            i = 1;
-            resMoney += ',';
-        };
-        money = Math.floor(money / 10);
+    let moneyStr = money.toString();
+    let moneyArr = moneyStr.split('.');
+    let moneyInt = moneyArr[0];
+    let moneyDec = moneyArr[1];
+    let moneyIntArr = moneyInt.split('');
+    let count = 0;
+    for (let i = moneyIntArr.length - 1; i >= 0; i--) {
+        count++;
+        resMoney = moneyIntArr[i] + resMoney;
+        if (count % 3 === 0 && i !== 0) {
+            resMoney = ',' + resMoney;
+        }
     }
+    if (moneyDec) {
+        resMoney = resMoney + '.' + moneyDec;
+    }
+    return resMoney;
 
-    let res = resMoney.split('');
-    if (res[res.length - 1]===',') res.pop();
-
-    return res.reverse().join('');
 }

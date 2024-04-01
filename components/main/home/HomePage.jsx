@@ -3,7 +3,7 @@ import { View, Text, SafeAreaView, StatusBar, Image, ScrollView, TouchableOpacit
 import { COLORS, images } from '../../../constants'
 import ExpenseCard from '../common/cards/expense/ExpenseCard';
 import StreakBanner from './streakbanner/StreakBanner';
-import { transactionsData } from '../../../constants/fakeData';
+// import { transactionsData } from '../../../constants/fakeData';
 import TransactionCard from '../common/cards/transaction/TransactionCard';
 import styles from './homepage.style';
 import { Dialog, Input } from '@rneui/themed';
@@ -11,16 +11,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { setUsername, setEmail } from '../../../store/profilecreation';
 import { useDispatch } from 'react-redux';
+import SmsAndroid from 'react-native-get-sms-android';
 
-const ChatModal = ({visible, setVisibility}) => {
+const ChatModal = ({ visible, setVisibility }) => {
 
     const messagesA = ['Hello', 'Iam Jonhhy!!', 'I want some help!', 'Hello', 'Iam Jonhhy!!', 'I want some help!', 'Hello', 'Iam Jonhhy!!', 'I want some help!', 'Hello', 'Iam Jonhhy!!', 'I want some help!', 'Hello', 'Iam Jonhhy!!', 'I want some help!'];
     const messagesB = ['Hey, Jonhhy!', 'How can I help you?'];
 
     return (
         <Dialog
-            isVisible={visible} 
-            onDismiss={() => setVisibility(false)} 
+            isVisible={visible}
+            onDismiss={() => setVisibility(false)}
             onBackdropPress={() => setVisibility(false)}
             overlayStyle={styles.chatModal}
         >
@@ -33,14 +34,14 @@ const ChatModal = ({visible, setVisibility}) => {
                 <TouchableOpacity
                     onPress={() => setVisibility(false)}
                 >
-                    <Image 
+                    <Image
                         source={images.closeicon}
                         style={styles.chatModalCloseIcon}
                     />
                 </TouchableOpacity>
             </View>
             <View style={styles.chatContainer}>
-                <ScrollView 
+                <ScrollView
                 >
                     {messagesA.map((item, index) => (
                         <View
@@ -94,6 +95,88 @@ const HomePage = ({ navigateTo }) => {
 
     const [isChatModalOpen, setIsChatModalOpen] = useState(false);
 
+    const [transactionsData, setTransactionsData] = useState([]);
+
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    const formatDateTime = (timestamp) => {
+        const date = new Date(timestamp);
+        const day = date.getDate();
+        const month = date.getMonth();
+        const year = date.getFullYear();
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+
+        // give time in 12 hour format
+        const time = hours > 12 ? `${hours - 12}:${minutes} PM` : `${hours}:${minutes} AM`;
+        const dayStr = day < 10 ? `0${day}` : day;
+
+        return `${dayStr} ${months[month]} ${year} ${time}`;
+    }
+
+
+    const getBankMessages = async () => {
+        const amountRegex = /(?:Rs\.?|INR|₹)\s?(\d+(?:,\d{3})*(?:\.\d{2})?)/;
+
+        const isCredited = (str) => {
+            return /(?:credited|received|deposited|sent)/i.test(str);
+        };
+        const nameRegex = /(?:from|to)\s(.+?)\s(.+?)/i;
+        const bankKeywordsRegex = /(credited|debited|payment|withdraw|settlement|received|sent)/i;
+
+        console.log('Permission granted');
+
+        const date = new Date();
+        date.setMonth(date.getMonth() - 1);
+
+        SmsAndroid.list(
+            JSON.stringify({
+                box: 'inbox',
+                maxCount: 100, // Increase maxCount to retrieve more messages
+                minDate: date.getTime() - 1000 * 60 * 60 * 24 * 90
+
+            }),
+            (fail) => {
+                console.log('Failed with this error: ' + fail);
+            },
+            (count, smsList) => {
+                const parsedSmsList = JSON.parse(smsList);
+
+                const bankMessages = parsedSmsList.filter((sms) => {
+                    return bankKeywordsRegex.test(sms.body);
+                });
+
+                // const oldMessages = bankMessages.filter((sms) => {
+                //     return new Date(sms.date) > date;
+                // });
+
+                bankMessages.forEach((transaction) => {
+                    const amount = amountRegex.exec(transaction.body);
+                    const amountValue = amount ? parseFloat(amount[1].replace(/,/g, '')) : null;
+                    const type = isCredited(transaction.body) ? 'credit' : 'debit';
+                    const name = transaction.address
+                    const date = formatDateTime(transaction.date);
+                    console.log({ name, amountValue, type, date });
+                    if (amountValue && amountValue > 0) {
+                        setTransactionsData((prevData) => {
+                            return [
+                                ...prevData,
+                                {
+                                    name: name ? name : 'Unknown',
+                                    image: name.includes('BNK') ? images.bank : images.payments,
+                                    time: date,
+                                    amount: amountValue ? amountValue : 0,
+                                    isExpense: type === 'debit' ? true : false
+                                }
+                            ]
+                        });
+                    }
+                });
+            }
+        );
+    };
+    
+
     useEffect(() => {
         const fetchData = async () => {
             const options = {
@@ -113,6 +196,7 @@ const HomePage = ({ navigateTo }) => {
             }
         }
         fetchData();
+        getBankMessages();
     }, [])
 
     const data = [
@@ -132,9 +216,9 @@ const HomePage = ({ navigateTo }) => {
             income: 1200523
         },
     ];
- 
+
     return (
-        <SafeAreaView style={{backgroundColor: COLORS.white2}}>
+        <SafeAreaView style={{ backgroundColor: COLORS.white2 }}>
             <StatusBar
                 barStyle={'dark-content'}
                 backgroundColor={COLORS.white2}
@@ -143,8 +227,8 @@ const HomePage = ({ navigateTo }) => {
             <View style={styles.container}>
 
                 {
-                    !isChatModalOpen && 
-                    <View 
+                    !isChatModalOpen &&
+                    <View
                         style={styles.chatButtonContainer}
                     >
                         <TouchableOpacity
@@ -152,7 +236,7 @@ const HomePage = ({ navigateTo }) => {
                             activeOpacity={0.85}
                             onPress={() => setIsChatModalOpen(true)}
                         >
-                            <Image 
+                            <Image
                                 source={images.chaticon}
                                 style={styles.chatIcon}
                             />
@@ -191,7 +275,7 @@ const HomePage = ({ navigateTo }) => {
                         </View>
 
                         <StreakBanner />
-    
+
                         <View style={styles.expenseCardsContainer}>
                             <ScrollView
                                 contentContainerStyle={styles.expenseCardsList}
@@ -218,14 +302,14 @@ const HomePage = ({ navigateTo }) => {
 
                             <View style={styles.transactionsContainer}>
                                 {transactionsData.map((item, index) => (
-                                    <TransactionCard 
-                                        key={index} 
+                                    <TransactionCard
+                                        key={index}
                                         name={item.name}
                                         image={item.image}
                                         description={item.time}
                                         amount={item.amount}
                                         isExpense={item.isExpense}
-                                        navigateTo={navigateTo} 
+                                        navigateTo={navigateTo}
                                     />
                                 ))}
                             </View>
