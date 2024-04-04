@@ -26,7 +26,6 @@ const MessageSyncPage = (props) => {
                 );
                 if (permReq === PermissionsAndroid.RESULTS.GRANTED) {
                     setIsGranted(true);
-                    getBankMessages();
                 } else {
                     Linking.openSettings();
                 }

@@ -3,17 +3,40 @@ import styles from './transactiondetails.style';
 import { COLORS, icons } from '../../../constants';
 import { useState } from 'react';
 import { spendingCategories } from '../../../utils';
-import { transactionsData } from '../../../constants/fakeData';
+// import { transactionsData } from '../../../constants/fakeData';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 
-const CategoryCard = ({id, category, selectedCategory, setSelectedCategory}) => {
+const CategoryCard = ({id, category, selectedCategory, setSelectedCategory, tranID}) => {
     return (
         <TouchableOpacity 
             style={styles.categoryContainer}
-            onPress={() => setSelectedCategory(id)}
+            onPress={async () => {
+                setSelectedCategory(category.name);
+                console.log(tranID, category.name);
+                const options = {
+                    method: 'PUT',
+                    url: `https://unimoney-backend.onrender.com/transaction/${tranID}`,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Authorization": "Bearer " + await AsyncStorage.getItem('token')
+                    },
+                    data: {
+                        category: category.name
+                    }
+                };
+                try {
+                    const response = await axios(options);
+                    console.log(response.data);
+                }
+                catch (error) {
+                    console.log(error);
+                }
+            }}
             activeOpacity={0.6}
         >
-            <View style={styles.categoryBackground(selectedCategory==id)}>
+            <View style={styles.categoryBackground(selectedCategory==category.name)}>
                 <Image
                     source={category.image}
                     alt={category.name}
@@ -26,12 +49,13 @@ const CategoryCard = ({id, category, selectedCategory, setSelectedCategory}) => 
 }
 
 const TransactionDetailsPage = (props) => {
-
-    const [selectedCategory, setSelectedCategory] = useState(0);
+    
+    const transaction = props.route.params;
+    const [selectedCategory, setSelectedCategory] = useState(transaction.category);
 
     const { ArrowleftIcon } = icons;
 
-    const transaction = transactionsData[0];
+
 
     return (
         <SafeAreaView style={{backgroundColor: COLORS.white2}}>
@@ -93,7 +117,7 @@ const TransactionDetailsPage = (props) => {
                     </View>
                     <View style={styles.categoriesConatainer}>
                         {spendingCategories.map((item, index) => (
-                            <CategoryCard id={index} category={item} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} key={index} />
+                            <CategoryCard id={index} category={item} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} key={index} tranID={transaction.id}/>
                         ))}
                     </View>
                 </View>

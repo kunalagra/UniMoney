@@ -110,3 +110,20 @@ export const moneyTextHelper = (money) => {
     return resMoney;
 
 }
+
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+export const formatDateTime = (timestamp) => {
+    const date = new Date(timestamp);
+    const day = date.getDate();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    // give time in 12 hour format
+    const time = hours > 12 ? `${hours - 12}:${minutes} PM` : `${hours}:${minutes} AM`;
+    const dayStr = day < 10 ? `0${day}` : day;
+
+    return `${dayStr} ${months[month]} ${year} ${time}`;
+}
