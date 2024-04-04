@@ -132,7 +132,7 @@ const HomePage = ({ navigateTo }) => {
         SmsAndroid.list(
             JSON.stringify({
                 box: 'inbox',
-                maxCount: 100, // Increase maxCount to retrieve more messages
+                maxCount: 5, // Increase maxCount to retrieve more messages
                 minDate: date.getTime() - 1000 * 60 * 60 * 24 * 90
 
             }),
@@ -246,7 +246,7 @@ const HomePage = ({ navigateTo }) => {
 
                 <ChatModal visible={isChatModalOpen} setVisibility={setIsChatModalOpen} />
 
-                <ScrollView>
+                <ScrollView style={{minHeight: '100vh'}}>
 
                     <View style={styles.mainContainer}>
                         <View style={styles.navbar}>
