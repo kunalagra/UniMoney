@@ -133,7 +133,7 @@ const HomePage = ({ navigateTo }) => {
         SmsAndroid.list(
             JSON.stringify({
                 box: 'inbox',
-                maxCount: 100, // Increase maxCount to retrieve more messages
+                maxCount: 5, // Increase maxCount to retrieve more messages
                 // minDate: date.getTime() - 1000 * 60 * 60 * 24 * 30
 
             }),
