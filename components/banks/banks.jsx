@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { SafeAreaView, View, Text, ScrollView, StatusBar, TouchableOpacity, Image, Modal, } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import { SafeAreaView, View, Text, ScrollView, StatusBar, TouchableOpacity, Image, Modal, RefreshControl } from "react-native";
 import { COLORS, FONT, SIZES, icons, images } from "../../constants";
 import { Input, Icon } from '@rneui/themed';
 import styles from "./banks.style";
@@ -24,6 +24,7 @@ const Banks = ({ navigation }) => {
     const { alltransactions } = useSelector(state => state.transactiondata);
     const [uniqueBanksNumber, setUniqueBanksNumber] = useState([]);
     const [linkedBanks, setLinkedBanks] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
 
     const getUniqueBanksNumber = (linkedBanks) => {
         let uniqueBanks = new Set();
@@ -53,28 +54,36 @@ const Banks = ({ navigation }) => {
         }
     }
 
-    useEffect(() => {
-        const getMyBanks = async () => {
-            const options = {
-                method: 'GET',
-                url: 'https://unimoney-backend.onrender.com/bank/my',
-                headers: {
-                    "Content-type": "application/json",
-                    "Authorization": "Bearer " + await AsyncStorage.getItem('token')
-                }
-            };
-            try {
-                const response = await axios.request(options);
-                setLinkedBanks(response.data);
-                let linkedBanks = [];
-                response.data.forEach((item) => {
-                    linkedBanks.push(item.number);
-                })
-                getUniqueBanksNumber(linkedBanks);
-            } catch (error) {
-                console.error(error);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        getMyBanks();
+        setTimeout(() => setRefreshing(false), 1000);
+    }, []);
+
+    const getMyBanks = async () => {
+        const options = {
+            method: 'GET',
+            url: 'https://unimoney-backend.onrender.com/bank/my',
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + await AsyncStorage.getItem('token')
             }
+        };
+        try {
+            const response = await axios.request(options);
+            setLinkedBanks(response.data);
+            let linkedBanks = [];
+            response.data.forEach((item) => {
+                linkedBanks.push(item.number);
+            })
+            getUniqueBanksNumber(linkedBanks);
+        } catch (error) {
+            console.error(error);
         }
+    }
+
+    useEffect(() => {
         getMyBanks();
     }, [])
 
@@ -108,12 +117,12 @@ const Banks = ({ navigation }) => {
                             fontSize: 12,
                             color: "black",
                         }}
-                        labelStyle={{ fontSize: 14, fontWeight: "400", color: "#FF720A", left: 20 }}
+                        labelStyle={{ fontSize: 14, fontWeight: "400", color: COLORS.gray2, left: 20 }}
                         inputContainerStyle={{ borderBottomWidth: 0, top: -10, left: -10 }}
                         inputStyle={{ color: "black", height: 20 }}
-                        containerStyle={{ borderBottomColor: "#FF720A", borderBottomWidth: 2.5, width: "94%", marginLeft: 10, height: 55, marginTop: 20 }}
-                        cursorColor={"#FF720A"}
-                        selectionColor={"#FF720A"}
+                        containerStyle={{ borderBottomColor: COLORS.main3, borderBottomWidth: 2.5, width: "94%", marginLeft: 10, height: 55, marginTop: 20 }}
+                        cursorColor={COLORS.main3}
+                        selectionColor={COLORS.main3}
                         autoFocus={true}
                         onChangeText={(value) => setBankName(value)}
                         value={bankName}
@@ -180,7 +189,11 @@ const Banks = ({ navigation }) => {
             </Modal>
 
 
-            <ScrollView >
+            <ScrollView 
+            refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[COLORS.main3]} />
+            }
+            >
                 <View style={styles.mainContainer}>
                     {uniqueBanksNumber.map((acc, index) => {
                         return (

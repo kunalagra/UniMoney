@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     },
 
     accContainer: {
-        backgroundColor: COLORS.orange1,
+        backgroundColor: COLORS.main4,
         padding: 10,
         borderRadius: 10,
         flexDirection: 'row',
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     },
 
     closeButton: {
-        backgroundColor: "#FF720A",
+        backgroundColor: COLORS.gray1,
         width: "94%",
         height: 40,
         justifyContent: "center",
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
     },
     selectButton: {
-        backgroundColor: "#FF720A",
+        backgroundColor: COLORS.main3,
         width: "94%",
         height: 40,
         justifyContent: "center",
@@ -111,7 +111,8 @@ const styles = StyleSheet.create({
     bankContainer: {
         width: "100%",
         alignItems: "center",
-        marginTop: 20
+        marginTop: 20,
+        gap: 20
     },
     bankCard: {
         flexDirection: "row",
