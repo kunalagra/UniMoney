@@ -134,7 +134,7 @@ const HomePage = ({ navigateTo }) => {
             JSON.stringify({
                 box: 'inbox',
                 maxCount: 50, // Increase maxCount to retrieve more messages
-                //minDate: prevData[0].date,
+                minDate: prevData[0].date,
 
             }),
             (fail) => {

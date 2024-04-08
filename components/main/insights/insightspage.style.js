@@ -72,6 +72,54 @@ const styles = StyleSheet.create({
         tintColor: COLORS.main3
     },
 
+    filterIcon: {
+        width: 28, 
+        height: 28,
+        tintColor: COLORS.main3
+    },
+
+    filterDot: {
+        position: 'absolute', 
+        top: 0, 
+        right: 0, 
+        backgroundColor: COLORS.main3, 
+        borderRadius: 100, 
+        width: 10, 
+        height: 10, 
+        zIndex: 1
+    },
+
+    filterDatePickersContainer: {
+        flexDirection: 'row', 
+        justifyContent: 'center', 
+        gap: 20
+    },
+
+    filterModal: {
+        marginBottom: 10, 
+        gap: 15, 
+        backgroundColor: 'white', 
+        borderRadius: 20, 
+        padding: 10
+    },
+
+    filterDatesContainer: (isStart) => ({
+        gap: 10, 
+        alignItems: isStart? 'flex-end' : 'flex-start'
+    }),
+
+    filterDateText: {
+        fontFamily: FONT.medium, 
+        color: COLORS.gray3, 
+        fontSize: SIZES.regular
+    },
+
+    filterDateValueContainer: {
+        padding: 6, 
+        borderRadius: 4, 
+        backgroundColor: COLORS.white3
+    },
+
     analysisContainer: {
         marginBottom: 400, 
         gap: 30

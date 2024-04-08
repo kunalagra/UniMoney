@@ -41,13 +41,11 @@ const HistoryPage = ({ navigateTo }) => {
     };
 
     const prevMonth = () => {
-        console.log(date.getMonth(), date.getFullYear());
         if (date.getMonth()!==0) setDate(new Date(date.getFullYear(), date.getMonth()-1));
         else setDate(new Date(date.getFullYear()-1, 11));
     }
     
     const nextMonth = () => {
-        console.log(date.getMonth(), date.getFullYear());
         if (date.getMonth()!==11) setDate(new Date(date.getFullYear(), date.getMonth()+1));
         else setDate(new Date(date.getFullYear()+1, 0));
     }
@@ -159,7 +157,7 @@ const HistoryPage = ({ navigateTo }) => {
                                 </Text>
                             </TouchableOpacity>
                             <View style={styles.headingIconsContainer}>
-                                <TouchableOpacity onPress={nextMonth}>
+                                <TouchableOpacity onPress={nextMonth} disabled={date.getMonth()===new Date().getMonth() && date.getFullYear()===new Date().getFullYear()}>
                                     <Text style={styles.arrowText}>
                                         {'>'}
                                     </Text>
