@@ -23,7 +23,7 @@ const SettingsPage = (props) => {
             title: "Manage accounts",
             image: images.bank_outline,
             desc: "Manage your accounts",
-            handlePress: () => {},
+            handlePress: () => {props.navigation.navigate('Banks')}
         },
         {
             title: "New category",

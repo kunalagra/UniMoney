@@ -109,7 +109,7 @@ const TransactionDetailsPage = (props) => {
                 <View style={styles.bottomContainer}>
                     <View style={styles.bottomTextContainer}>
                         <Text style={styles.bottomText1}>
-                            Your spend was categorised
+                            {transaction.isExpense ? 'Your spend was categorised' : 'Your income was categorised'}
                         </Text>
                         <Text style={styles.bottomText2}>
                             Tap to change it

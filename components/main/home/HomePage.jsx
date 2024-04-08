@@ -133,8 +133,8 @@ const HomePage = ({ navigateTo }) => {
         SmsAndroid.list(
             JSON.stringify({
                 box: 'inbox',
-                maxCount: 100, // Increase maxCount to retrieve more messages
-                // minDate: date.getTime() - 1000 * 60 * 60 * 24 * 30
+                maxCount: 50, // Increase maxCount to retrieve more messages
+                //minDate: prevData[0].date,
 
             }),
             (fail) => {
@@ -151,29 +151,15 @@ const HomePage = ({ navigateTo }) => {
                         // const amount = amountRegex.exec(transaction.body);
                         // const amountValue = amount ? parseFloat(amount[1].replace(/,/g, '')) : null;
                     const transactionInfo = getTransactionInfo(transaction.body);
+                    console.log(transaction.body, transaction.date);
+                    console.log(transactionInfo);
                     const type = isCredited(transaction.body) ? 'credit' : 'debit';
-                    const name = transaction.address
+                    const name = transactionInfo.transaction.detail ? transactionInfo.transaction.detail : transaction.address;
                     const date = formatDateTime(transaction.date);
                     const amountValue = transactionInfo.transaction.amount;
                     const accNumber = transactionInfo.account.number;
                     const txid = transactionInfo.transaction.referenceNo;
-                    if (amountValue && amountValue > 0 && !name.includes('+91')) {
-                    // console.log(transaction.body);
-                    // console.log({
-                    //                 amount: amountValue ? parseFloat(amountValue) : 0,
-                    //                 acc : accNumber ? accNumber : 0,
-                    //                 timestamp: date,
-                    //                 date: transaction.date,
-                    //                 name: name ? name : 'Unknown',
-                    //                 image: name.includes('BNK') ? images.bank : images.payments,
-                    //                 type: type,
-                    //                 txid: txid ? txid : 0,
-                    //                 isExpense: type === 'debit' ? true : false,
-                    //                 category: {
-                    //                     name: 'ATM',
-                    //                     image: images.cash_withdrawal
-                    //                 }
-                    //             });
+                    if (amountValue && amountValue > 0 && !transaction.address.includes('+91')) {
                         smsdata.push(
                                 {
                                     amount: amountValue ? parseFloat(amountValue) : 0,
@@ -199,21 +185,28 @@ const HomePage = ({ navigateTo }) => {
                 // const oldMessages = bankMessages.filter((sms) => {
                 //     return new Date(sms.date) > date;
                 // });
+
+                const messages = smsdata.filter((sms, index, self) =>
+                    index === self.findIndex((t) => (
+                        t.txid === sms.txid && t.amount === sms.amount
+                    ))
+                );
+
                 const newtransactions = []
-                // console.log(smsdata);
+                // console.log(messages);
                 // check if the sms is already present in the transactions
                 // console.log(prevData);
                 // console.log(smsdata);
-                smsdata.forEach((sms) => {
+                messages.forEach((sms) => {
                     const isPresent = prevData.find((transaction) => {
-                        return transaction.date === sms.date && transaction.amount === sms.amount;
+                        return (transaction.date === sms.date && transaction.amount === sms.amount) || transaction.txid === sms.txid;
                     });
                     // console.log(isPresent);
                     if (!isPresent) {
                         newtransactions.push(sms);
                     }
                 });
-                // console.log(newtransactions);
+                console.log(newtransactions);
 
 
                 // dispatch(setAllTransactions(alllocaltransactions));
@@ -319,15 +312,16 @@ const HomePage = ({ navigateTo }) => {
             const response = await axios.request(options);
             const transactions = response.data;
             // sort transactions by date in descending order
-            transactions.sort((a, b) => {
-                return new Date(b.date) - new Date(a.date);
-            });
+            // transactions.sort((a, b) => {
+            //     return new Date(b.date) - new Date(a.date);
+            // });
             for (let i = 0; i < transactions.length; i++) {
                 transactions[i].image = transactions[i].name.includes('BNK') ? images.bank : images.payments;
                 transactions[i].isExpense = transactions[i].type === 'debit' ? true : false;
                 transactions[i].timestamp = formatDateTime(transactions[i].date);
             }
             // set first 10 transactions to display on the homepage
+            // console.log(transactions)
             setTransactionsData(transactions.slice(0, 10));
             dispatch(setAllTransactions(transactions));
             calculateDailyIncome(transactions);

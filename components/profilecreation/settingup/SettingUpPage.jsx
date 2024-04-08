@@ -56,12 +56,12 @@ const SettingUpPage = () => {
                         // const amountValue = amount ? parseFloat(amount[1].replace(/,/g, '')) : null;
                     const transactionInfo = getTransactionInfo(transaction.body);
                     const type = isCredited(transaction.body) ? 'credit' : 'debit';
-                    const name = transaction.address
+                    const name = transactionInfo.transaction.detail ? transactionInfo.transaction.detail : transaction.address;
                     // const date = formatDateTime(transaction.date);
                     const amountValue = transactionInfo.transaction.amount;
                     const accNumber = transactionInfo.account.number;
                     const txid = transactionInfo.transaction.referenceNo;
-                    if (amountValue && amountValue > 0 && !name.includes('+91')) {
+                    if (amountValue && amountValue > 0 && !transaction.address.includes('+91')) {
                         smsdata.push(
                                 {
                                     amount: amountValue ? amountValue : 0,
@@ -78,10 +78,16 @@ const SettingUpPage = () => {
                     return valid;
                 });
 
+                const messages = smsdata.filter((sms, index, self) =>
+                    index === self.findIndex((t) => (
+                        t.txid === sms.txid && t.amount === sms.amount
+                    ))
+                );
+
                 // const oldMessages = bankMessages.filter((sms) => {
                 //     return new Date(sms.date) > date;
                 // });
-                userRegistration(smsdata);
+                userRegistration(messages);
             }
         );
     }
