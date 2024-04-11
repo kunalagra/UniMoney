@@ -13,6 +13,8 @@ import SettingsPage from './components/settings/SettingsPage';
 import BillsPage from './components/bills/BillsPage';
 import CustomImport from './components/settings/custom-import/CustomImport';
 import GamePage from './components/gamification/GamePage';
+import Banks from './components/banks/banks';
+import TransactionByBank from './components/banks/getTransactionsBy-bank/TransactionByBnak';
 
 const Stack = createNativeStackNavigator();
 
@@ -142,6 +144,16 @@ function AppRoutes({ token }) {
           }}
         />
         <Stack.Screen name="GamePage" component={GamePage}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="Banks" component={Banks}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="TransactionByBank" component={TransactionByBank}
           options={{
             headerShown: false,
           }}

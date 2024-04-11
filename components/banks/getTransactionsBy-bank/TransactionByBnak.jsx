@@ -1,7 +1,7 @@
 import { View, Text, SafeAreaView, StatusBar, ScrollView, TouchableOpacity, RefreshControl, Image } from 'react-native'
-import styles from './historypage.style';
+import styles from './transactionbybank.style';
 // import { transactionsData } from '../../../constants/fakeData';
-import TransactionCard from '../common/cards/transaction/TransactionCard';
+import TransactionCard from '../../main/common/cards/transaction/TransactionCard';
 import { icons, COLORS, images, SIZES, FONT } from '../../../constants';
 import React, { useState, useCallback, useEffect } from 'react';
 import { Dialog } from '@rneui/themed';
@@ -11,8 +11,9 @@ import DatePicker from 'react-native-date-picker';
 import { useSelector } from 'react-redux';
 
 
-const HistoryPage = ({ navigateTo }) => {
+const TransactionByBank = (props) => {
 
+    const { details } = props.route.params;
     const { ArrowleftIcon } = icons;
 
     const [refreshing, setRefreshing] = useState(false);
@@ -41,22 +42,25 @@ const HistoryPage = ({ navigateTo }) => {
     };
 
     const prevMonth = () => {
+        console.log(date.getMonth(), date.getFullYear());
         if (date.getMonth()!==0) setDate(new Date(date.getFullYear(), date.getMonth()-1));
         else setDate(new Date(date.getFullYear()-1, 11));
     }
     
     const nextMonth = () => {
+        console.log(date.getMonth(), date.getFullYear());
         if (date.getMonth()!==11) setDate(new Date(date.getFullYear(), date.getMonth()+1));
         else setDate(new Date(date.getFullYear()+1, 0));
     }
 
     useEffect(() => {
+        // filter transactions by bank acc and then by date
         if (alltransactions) {
-            let tmp = alltransactions.filter((item) => {
+            let tmp = alltransactions.filter((item) => item.acc === details.number);
+            tmp = tmp.filter((item) => {
                 let itemDate = new Date(item.date);
                 return itemDate >= new Date(date.getFullYear(), date.getMonth()) && itemDate < new Date(date.getFullYear(), date.getMonth()+1);
             });
-
             setTransactionsData(tmp);
         }
     }, [date, alltransactions]);
@@ -131,7 +135,7 @@ const HistoryPage = ({ navigateTo }) => {
                 <View style={styles.mainContainer}>
                     <View style={styles.navbar}>
                         <TouchableOpacity
-                            onPress={() => navigateTo('Home')}
+                            onPress={() => props.navigation.pop()}
                         >
                             <ArrowleftIcon 
                                 style={styles.arrowLeftIcon}
@@ -139,7 +143,7 @@ const HistoryPage = ({ navigateTo }) => {
                             />
                         </TouchableOpacity>
                         <View>
-                            <Text style={styles.navHeading}>All Transactions</Text>
+                            <Text style={styles.navHeading}>All Transactions by {details.id.name}</Text>
                         </View>
                     </View>
 
@@ -157,7 +161,7 @@ const HistoryPage = ({ navigateTo }) => {
                                 </Text>
                             </TouchableOpacity>
                             <View style={styles.headingIconsContainer}>
-                                <TouchableOpacity onPress={nextMonth} disabled={date.getMonth()===new Date().getMonth() && date.getFullYear()===new Date().getFullYear()}>
+                                <TouchableOpacity onPress={nextMonth}>
                                     <Text style={styles.arrowText}>
                                         {'>'}
                                     </Text>
@@ -207,7 +211,7 @@ const HistoryPage = ({ navigateTo }) => {
                                     description={item.timestamp}
                                     amount={item.amount}
                                     isExpense={item.isExpense}
-                                    navigateTo={navigateTo}
+                                    navigateTo={props.navigation.navigate}
                                     category={item.category.name}
                                     id={item._id}
                                 />
@@ -219,7 +223,7 @@ const HistoryPage = ({ navigateTo }) => {
                 </View>
 
                 <View style={styles.addButtonContainer}>
-                    <TouchableOpacity activeOpacity={0.85} style={styles.addButton} onPress={() => navigateTo('AddTransactionPage')}>
+                    <TouchableOpacity activeOpacity={0.85} style={styles.addButton} onPress={() => props.navigation.navigate('AddTransactionPage')}>
                         <Text style={styles.addButtonText}>Add Transaction</Text>
                     </TouchableOpacity>
                 </View>
@@ -229,4 +233,4 @@ const HistoryPage = ({ navigateTo }) => {
     )
 }
 
-export default HistoryPage;
+export default TransactionByBank;
