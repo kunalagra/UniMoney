@@ -5,12 +5,13 @@ import { COLORS, images } from '../../../../constants';
 import styles from './streakbanner.style';
 
 
-const StreakBanner = () => {
+const StreakBanner = ({ navigateTo }) => {
   return (
     <View style={styles.container}>
         <TouchableOpacity 
             style={styles.cardContainer}
             activeOpacity={0.8}
+            onPress={() => navigateTo('GamePage')}
         >
             <LinearGradient
                 colors={[ COLORS.purple1, COLORS.purple1, COLORS.purple1, COLORS.purple2 ]}

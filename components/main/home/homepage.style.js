@@ -4,7 +4,8 @@ import { SIZES, COLORS, FONT } from "../../../constants";
 const styles = StyleSheet.create({
 
     container: {
-        position: 'relative'
+        position: 'relative',
+        minHeight: '100%'
     },
 
     chatButtonContainer: {

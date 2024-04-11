@@ -61,6 +61,9 @@ import tick from "../assets/images/tick.png";
 import travel from "../assets/images/travel.png";
 import wallet2 from "../assets/images/wallet2.png";
 import wave_with_coin from "../assets/images/wave_with_coin.png";
+import coin from "../assets/images/coin.png";
+import star_filled from "../assets/images/star_filled.png";
+import trophy from "../assets/images/trophy.png";
 
 
 export default {
@@ -82,6 +85,7 @@ export default {
     category_bw,
     chaticon,
     closeicon,
+    coin,
     coinstack,
     creditcards,
     database,
@@ -120,11 +124,13 @@ export default {
     shampoo,
     shopping,
     smssync,
+    star_filled,
     star_outline,
     sync,
     sync3d,
     tick,
     travel,
+    trophy,
     wallet2,
     wave_with_coin,
 }

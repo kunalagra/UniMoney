@@ -20,6 +20,8 @@ import TickIcon from "../assets/icons/tick.svg";
 import VisibilityIcon from "../assets/icons/visibility.svg";
 import WalletIcon from "../assets/icons/wallet.svg";
 import Loader from "../assets/icons/loader.svg";
+import StarFilled from "../assets/icons/star_filled.svg";
+import Flame from "../assets/icons/flame.svg";
 
 export default {
     AddIcon,
@@ -43,5 +45,7 @@ export default {
     TickIcon,
     VisibilityIcon,
     WalletIcon,
-    Loader
+    Loader,
+    Flame,
+    StarFilled
 }

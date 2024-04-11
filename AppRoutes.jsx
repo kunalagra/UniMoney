@@ -12,6 +12,7 @@ import AddBill from './components/bills/add-bill/AddBill';
 import SettingsPage from './components/settings/SettingsPage';
 import BillsPage from './components/bills/BillsPage';
 import CustomImport from './components/settings/custom-import/CustomImport';
+import GamePage from './components/gamification/GamePage';
 
 const Stack = createNativeStackNavigator();
 
@@ -136,6 +137,11 @@ function AppRoutes({ token }) {
           }}
         />
         <Stack.Screen name="DublicateGetStarted" component={DublicateGetStarted}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="GamePage" component={GamePage}
           options={{
             headerShown: false,
           }}

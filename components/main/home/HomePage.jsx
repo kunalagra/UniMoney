@@ -439,11 +439,11 @@ const HomePage = ({ navigateTo }) => {
                         </View>
                         <View style={styles.nameContainer}>
                             <Text style={styles.nameText}>
-                                Hey, {name}!
+                                Hey, {name===''? 'John' : name[0].toUpperCase() + name.slice(1).toLowerCase()}!
                             </Text>
                         </View>
 
-                        <StreakBanner />
+                        <StreakBanner navigateTo={navigateTo} />
 
                     {loading ? <Text>Loading...</Text> : (
                         <>
