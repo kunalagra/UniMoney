@@ -9,6 +9,7 @@ import { LineChart, PieChart } from 'react-native-gifted-charts';
 import CustomButton from '../../profilecreation/common/button/CustomButton';
 import DatePicker from 'react-native-date-picker';
 import MonthPicker from 'react-native-month-year-picker';
+import { useSelector } from 'react-redux';
 
 const getMaxPortion = (categories) => {
     let res = {category: categories[0].name, value: categories[0].amount};
@@ -24,6 +25,8 @@ const getMaxPortion = (categories) => {
 const InsightsPage = (props) => {
 
     const { ArrowleftIcon } = icons;
+
+    const { alltransactions } = useSelector(state => state.transactiondata);
 
     const totalSpends = 26371;
     const totalIncome = 31270;

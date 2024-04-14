@@ -12,7 +12,7 @@ import axios from 'axios';
 import { setUsername, setEmail } from '../../../store/profilecreation';
 import { useDispatch, useSelector } from 'react-redux';
 import SmsAndroid from 'react-native-get-sms-android';
-import { setDailyIncome, setMonthlyIncome, setYearlyIncome, setDailyExpense, setMonthlyExpense, setYearlyExpense, setAllTransactions } from '../../../store/transactiondata';
+import { setDailyIncome, setMonthlyIncome, setYearlyIncome, setDailyExpense, setMonthlyExpense, setYearlyExpense, setAllTransactions, setCategories } from '../../../store/transactiondata';
 import { getTransactionInfo } from 'transaction-sms-parser';
 import { formatDateTime } from '../../../utils';
 
@@ -346,10 +346,26 @@ const HomePage = ({ navigateTo }) => {
                 }
             };
             try {
-                const response = await axios.request(options);
-                setName(response.data.user.username);
-                dispatch(setUsername(response.data.user.username));
-                dispatch(setEmail(response.data.user.email));
+                const response = await axios.request(options).then(async (response) => {
+                    const options = {
+                        method: 'GET',
+                        url: 'https://unimoney-backend.onrender.com/category/',
+                        headers: {
+                            "Content-type": "application/json",
+                            "Authorization": "Bearer " + await AsyncStorage.getItem('token')
+                        }
+                    };
+                    try {
+                        const res = await axios.request(options);
+                        dispatch(setCategories(res.data));
+                        // console.log(res.data);
+                    } catch (error) {
+                        console.log(error);
+                    }
+                    setName(response.data.user.username);
+                    dispatch(setUsername(response.data.user.username));
+                    dispatch(setEmail(response.data.user.email));
+                });
             } catch (error) {
                 console.log(error);
             }
@@ -439,7 +455,7 @@ const HomePage = ({ navigateTo }) => {
 
                         <StreakBanner navigateTo={navigateTo} />
 
-                    {loading ? <Text>Loading...</Text> : (
+                    {loading ? <Text style={{color: COLORS.black, fontSize:25, fontWeight: 'bold', alignContent:'center', justifyContent:"center", alignSelf: "center", marginTop:20}}>Loading...</Text> : (
                         <>
                         <View style={styles.expenseCardsContainer}>
                             <ScrollView

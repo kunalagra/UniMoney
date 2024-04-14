@@ -64,7 +64,7 @@ const SettingUpPage = () => {
                     if (amountValue && amountValue > 0 && !transaction.address.includes('+91')) {
                         smsdata.push(
                                 {
-                                    amount: amountValue ? amountValue : 0,
+                                    amount: amountValue ? parseFloat(amountValue) : 0,
                                     acc : accNumber ? accNumber : 0,
                                     date: transaction.date,
                                     name: name ? name : 'Unknown',

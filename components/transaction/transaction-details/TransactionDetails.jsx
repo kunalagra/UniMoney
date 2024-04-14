@@ -2,10 +2,11 @@ import {Text, View, TouchableOpacity, ScrollView, Image, SafeAreaView, StatusBar
 import styles from './transactiondetails.style';
 import { COLORS, icons } from '../../../constants';
 import { useState } from 'react';
-import { spendingCategories } from '../../../utils';
+// import { spendingCategories } from '../../../utils';
 // import { transactionsData } from '../../../constants/fakeData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 
 const CategoryCard = ({id, category, selectedCategory, setSelectedCategory, tranID}) => {
@@ -38,7 +39,9 @@ const CategoryCard = ({id, category, selectedCategory, setSelectedCategory, tran
         >
             <View style={styles.categoryBackground(selectedCategory==category.name)}>
                 <Image
-                    source={category.image}
+                    source={{
+                        uri: category.img
+                    }}
                     alt={category.name}
                     style={styles.categoryImage}
                 />
@@ -54,6 +57,7 @@ const TransactionDetailsPage = (props) => {
     const [selectedCategory, setSelectedCategory] = useState(transaction.category);
 
     const { ArrowleftIcon } = icons;
+    const { Categories } = useSelector(state => state.transactiondata);
 
 
 
@@ -116,7 +120,7 @@ const TransactionDetailsPage = (props) => {
                         </Text>
                     </View>
                     <View style={styles.categoriesConatainer}>
-                        {spendingCategories.map((item, index) => (
+                        {Categories.map((item, index) => (
                             <CategoryCard id={index} category={item} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} key={index} tranID={transaction.id}/>
                         ))}
                     </View>

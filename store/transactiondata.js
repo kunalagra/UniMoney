@@ -10,6 +10,7 @@ const slice = createSlice({
         dailyexpense: 0,
         monthlyexpense: 0,
         yearlyexpense: 0,
+        Categories: []
     },
     reducers: {
         setAllTransactionsReducer: (state, action) => {
@@ -33,6 +34,9 @@ const slice = createSlice({
         setYearlyExpenseReducer: (state, action) => {
             state.yearlyexpense = action.payload.yearlyexpense;
         },
+        setCategoriesReducer: (state, action) => {
+            state.Categories = action.payload.Categories;
+        },
 
     },
 });
@@ -40,7 +44,7 @@ const slice = createSlice({
 export default slice.reducer;
 
 // Actions
-const { setAllTransactionsReducer, setDailyIncomeReducer, setMonthlyIncomeReducer, setYearlyIncomeReducer, setDailyExpenseReducer, setMonthlyExpenseReducer, setYearlyExpenseReducer } = slice.actions;
+const { setAllTransactionsReducer, setDailyIncomeReducer, setMonthlyIncomeReducer, setYearlyIncomeReducer, setDailyExpenseReducer, setMonthlyExpenseReducer, setYearlyExpenseReducer, setCategoriesReducer } = slice.actions;
 
 export const setAllTransactions = (alltransactions) => async dispatch => {
     try {
@@ -92,6 +96,14 @@ export const setMonthlyExpense = (monthlyexpense) => async dispatch => {
 export const setYearlyExpense = (yearlyexpense) => async dispatch => {
     try {
         dispatch(setYearlyExpenseReducer({ yearlyexpense }));
+    } catch (e) {
+        return console.error(e.message);
+    }
+}
+
+export const setCategories = (Categories) => async dispatch => {
+    try {
+        dispatch(setCategoriesReducer({ Categories }));
     } catch (e) {
         return console.error(e.message);
     }

@@ -143,7 +143,7 @@ const TransactionByBank = (props) => {
                             />
                         </TouchableOpacity>
                         <View>
-                            <Text style={styles.navHeading}>All Transactions by {details.id.name}</Text>
+                            <Text style={styles.navHeading}>{details.id.name}</Text>
                         </View>
                     </View>
 

@@ -14,7 +14,7 @@ import BillsPage from './components/bills/BillsPage';
 import CustomImport from './components/settings/custom-import/CustomImport';
 import GamePage from './components/gamification/GamePage';
 import Banks from './components/banks/banks';
-import TransactionByBank from './components/banks/getTransactionsBy-bank/TransactionByBnak';
+import TransactionByBank from './components/banks/getTransactionsBy-bank/TransactionByBank';
 
 const Stack = createNativeStackNavigator();
 

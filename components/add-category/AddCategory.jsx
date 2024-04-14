@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Icon, Input } from "@rneui/themed";
 import styles from "./addcategory.style";
 import { launchImageLibrary } from 'react-native-image-picker';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from 'axios';
 
 
 
@@ -12,10 +14,14 @@ const AddCategory = (props) => {
 
     const { ArrowleftIcon } = icons;
 
+    const imgDir = 'https://unimoney-backend.onrender.com/uploads/';
+
+
     const [categoryName, setCategoryName] = useState('');
 
     const [imageData, setImageData] = useState('');
     const [imageUri, setImageUri] = useState('');
+
 
     const chooseImage = () => {
         let options = {
@@ -41,6 +47,47 @@ const AddCategory = (props) => {
             }
         });
     }
+
+    const postData = async () => {
+        // send image in formdata format
+        const formData = new FormData();
+        formData.append('name', categoryName);
+        formData.append('key', '99c156a8c49cb257d3305e9ef1ae780e')
+        formData.append('image', imageData);
+        try {
+            const response = await axios.post('https://api.imgbb.com/1/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            }).then(async (response) => {
+                // console.log(response.data.data.url);
+                const option = {
+                    method: 'POST',
+                    url: 'https://unimoney-backend.onrender.com/category/',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + await AsyncStorage.getItem('token')
+                    },
+                    data: {
+                        name: categoryName,
+                        img: response.data.data.url,
+                    }
+                }
+                try {
+                    const res = await axios.request(option);
+                    // console.log(res.data);
+                }
+                catch (error) {
+                    console.log(error);
+                }
+            });
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+
 
     return (
         <SafeAreaView style={{ backgroundColor: COLORS.white2, flex: 1 }}>
@@ -111,7 +158,7 @@ const AddCategory = (props) => {
                     <TouchableOpacity
                         style={styles.upperButton}
                         activeOpacity={0.85}
-                        onPress={() => { }}
+                        onPress={() => { postData() }}
                     >
                         <Text style={styles.buttonText}>
                             Save & Add more
@@ -120,7 +167,7 @@ const AddCategory = (props) => {
                     <TouchableOpacity
                         style={styles.lowerButton}
                         activeOpacity={0.85}
-                        onPress={() => props.navigation.pop()}
+                        onPress={() => { postData(); props.navigation.pop() }}
                     >
                         <Text style={styles.buttonText}>
                             Save & Close

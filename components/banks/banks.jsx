@@ -203,7 +203,7 @@ const Banks = ({ navigation }) => {
                                     source={images.bank}
                                     style={styles.BankImage}
                                 />
-                                <Text style={styles.bankAcc}>A/c No: XXXX XXXX XXXX {acc}</Text>
+                                <Text style={styles.bankAcc}>A/c No: XX {acc}</Text>
                             </TouchableOpacity>
                         )
                     })}
@@ -225,9 +225,9 @@ const Banks = ({ navigation }) => {
                                         style={{ width: 40, height: 40 }}
                                     />
                                 </View>
-                                <View style={{ flexDirection: "column", gap: 10 }}>
+                                <View style={{ flexDirection: "column", gap: 10, marginLeft:15 }}>
                                     <Text style={styles.bankName}>{item.id.name}</Text>
-                                    <Text style={styles.bankAcc}>A/c No: XXXX XXXX XXXX {item.number}</Text>
+                                    <Text style={styles.bankAcc}>A/c No: XX {item.number}</Text>
                                 </View>
                             </TouchableOpacity>
                         )
