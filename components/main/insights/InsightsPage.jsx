@@ -1,9 +1,9 @@
 import { View, Text, SafeAreaView, StatusBar, ScrollView, TouchableOpacity, RefreshControl, Image } from 'react-native'
 import styles from './insightspage.style';
-import { chartColors, incomeData, monthlyExpense, monthlyIncome, spendsData } from '../../../constants/fakeData';
+import { chartColors, monthlyExpense, monthlyIncome } from '../../../constants/fakeData';
 import TransactionCard from '../common/cards/transaction/TransactionCard';
 import { icons, COLORS, images } from '../../../constants';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { moneyTextHelper } from '../../../utils';
 import { LineChart, PieChart } from 'react-native-gifted-charts';
 import CustomButton from '../../profilecreation/common/button/CustomButton';
@@ -12,6 +12,7 @@ import MonthPicker from 'react-native-month-year-picker';
 import { useSelector } from 'react-redux';
 
 const getMaxPortion = (categories) => {
+    if (categories.length === 0) return {category: '', value: 0};
     let res = {category: categories[0].name, value: categories[0].amount};
     for(let i=0; i<categories.length; i++) {
         if (categories[i].amount > res.value) {
@@ -26,31 +27,16 @@ const InsightsPage = (props) => {
 
     const { ArrowleftIcon } = icons;
 
-    const { alltransactions } = useSelector(state => state.transactiondata);
+    const { alltransactions, Categories } = useSelector(state => state.transactiondata);
+    const [spendsData, setSpendsData] = useState([]);
+    const [incomeData, setIncomeData] = useState([]);
+    const [totalSpends, setTotalSpends] = useState(0);
+    const [totalIncome, setTotalIncome] = useState(0);
+    const [monthlyExpense, setMonthlyExpense] = useState([]);
+    const [monthlyIncome, setMonthlyIncome] = useState([]);
 
-    const totalSpends = 26371;
-    const totalIncome = 31270;
     const [isExpenseSelected, setIsExpenseSelected] = useState(true);
-    const maxExpense = getMaxPortion(spendsData);
-    const maxIncome = getMaxPortion(incomeData);
-
-    const expenseSplitData = spendsData.map((item, index) => {
-        return {
-            name: item.name,
-            value: item.amount,
-            color: chartColors[index],
-            focused: maxExpense.value==item.amount
-          };
-    });
-
-    const incomeSplitData = incomeData.map((item, index) => {
-        return {
-            name: item.name,
-            value: item.amount,
-            color: chartColors[index],
-            focused: maxIncome.value==item.amount
-          };
-    });
+    
 
     const [refreshing, setRefreshing] = useState(false);
 
@@ -67,10 +53,112 @@ const InsightsPage = (props) => {
     const [isFilterStartOpen, setIsFilterStartOpen] = useState(false);
     const [isFilterEndOpen, setIsFilterEndOpen] = useState(false);
 
+    const [maxExpense, setMaxExpense] = useState({category: '', value: 0});
+    const [maxIncome, setMaxIncome] = useState({category: '', value: 0});
+
+    const [expenseSplitData, setExpenseSplitData] = useState([]);
+    const [incomeSplitData, setIncomeSplitData] = useState([]);
+
+    useEffect(() => {
+        const monthWiseTransactions = alltransactions.filter((item) => {
+            const itemDate = new Date(item.date);
+            return itemDate.getMonth() === date.getMonth() && itemDate.getFullYear() === date.getFullYear();
+        });
+
+        const spends = monthWiseTransactions.filter((item) => item.isExpense);
+        const income = monthWiseTransactions.filter((item) => !item.isExpense);
+
+        
+        let spendsData = Categories.map((category) => {
+            const categoryTransactions = spends.filter((item) => item.category.name === category.name);
+            return {
+                name: category.name,
+                image: category.img,
+                amount: categoryTransactions.reduce((acc, item) => acc + item.amount, 0)
+            }
+        }
+    );
+    
+    
+    let incomeData = Categories.map((category) => {
+        const categoryTransactions = income.filter((item) => item.category.name === category.name);
+        return {
+            name: category.name,
+            image: category.img,
+            amount: categoryTransactions.reduce((acc, item) => acc + item.amount, 0)
+        }
+    }
+);
+        spendsData = spendsData.filter((item) => item.amount > 0);
+        incomeData = incomeData.filter((item) => item.amount > 0);
+
+        const totalSpends = spends.reduce((acc, item) => acc + item.amount, 0);
+        const totalIncome = income.reduce((acc, item) => acc + item.amount, 0);
+
+        setSpendsData(spendsData);
+        setIncomeData(incomeData);
+        setTotalSpends(Math.round(totalSpends));
+        setTotalIncome(Math.round(totalIncome));
+
+        const maxExpense = getMaxPortion(spendsData);
+        const maxIncome = getMaxPortion(incomeData);
+
+        setMaxExpense(maxExpense);
+        setMaxIncome(maxIncome);
+
+        const expenseSplitData = spendsData.map((item, index) => ({
+            name: item.name,
+            value: item.amount,
+            color: chartColors[index],
+            focused: maxExpense.value==item.amount
+        }));
+
+        const incomeSplitData = incomeData.map((item, index) => ({
+            name: item.name,
+            value: item.amount,
+            color: chartColors[index],
+            focused: maxIncome.value==item.amount
+        }));
+        
+        setExpenseSplitData(expenseSplitData);
+        setIncomeSplitData(incomeSplitData);
+
+        let allMonthsWiseExpenses = [];
+        let allMonthsWiseIncomes = [];
+
+    for (let i=0; i<12; i++) {
+        const monthWiseTransactions = alltransactions.filter((item) => {
+            const itemDate = new Date(item.date);
+            return itemDate.getMonth() === i && itemDate.getFullYear() === date.getFullYear();
+        }
+    );
+
+    const spends = monthWiseTransactions.filter((item) => item.isExpense);
+    const income = monthWiseTransactions.filter((item) => !item.isExpense);
+
+    const totalSpends = spends.reduce((acc, item) => acc + item.amount, 0);
+    const totalIncome = income.reduce((acc, item) => acc + item.amount, 0);
+
+    // if (totalSpends === 0 && totalIncome === 0) continue;
+
+    allMonthsWiseExpenses.push({label: `${months[i]} ${date.getFullYear()}`, value: Math.round(totalSpends/100000), dataPointText: `${Math.round(totalSpends/100000)}K`});
+    allMonthsWiseIncomes.push({label: `${months[i]} ${date.getFullYear()}`, value: Math.round(totalIncome/100000), dataPointText: `${Math.round(totalIncome/100000)}K`});
+
+    }
+    // console.log(allMonthsWiseExpenses);
+    // console.log(allMonthsWiseIncomes);
+    setMonthlyExpense(allMonthsWiseExpenses);
+    setMonthlyIncome(allMonthsWiseIncomes);
+
+        
+    }, [alltransactions, Categories, date]);
+
+
+
     const onValueChange = (event, newDate) => {
+        setIsMonthModalOpen(false);
         const selectedDate = newDate || new Date(date);
         setDate(selectedDate);
-        setIsMonthModalOpen(false);
     };
 
     const prevMonth = () => {
@@ -146,7 +234,7 @@ const InsightsPage = (props) => {
                     locale="en"
                 />
             )}
-
+            { spendsData && 
             <View style={styles.sectionContainer}>
 
                 <View style={styles.mainContainer}>
@@ -255,6 +343,7 @@ const InsightsPage = (props) => {
                                                 key={index} 
                                                 name={item.name}
                                                 image={item.image}
+                                                url={true}
                                                 description={`${Math.round((item.amount/totalSpends).toFixed(2) * 100)}% of total spends`}
                                                 amount={item.amount}
                                                 isExpense={true}
@@ -266,6 +355,7 @@ const InsightsPage = (props) => {
                                                 key={index} 
                                                 name={item.name}
                                                 image={item.image}
+                                                url={true}
                                                 description={`${Math.round((item.amount/totalIncome).toFixed(2) * 100)}% of total income`}
                                                 amount={item.amount}
                                                 isExpense={false}
@@ -350,7 +440,7 @@ const InsightsPage = (props) => {
                                             noOfSections={5}
                                             spacing={40}
                                             thickness={3}
-                                            yAxisLabelSuffix={'K'}
+                                            yAxisLabelSuffix={'L'}
                                             showVerticalLines
                                             curved
                                             textShiftX={-5}
@@ -378,7 +468,7 @@ const InsightsPage = (props) => {
                     </View>
                 </View>
             </View>
-
+}
         </SafeAreaView>
     )
 }

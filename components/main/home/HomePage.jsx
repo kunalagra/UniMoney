@@ -151,8 +151,8 @@ const HomePage = ({ navigateTo }) => {
                         // const amount = amountRegex.exec(transaction.body);
                         // const amountValue = amount ? parseFloat(amount[1].replace(/,/g, '')) : null;
                     const transactionInfo = getTransactionInfo(transaction.body);
-                    console.log(transaction.body, transaction.date);
-                    console.log(transactionInfo);
+                    // console.log(transaction.body, transaction.date);
+                    // console.log(transactionInfo);
                     const type = isCredited(transaction.body) ? 'credit' : 'debit';
                     const name = transactionInfo.transaction.detail ? transactionInfo.transaction.detail : transaction.address;
                     const date = formatDateTime(transaction.date);
@@ -206,7 +206,7 @@ const HomePage = ({ navigateTo }) => {
                         newtransactions.push(sms);
                     }
                 });
-                console.log(newtransactions);
+                // console.log(newtransactions);
 
 
                 // dispatch(setAllTransactions(alllocaltransactions));

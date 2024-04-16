@@ -23,6 +23,7 @@ const COLORS = {
     lightGold1: '#FBE7AB',
     lightGold2: '#FEDB71',
 
+    green0: "#E0F7E9",
     green1: "#4CAF50",
 
     lightblue1: "#CED6F9",

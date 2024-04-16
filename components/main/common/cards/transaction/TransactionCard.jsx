@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import { moneyTextHelper } from "../../../../../utils";
 import styles from "./transactioncard.style";
 
-const TransactionCard = ({ name, image, description, amount, isExpense, navigateTo,category, id }) => {
+const TransactionCard = ({ name, image, description, amount, isExpense, navigateTo,category, id, url }) => {
   return (
     <TouchableOpacity 
         style={styles.cardContainer}
@@ -11,7 +11,7 @@ const TransactionCard = ({ name, image, description, amount, isExpense, navigate
     >
         <View style={styles.transactionDetailsContainer}>
             <Image
-                source={image}
+                source={ url ? {uri: image} : image}
                 style={styles.transactionImage}
             />
             <View style={styles.detailsContainer}>
