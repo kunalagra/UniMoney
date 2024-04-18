@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     mainContainer: {
         gap: 20,
         flexDirection: 'column',
+        paddingHorizontal: 6
     },
 
     accContainer: {
@@ -118,7 +119,8 @@ const styles = StyleSheet.create({
     bankContainer: {
         width: "100%",
         marginTop: 20,
-        gap: 20
+        gap: 20,
+        paddingHorizontal: 6
     },
     bankCard: {
         flexDirection: "row",
