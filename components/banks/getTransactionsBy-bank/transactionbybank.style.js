@@ -4,7 +4,8 @@ import { SIZES, COLORS, FONT, SHADOWS } from "../../../constants";
 const styles = StyleSheet.create({
 
     sectionContainer: {
-        position: 'relative'
+        position: 'relative',
+        height: '100%'
     },
 
     mainContainer: {
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
 
     addButtonContainer: { 
         position: 'absolute', 
-        bottom: 195, 
+        bottom: 50, 
         left: '50%', 
         transform: [{ translateX: -75 }]
     },

@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     container: {
         paddingHorizontal: 20,
         marginTop: 10,
-        marginBottom: 100,
+        marginBottom: 70,
         gap: 30,
     },
 
@@ -39,12 +39,21 @@ const styles = StyleSheet.create({
     },
 
     accContainer: {
-        backgroundColor: COLORS.main4,
         padding: 10,
         borderRadius: 10,
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 10
+        gap: 10,
+        width: '100%', 
+        paddingVertical: 10, 
+        paddingHorizontal: 15, 
+        backgroundColor: COLORS.white1,  
+        justifyContent: 'space-between',
+        ...SHADOWS.small
+    },
+
+    linkText: {
+        color: COLORS.main3,
     },
 
     BankImage: {
@@ -60,26 +69,25 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        width: '88%',
-        margin: 22,
+        width: '90%',
         borderRadius: 10,
-        backgroundColor: COLORS.white1
+        backgroundColor: COLORS.white1,
+        marginVertical: 20,
+        paddingVertical: 20,
+        paddingHorizontal: 20
     },
 
     bankDetails: {
         flexDirection: "row",
         alignItems: "center",
-        width: "94%",
-        marginHorizontal: 8,
-        marginVertical: 2,
+        justifyContent: 'flex-start',
+        width: "100%",
         height: 45,
-        elevation: 5,
-        shadowColor: "black",
-        shadowOpacity: 1,
-        shadowRadius: 5,
-        shadowOffset: { width: 0, height: 0 },
-        backgroundColor: "white",
-        borderRadius: 2,
+        backgroundColor: COLORS.white2,
+        borderRadius: 8,
+        ...SHADOWS.small,
+        marginBottom: 5,
+        gap: 20
     },
 
     closeButton: {
@@ -103,34 +111,35 @@ const styles = StyleSheet.create({
     },
     bankHeader: {
         color: COLORS.gray3,
-        fontSize: 16,
+        fontSize: SIZES.large - 2,
         fontFamily: FONT.medium,
-        marginLeft: 20,
         marginTop: 20
     },
     bankContainer: {
         width: "100%",
-        alignItems: "center",
         marginTop: 20,
         gap: 20
     },
     bankCard: {
         flexDirection: "row",
         alignItems: "center",
-        height: 150,
         width: "100%",
-        backgroundColor: COLORS.gray1,
+        backgroundColor: COLORS.white4,
         gap: 10,
-        borderRadius: 10
+        borderRadius: 10,
+        marginBottom: 10,
+        ...SHADOWS.medium,
+        paddingHorizontal: 14,
+        paddingVertical: 10
     },
     imageView: {
-        backgroundColor: COLORS.lightGold1,
-        height: "100%",
+        backgroundColor: COLORS.main4,
         width: "35%",
         borderTopLeftRadius: 10,
         borderBottomLeftRadius: 10,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        padding: 16
     },
     bankName: {
         color: COLORS.black,
