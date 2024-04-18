@@ -14,7 +14,7 @@ const BudgetCard = ({title="Monthly Budget", image=null, budgetSet, currentSpend
         >
             {image &&
                 <Image
-                    source={image}
+                    source={{uri: image}}
                     style={styles.cardImage}
                 />
             }

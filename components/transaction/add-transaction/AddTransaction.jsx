@@ -83,22 +83,12 @@ const AddTransactionPage = (props) => {
                 setAccountList(response.data.bank.map((item) => {
                     return {
                         label: item.id.name,
-                        value: item.id.name
-                    }
-                }));
-                console.log(response.data.bank.map((item) => {
-                    return {
-                        label: item.id.name,
-                        value: item.id.name
+                        value: item.number
                     }
                 }));
                 setCategoryList(response.data.category.map((item) => {
-                    return {
-                        label: item.details.name,
-                        value: item.details.name
-                    }
-                }));
-                console.log(response.data.category.map((item) => {
+                    // console.log(item);
+                    if (item.details)
                     return {
                         label: item.details.name,
                         value: item.details.name
@@ -114,6 +104,10 @@ const AddTransactionPage = (props) => {
 
     const postTransaction = async () => {
         // console.log(typeOfPayment, amount, category, date.getTime(), debitAcc, desc);
+        if (amount === "" || category === "" || desc === "") {
+            alert("Please fill all the fields");
+            return;
+        }
         const options = {
             method: 'POST',
             url: 'https://unimoney-backend.onrender.com/transaction/',
@@ -188,7 +182,7 @@ const AddTransactionPage = (props) => {
                             <Text style={styles.rowHeader}>
                                 { typeOfPayment === "debit" ? "Debit" : "Credit" } Account
                             </Text>
-                            {/* <CustomDropdown data={accountList} value={debitAcc} setValue={setDebitAcc} /> */}
+                            <CustomDropdown data={accountList} value={debitAcc} setValue={setDebitAcc} />
                         </View>
 
                         <View style={styles.rowField}>
@@ -213,7 +207,7 @@ const AddTransactionPage = (props) => {
                             <Text style={styles.rowHeader}>
                                 Category
                             </Text>
-                            {/* <CustomDropdown data={categoryList} value={category} setValue={setCategory} /> */}
+                            <CustomDropdown data={categoryList} value={category} setValue={setCategory} />
                         </View>
 
                         <View style={styles.rowField}>

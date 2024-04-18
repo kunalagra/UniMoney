@@ -1,11 +1,12 @@
 import { View, Text, SafeAreaView, StatusBar, ScrollView, TouchableOpacity, RefreshControl, Switch } from 'react-native'
 import styles from './budgetpage.style';
 import { icons, COLORS } from '../../../constants';
-import React, { useState, useCallback } from 'react';
-import { budgetModeCategories } from '../../../constants/fakeData';
+import React, { useState, useCallback, useEffect } from 'react';
+// import { budgetModeCategories } from '../../../constants/fakeData';
 import BudgetCard from './budgetcard/BudgetCard';
 import BudgetDetailsBar from './budgetdetailsbar/BudgetDetailsBar';
 import AmountBottomBar from './amountbottombar/AmountBottomBar';
+import { useSelector } from 'react-redux';
 
 
 const BudgetPage = ({ navigateTo }) => {
@@ -17,6 +18,31 @@ const BudgetPage = ({ navigateTo }) => {
     const [selectedCategory, setSelectedCategory] = useState({});
     const [isAmountBarOpen, setIsAmountBarOpen] = useState(false);
     const [isAddCategory, setIsAddCategory] = useState(false);
+    const { Categories, alltransactions} = useSelector(state => state.transactiondata);
+    const [budgetModeCategories, setBudgetModeCategories] = useState([])
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        // calculate current month spendings in each category 
+        const currentMonthTransactions = alltransactions.filter(item => {
+            const date = new Date(item.date);
+            return date.getMonth() == new Date().getMonth() && date.getFullYear() == new Date().getFullYear();
+        });
+        
+        // get categories only those limit is greater than 0
+        const categories = Categories.filter(item => item.limit > 0).map(category => {
+            const transactions = currentMonthTransactions.filter(item => item.category.name == category.details.name);
+            const currentSpend = transactions.reduce((acc, item) => acc + item.amount, 0);
+            return { ...category, currentSpend: Math.round(currentSpend) };
+        });
+        // console.log(categories);
+
+        setBudgetModeCategories(categories);
+
+        setTimeout(() => setLoading(false), 1000);
+
+
+    }, [Categories]);
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
@@ -99,20 +125,21 @@ const BudgetPage = ({ navigateTo }) => {
                                 <Text style={styles.cardsHeader}>
                                     Categories
                                 </Text>
-
-                                {budgetModeCategories.map((item, index) => (
+                                { loading ? <Text>Loading...</Text> :
+                                budgetModeCategories.map((item, index) => (
                                     <BudgetCard
                                         key={index}
-                                        title={item.title}
-                                        image={item.image}
+                                        title={item.details.name}
+                                        image={item.details.img}
                                         currentSpends={item.currentSpend}
-                                        budgetSet={item.budgetSet}
+                                        budgetSet={item.limit}
                                         handlePress={() => {
                                             setSelectedCategory(item);
                                             setIsBottomBarOpen(true);
                                         }}
                                     />
-                                ))}
+                                ))
+                            }
 
                             </View>
                         }

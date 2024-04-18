@@ -1,6 +1,6 @@
 import { View, Text, SafeAreaView, StatusBar, ScrollView, TouchableOpacity, RefreshControl, Image } from 'react-native'
 import styles from './insightspage.style';
-import { chartColors, monthlyExpense, monthlyIncome } from '../../../constants/fakeData';
+import { chartColors } from '../../../constants/fakeData';
 import TransactionCard from '../common/cards/transaction/TransactionCard';
 import { icons, COLORS, images } from '../../../constants';
 import React, { useState, useCallback, useEffect } from 'react';
@@ -70,10 +70,10 @@ const InsightsPage = (props) => {
 
         
         let spendsData = Categories.map((category) => {
-            const categoryTransactions = spends.filter((item) => item.category.name === category.name);
+            const categoryTransactions = spends.filter((item) => item.category.name === category.details.name);
             return {
-                name: category.name,
-                image: category.img,
+                name: category.details.name,
+                image: category.details.img,
                 amount: categoryTransactions.reduce((acc, item) => acc + item.amount, 0)
             }
         }
@@ -81,10 +81,10 @@ const InsightsPage = (props) => {
     
     
     let incomeData = Categories.map((category) => {
-        const categoryTransactions = income.filter((item) => item.category.name === category.name);
+        const categoryTransactions = income.filter((item) => item.category.name === category.details.name);
         return {
-            name: category.name,
-            image: category.img,
+            name: category.details.name,
+            image: category.details.img,
             amount: categoryTransactions.reduce((acc, item) => acc + item.amount, 0)
         }
     }

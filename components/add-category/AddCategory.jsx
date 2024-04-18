@@ -50,6 +50,10 @@ const AddCategory = (props) => {
 
     const postData = async () => {
         // send image in formdata format
+        if (categoryName == '') {
+            alert('Please enter a name for category');
+            return;
+        }
         const formData = new FormData();
         formData.append('name', categoryName);
         formData.append('key', '99c156a8c49cb257d3305e9ef1ae780e')

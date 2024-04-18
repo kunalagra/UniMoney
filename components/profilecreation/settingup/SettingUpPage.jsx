@@ -26,7 +26,7 @@ const SettingUpPage = () => {
         const isCredited = (str) => {
             return /(?:credited|received|deposited|has sent)/i.test(str);
         };
-        const bankKeywordsRegex = /(credited|debited|payment|withdraw|received|sent)/i;
+        const bankKeywordsRegex = /(credited|debited|payment|withdraw|received)/i;
         const spamKeywordsRegex = /(Congratulations|won|win|prize|lucky|offer|discount|sale|reward|requested money)/i;
 
         console.log('Permission granted');
@@ -87,6 +87,7 @@ const SettingUpPage = () => {
                 // const oldMessages = bankMessages.filter((sms) => {
                 //     return new Date(sms.date) > date;
                 // });
+                console.log(messages);
                 userRegistration(messages);
             }
         );
