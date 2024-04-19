@@ -121,7 +121,7 @@ const TransactionDetailsPage = (props) => {
                     </View>
                     <View style={styles.categoriesConatainer}>
                         {Categories.map((item, index) => (
-                            <CategoryCard id={index} category={item} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} key={index} tranID={transaction.id}/>
+                            <CategoryCard id={index} category={item.details} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} key={index} tranID={transaction.id}/>
                         ))}
                     </View>
                 </View>
