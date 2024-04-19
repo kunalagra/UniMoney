@@ -8,6 +8,8 @@ import bank from "../assets/images/bank.png";
 import bank_outline from "../assets/images/bank_outline.png";
 import bell_ring from "../assets/images/bell_ring.png";
 import bin from "../assets/images/bin.png";
+import block from "../assets/images/block.png";
+import boy_gamer from "../assets/images/boy_gamer.png";
 import calculator from "../assets/images/calculator.png";
 import calendar from "../assets/images/calendar.png";
 import cart_shopping from "../assets/images/cart_shopping.png";
@@ -22,14 +24,22 @@ import database from "../assets/images/database.png";
 import databaseicon from "../assets/images/databaseicon.png";
 import datasync from "../assets/images/datasync.png";
 import diceWithTiles from "../assets/images/dice_with_tiles.png";
+import dice1 from "../assets/images/dice1.png";
+import dice2 from "../assets/images/dice2.png";
+import dice3 from "../assets/images/dice3.png";
+import dice4 from "../assets/images/dice4.png";
+import dice5 from "../assets/images/dice5.png";
+import dice6 from "../assets/images/dice6.png";
 import dream11 from "../assets/images/dream11.png";
 import education from "../assets/images/education.png";
 import entertainment from "../assets/images/entertainment.png";
 import filter from "../assets/images/filter.png";
 import food from "../assets/images/food.png";
+import flame from "../assets/images/flame.png";
 import footerwave1 from "../assets/images/footerwave1.png";
 import fuel from "../assets/images/fuel.png";
 import gadget from "../assets/images/gadget.png";
+import girl_gamer from "../assets/images/girl_gamer.png";
 import headerwave from "../assets/images/headerwave.png";
 import help_outline from "../assets/images/help_outline.png";
 import house from "../assets/images/house.png";
@@ -38,6 +48,7 @@ import insurance from "../assets/images/insurance.png";
 import investment from "../assets/images/investment.png";
 import keyicon from "../assets/images/keyuci.png";
 import line_graph from "../assets/images/line_graph.png";
+import leaderboard from "../assets/images/leaderboard.png";
 import logo1 from "../assets/images/Logo_1.png";
 import logo2 from "../assets/images/Logo_2.png";
 import medicines from "../assets/images/medicines.png";
@@ -64,6 +75,7 @@ import wave_with_coin from "../assets/images/wave_with_coin.png";
 import coin from "../assets/images/coin.png";
 import star_filled from "../assets/images/star_filled.png";
 import trophy from "../assets/images/trophy.png";
+import question_mark from "../assets/images/question_mark.png";
 
 
 export default {
@@ -77,6 +89,8 @@ export default {
     bank_outline,
     bell_ring,
     bin,
+    block,
+    boy_gamer,
     calculator,
     calendar,
     cart_shopping,
@@ -92,14 +106,22 @@ export default {
     databaseicon,
     datasync,
     diceWithTiles,
+    dice1,
+    dice2,
+    dice3,
+    dice4,
+    dice5,
+    dice6,
     dream11,
     education,
     entertainment,
     filter,
     food,
+    flame,
     footerwave1,
     fuel,
     gadget,
+    girl_gamer,
     headerwave,
     help_outline,
     house,
@@ -108,6 +130,7 @@ export default {
     investment,
     keyicon,
     line_graph,
+    leaderboard,
     logo1,
     logo2,
     medicines,
@@ -118,6 +141,7 @@ export default {
     pie_graph,
     plus_icon,
     poweroff_icon,
+    question_mark,
     rupeecoin,
     saving_in_wallet,
     sendicon,

@@ -1,19 +1,30 @@
-import { RefreshControl, SafeAreaView, ScrollView, StatusBar, TouchableOpacity, View, Text, Image } from "react-native";
+import { RefreshControl, SafeAreaView, ScrollView, StatusBar, TouchableOpacity, View, Text, Image, ToastAndroid } from "react-native";
 import styles from "./gamepage.style";
 import { COLORS, FONT, SIZES, SHADOWS, icons, images } from "../../constants";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import LinearGradient from "react-native-linear-gradient";
+import { Dialog } from "@rneui/themed";
 
 const GamePage = (props) => {
 
-  const { ArrowleftIcon, StarFilled } = icons;
+  const { ArrowleftIcon } = icons;
 
   const [refreshing, setRefreshing] = useState(false);
+  const [diceModalVisible, setDiceModalVisible] = useState(false);
+  const [curProgress, setCurProgress] = useState(0);
+  const [curDiceNo, setCurDiceNo] = useState(1);
+  const done = false;
 
   const onRefresh = useCallback(() => {
       setRefreshing(true);
       setTimeout(() => setRefreshing(false), 1000);
   }, []);
+
+  const getRandomDiceNo = () => {
+    const num = Math.floor(Math.random() * 6 + 1);
+    setCurDiceNo(num);
+    return num;
+  }
 
   const tiles = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49];
   const leaders = [
@@ -30,15 +41,13 @@ const GamePage = (props) => {
     `Achievements, such as maintaining a streak of 10 days or crossing a certain number of tiles, can be displayed on a leaderboard, fostering a competitive atmosphere and potentially earning users exclusive content or other prizes.`
   ];
 
-  const curProgress = 38;
-
-  const StatView = ({ image, stat, title }) => {
+  const StatView = ({ image, stat, title, size=16 }) => {
     return (
       <View style={{ flexDirection: 'row', gap: 2, alignItems: 'center' }}>
         <Image 
           source={image}
           alt={title}
-          style={{ width: 16, height: 16, objectFit: 'contain' }}
+          style={{ width: size, height: size, objectFit: 'contain' }}
         />
         <Text style={{fontFamily: FONT.bold, fontSize: SIZES.large, color: COLORS.gray3}}>
           {stat}
@@ -63,9 +72,9 @@ const GamePage = (props) => {
         </View>
         <View style={{ flexDirection: 'row', gap: 7, alignItems: 'center' }}>
           <Image 
-            source={images.category}
+            source={images.trophy}
             alt={'trophies'}
-            style={{ width: 16, height: 16, objectFit: 'contain' }}
+            style={{ width: 18, height: 18, objectFit: 'contain' }}
           />
           <Text style={{fontFamily: FONT.medium2, fontSize: SIZES.medium, color: COLORS.gray3}}>
             {trophies}
@@ -116,24 +125,24 @@ const GamePage = (props) => {
             >
               <View style={{ width: '100%', gap: 20, paddingBottom: 200 }}>
                 <View style={{ flexDirection: 'row', gap: 6, alignItems: 'center', justifyContent: 'flex-end' }}>
-                  <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center', justifyContent: 'flex-end' }}>
+                  <TouchableOpacity style={{ flexDirection: 'row', gap: 4, alignItems: 'center', justifyContent: 'flex-end' }}>
                     <Image 
-                      source={images.category}
-                      style={{ width: 16, height: 16, objectFit: 'contain' }}
+                      source={images. question_mark}
+                      style={{ width: 16, height: 16, objectFit: 'contain', tintColor: COLORS.gray2 }}
                     />
                     <Text style={{fontFamily: FONT.medium, fontSize: SIZES.medium, color: COLORS.gray2}}>
                       Rules
                     </Text>
-                  </View>
-                  <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center', justifyContent: 'flex-end' }}>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={{ flexDirection: 'row', gap: 4, alignItems: 'center', justifyContent: 'flex-end' }}>
                     <Image 
-                      source={images.category}
-                      style={{ width: 16, height: 16, objectFit: 'contain' }}
+                      source={images.leaderboard}
+                      style={{ width: 19, height: 19, objectFit: 'contain', tintColor: COLORS.gray2 }}
                     />
                     <Text style={{fontFamily: FONT.medium, fontSize: SIZES.medium, color: COLORS.gray2}}>
                       Leaderboard
                     </Text>
-                  </View>
+                  </TouchableOpacity>
                 </View>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end'}}>
@@ -141,9 +150,9 @@ const GamePage = (props) => {
                     Stats
                   </Text>
                   <View style={{ flexDirection: 'row', gap: 10 }}>
-                    <StatView image={images.category} title={'streak'} stat={5} />
-                    <StatView image={images.category} title={'coins'} stat={48} />
-                    <StatView image={images.category} title={'trophies'} stat={17} />
+                    <StatView image={images.flame} title={'streak'} stat={5} size={23} />
+                    <StatView image={images.coin} title={'coins'} stat={48} />
+                    <StatView image={images.trophy} title={'trophies'} stat={17} size={20} />
                   </View>
                 </View>
 
@@ -186,7 +195,15 @@ const GamePage = (props) => {
                           {curProgress===tile && (
                             <View style={{ position: 'absolute', top: 0, left: 0}}>
                               <Image 
-                                source={images.category}
+                                source={images.boy_gamer}
+                                style={{ width: 34, height: 34, objectFit: 'contain' }}
+                              />
+                            </View>
+                          )}
+                          {curProgress > tile && (
+                            <View style={{ position: 'absolute', top: 0, left: 0}}>
+                              <Image 
+                                source={images.tick}
                                 style={{ width: 34, height: 34, objectFit: 'contain' }}
                               />
                             </View>
@@ -199,8 +216,8 @@ const GamePage = (props) => {
                 <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                   <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
                     <Image 
-                      source={images.category}
-                      style={{ width: 16, height: 16, objectFit: 'contain' }}
+                      source={images.trophy}
+                      style={{ width: 20, height: 20, objectFit: 'contain' }}
                     />
                     <Text style={{fontFamily: FONT.medium, fontSize: SIZES.large, color: COLORS.gray3}}>
                       My Rank
@@ -214,8 +231,8 @@ const GamePage = (props) => {
                 <View style={{ marginTop: 10, gap: 14 }}>
                   <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
                     <Image 
-                      source={images.category}
-                      style={{ width: 16, height: 16, objectFit: 'contain' }}
+                      source={images.leaderboard}
+                      style={{ width: 19, height: 19, objectFit: 'contain' }}
                     />
                     <Text style={{fontFamily: FONT.medium, fontSize: SIZES.large, color: COLORS.gray3}}>
                       Leaderboard
@@ -234,7 +251,7 @@ const GamePage = (props) => {
                 <View style={{ marginTop: 10, gap: 14 }}>
                   <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
                     <Image 
-                      source={images.category}
+                      source={images.question_mark}
                       style={{ width: 16, height: 16, objectFit: 'contain' }}
                     />
                     <Text style={{fontFamily: FONT.medium, fontSize: SIZES.large, color: COLORS.gray3}}>
@@ -255,18 +272,52 @@ const GamePage = (props) => {
           </View>
         </View>
 
-        <View style={{ position: 'absolute', bottom: 120, left: '38%' }}>
-          <TouchableOpacity style={{ width: 100, height: 100, borderRadius: 100, backgroundColor: COLORS.main2, justifyContent: 'center', alignItems: 'center' }}>
-            <Image 
-              source={images.category}
-              style={{ width: 64, height: 64, objectFit: 'contain' }}
-            />
-            <Text style={{fontFamily: FONT.regular2, fontSize: SIZES.small+2, color: COLORS.gray3, textAlign: 'center'}}>
-              Roll it
-            </Text>
-          </TouchableOpacity>
-        </View>
+
+        { !diceModalVisible && 
+          <View style={{ position: 'absolute', bottom: 120, alignItems: 'center', width: '100%' }}>
+            <TouchableOpacity style={{ width: 80, height: 80, borderRadius: 100, backgroundColor: COLORS.main2, justifyContent: 'center', alignItems: 'center' }}
+              onPress={() => {
+                if (done) {
+                  ToastAndroid.show('You already rolled the die today!!', 4);
+                } else if (curProgress===49) {
+                  ToastAndroid.show('You already crossed all the tiles!!', 4);
+                } else {
+                  setDiceModalVisible(true); getRandomDiceNo();
+                }
+              }}
+              >
+              <View style={{ width: 44, height: 44, position: 'relative', backgroundColor: COLORS.white1, borderRadius: 10 }}>
+                <Image 
+                  source={images.dice6}
+                  style={{ width: 44, height: 44, objectFit: 'contain', position: 'absolute', top: 0, left: 0, tintColor: COLORS.main3 }}
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
+        } 
       </View>
+
+      <Dialog
+        animationType="slide"
+        transparent={true}
+        isVisible={diceModalVisible}
+        onRequestClose={() => {
+            setDiceModalVisible(false);
+            setCurProgress(prev => Math.min(49, prev+curDiceNo));
+        }}
+        overlayStyle={{ justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent', elevation: 0 }}
+        onBackdropPress={() => {
+          setDiceModalVisible(false);
+          setCurProgress(prev => Math.min(49, prev+curDiceNo));
+        }}
+      >
+        <View style={{ width: 140, height: 140, position: 'relative', backgroundColor: COLORS.white1, borderRadius: 20 }}>
+          <Image 
+            source={images[`dice${curDiceNo}`]}
+            style={{ width: 150, height: 150, objectFit: 'contain', position: 'absolute', top: -5, left: -5, tintColor: COLORS.main3 }}
+          />
+        </View>
+      </Dialog>
     </SafeAreaView>
   );
 };
