@@ -30,6 +30,8 @@ const GamePage = (props) => {
     `Achievements, such as maintaining a streak of 10 days or crossing a certain number of tiles, can be displayed on a leaderboard, fostering a competitive atmosphere and potentially earning users exclusive content or other prizes.`
   ];
 
+  const curProgress = 38;
+
   const StatView = ({ image, stat, title }) => {
     return (
       <View style={{ flexDirection: 'row', gap: 2, alignItems: 'center' }}>
@@ -70,6 +72,25 @@ const GamePage = (props) => {
           </Text>
         </View>
       </TouchableOpacity>
+    )
+  }
+
+  const Star = ({ size, progress }) => {
+    return (
+      <View style={{ position: 'relative', flexDirection: 'row' }}>
+        <Image
+          source={images.star_filled}
+          style={{ width: size, height: size, tintColor: COLORS.white1, opacity: 0.5 }}
+        />
+        <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+          <View style={{ width: 0, height: '100%', overflow: 'hidden', paddingRight: `${progress * 100}%` }}>
+            <Image
+              source={images.star_filled}
+              style={{ width: size, height: size, tintColor: COLORS.gold1 }}
+            />
+          </View>
+        </View>
+    </View>
     )
   }
 
@@ -137,31 +158,14 @@ const GamePage = (props) => {
                           start={{x: 0, y: 0}} end={{x: 1, y: 0}}
                       >
                           <View style={{ gap: 10, alignItems: 'center' }}>
-                            <View style={{ position: 'relative', flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-end' }}>
-                              <View style={{ top: 0, left: 0, height: '100%', borderWidth: 1, borderColor: 'white' }}>
-                                  <View style={{ width: 0, height: 28, paddingRight: 20, overflow: 'hidden', justifyContent: 'flex-end' }}>
-                                    <Image
-                                      source={images.star_filled}
-                                      style={{ maxWidth: 24, height: 28, maxHeight: 24, tintColor: COLORS.gold1 }}
-                                    />
-                                  </View>
+                            <View style={{ gap: 10, alignItems: 'flex-end', flexDirection: 'row' }}>
+                              <View style={{ height: 0, borderWidth: 0.6, borderColor: COLORS.lightblue1, width: '20%' }} />
+                              <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-end' }}>
+                                <Star size={24} progress={curProgress/16} />
+                                <Star size={32} progress={curProgress > 16? (curProgress-16)/17 : 0} />
+                                <Star size={24} progress={curProgress > 33? (curProgress-33)/16 : 0} />
                               </View>
-                              <View style={{ top: 0, left: 0, height: '100%', borderWidth: 1, borderColor: 'white' }}>
-                                  <View style={{ width: 0, height: 28, paddingRight: 30, overflow: 'hidden', justifyContent: 'flex-end' }}>
-                                    <Image
-                                      source={images.star_filled}
-                                      style={{ maxWidth: 28, height: 28, maxHeight: 28, tintColor: COLORS.gold1 }}
-                                    />
-                                  </View>
-                              </View>
-                              <View style={{ top: 0, left: 0, height: '100%', borderWidth: 1, borderColor: 'white' }}>
-                                  <View style={{ width: 0, height: 28, paddingRight: 30, overflow: 'hidden', justifyContent: 'flex-end' }}>
-                                    <Image
-                                      source={images.star_filled}
-                                      style={{ maxWidth: 24, height: 28, maxHeight: 24, tintColor: COLORS.gold1 }}
-                                    />
-                                  </View>
-                              </View>
+                              <View style={{ height: 0, borderWidth: 0.6, borderColor: COLORS.lightblue1, width: '20%' }} />
                             </View>
                             <Text style={{fontFamily: FONT.regular, fontSize: SIZES.small, color: COLORS.lightblue1}}>
                               {`(10 coins, 2 trophies) collected in this month`}
@@ -178,7 +182,15 @@ const GamePage = (props) => {
                   <View style={{ width: 305, height: 305, flexDirection: 'row', gap: 10, flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
                     {tiles.map((tile) => (
                       <TouchableOpacity key={tile} 
-                        style={{ position: 'relative', width: 35, height: 35, backgroundColor: new Date().getDate() >= tile? COLORS.white1 : COLORS.white3, borderRadius: 5, opacity: new Date().getDate() >= tile? 0.7 : 0.5 }}>
+                        style={{ position: 'relative', width: 35, height: 35, backgroundColor: curProgress >= tile? COLORS.white1 : COLORS.white3, borderRadius: 5, opacity: curProgress >= tile? 0.7 : 0.5 }}>
+                          {curProgress===tile && (
+                            <View style={{ position: 'absolute', top: 0, left: 0}}>
+                              <Image 
+                                source={images.category}
+                                style={{ width: 34, height: 34, objectFit: 'contain' }}
+                              />
+                            </View>
+                          )}
                       </TouchableOpacity>
                     ))}
                   </View>
@@ -241,6 +253,18 @@ const GamePage = (props) => {
               </View>
             </ScrollView>
           </View>
+        </View>
+
+        <View style={{ position: 'absolute', bottom: 120, left: '38%' }}>
+          <TouchableOpacity style={{ width: 100, height: 100, borderRadius: 100, backgroundColor: COLORS.main2, justifyContent: 'center', alignItems: 'center' }}>
+            <Image 
+              source={images.category}
+              style={{ width: 64, height: 64, objectFit: 'contain' }}
+            />
+            <Text style={{fontFamily: FONT.regular2, fontSize: SIZES.small+2, color: COLORS.gray3, textAlign: 'center'}}>
+              Roll it
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
