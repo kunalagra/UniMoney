@@ -4,6 +4,7 @@ import { COLORS } from "../../../../constants";
 import styles from "./amountbottombar.style";
 
 const AmountBottomBar = ({ visible, setVisibility, title }) => {
+    
     return (
         <BottomSheet
             isVisible={visible}

@@ -151,7 +151,7 @@ const HomePage = ({ navigateTo }) => {
                         // const amount = amountRegex.exec(transaction.body);
                         // const amountValue = amount ? parseFloat(amount[1].replace(/,/g, '')) : null;
                     const transactionInfo = getTransactionInfo(transaction.body);
-                    // console.log(transaction.body, transaction.date);
+                    // console.log(transaction.body);
                     // console.log(transactionInfo);
                     const type = isCredited(transaction.body) ? 'credit' : 'debit';
                     const name = transactionInfo.transaction.detail ? transactionInfo.transaction.detail : transaction.address;
@@ -172,8 +172,8 @@ const HomePage = ({ navigateTo }) => {
                                     txid: txid ? txid : 0,
                                     isExpense: type === 'debit' ? true : false,
                                     category: {
-                                        name: 'ATM',
-                                        image: images.cash_withdrawal
+                                        name: name.includes('BNK') ? 'Transfers':'Payments',
+                                        image: name.includes('BNK') ? images.bank : images.payments,
                                     }
                                 }
                         );

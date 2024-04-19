@@ -240,10 +240,10 @@ const Banks = ({ navigation }) => {
                                                 source={
                                                     { uri: item.id.img }
                                                 }
-                                                style={{ width: 40, height: 40 }}
+                                                style={{ width: 40, height: 40, borderRadius: 10 }}
                                             />
                                         </View>
-                                        <View style={{ flexDirection: "column", gap: 10, marginLeft:15 }}>
+                                        <View style={{ flexDirection: "column", gap: 10, marginLeft:15, width: '50%' }}>
                                             <Text style={styles.bankName} numberOfLines={1}>{item.id.name}</Text>
                                             <Text style={styles.bankAcc}>A/c No: XX {item.number}</Text>
                                         </View>

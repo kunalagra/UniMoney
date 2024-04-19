@@ -11,7 +11,7 @@ import { budgetModeCategories } from "../../../../constants/fakeData";
 
 const BudgetDetailsBar = ({ visible, setVisibility, selectedCategory, setSelectedCategory, handleBudgetPress, isAddCategory, setIsAddCategory }) => {
 
-    const { title, image, currentSpend, budgetSet } = selectedCategory;
+    const { details, currentSpend, limit } = selectedCategory;
 
     const { WalletIcon, DocumentIcon, AddIcon } = icons;
 
@@ -102,10 +102,10 @@ const BudgetDetailsBar = ({ visible, setVisibility, selectedCategory, setSelecte
                         ) : (
                             <View style={styles.cardContainer}>
                                 <BudgetCard 
-                                    title={title}
-                                    image={image}
+                                    title={ details ? details.name: ''}
+                                    image={ details ? details.img: ''}
                                     currentSpends={currentSpend}
-                                    budgetSet={budgetSet}
+                                    budgetSet={limit}
                                     handlePress={() => {}}
                                 />
                             </View>

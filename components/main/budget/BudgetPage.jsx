@@ -74,7 +74,7 @@ const BudgetPage = ({ navigateTo }) => {
                 <AmountBottomBar
                     visible={isAmountBarOpen}
                     setVisibility={setIsAmountBarOpen}
-                    title={selectedCategory.title}
+                    title={selectedCategory.details? selectedCategory.details.name : ''}
                 />
 
                 <ScrollView
@@ -117,7 +117,7 @@ const BudgetPage = ({ navigateTo }) => {
                                     currentSpends={8000}
                                     budgetSet={20000}
                                     handlePress={() => {
-                                        setSelectedCategory({ title: "Monthly Budget", image: null, currentSpend: 8000, budgetSet: 20000 });
+                                        setSelectedCategory({ details: {name: "Monthly Budget", img: null}, currentSpend: 8000, limit: 20000 });
                                         setIsBottomBarOpen(true);
                                     }}
                                 />

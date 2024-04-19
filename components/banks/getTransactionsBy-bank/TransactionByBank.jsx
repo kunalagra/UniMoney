@@ -142,7 +142,7 @@ const TransactionByBank = (props) => {
                                 fill={COLORS.gray3}
                             />
                         </TouchableOpacity>
-                        <View>
+                        <View style={{ width: '60%'}}>
                             <Text style={styles.navHeading}>{details.id.name}</Text>
                         </View>
                     </View>
