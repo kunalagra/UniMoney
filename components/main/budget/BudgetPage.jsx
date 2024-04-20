@@ -7,6 +7,8 @@ import BudgetCard from './budgetcard/BudgetCard';
 import BudgetDetailsBar from './budgetdetailsbar/BudgetDetailsBar';
 import AmountBottomBar from './amountbottombar/AmountBottomBar';
 import { useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 
 const BudgetPage = ({ navigateTo }) => {
@@ -17,32 +19,66 @@ const BudgetPage = ({ navigateTo }) => {
     const [isBottomBarOpen, setIsBottomBarOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState({});
     const [isAmountBarOpen, setIsAmountBarOpen] = useState(false);
+    const [isMonthlyBudget, setIsMonthlyBudget] = useState(false);
+    const [MonthlyBudgetLimit, setMonthlyBudgetLimit] = useState(20000);
     const [isAddCategory, setIsAddCategory] = useState(false);
-    const { Categories, alltransactions} = useSelector(state => state.transactiondata);
+    const {alltransactions, monthlyexpense } = useSelector(state => state.transactiondata);
     const [budgetModeCategories, setBudgetModeCategories] = useState([])
     const [loading, setLoading] = useState(true);
+    const [Categories, setCategories] = useState([]);
+
+    const getsettings = async () => {
+        const isMonthlyBudget = await AsyncStorage.getItem('isMonthlyBudget');
+        const monthlyBudgetLimit = await AsyncStorage.getItem('monthlyBudgetLimit');
+        setIsMonthlyBudget(isMonthlyBudget === 'true');
+        setMonthlyBudgetLimit( monthlyBudgetLimit ? parseInt(monthlyBudgetLimit) : 20000);
+        return isMonthlyBudget === 'true';
+    }
+    useEffect(() => {
+        // console.log(monthlyexpense);
+        getsettings();
+    }, [refreshing]);
+
+    const getCategory = async () => {
+        setLoading(true);
+        const options = {
+            method: 'GET',
+            url: 'https://unimoney-backend.onrender.com/category/',
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + await AsyncStorage.getItem('token')
+            }
+        };
+        try {
+            const res = await axios.request(options);
+            const Categories = res.data;
+            setCategories(res.data)
+            const currentMonthTransactions = alltransactions.filter(item => {
+                const date = new Date(item.date);
+                return date.getMonth() == new Date().getMonth() && date.getFullYear() == new Date().getFullYear();
+            });
+
+            const spends = currentMonthTransactions.filter((item) => item.isExpense);
+    
+            const categories = Categories.filter(item => item.limit > 0).map(category => {
+                const transactions = spends.filter(item => item.category.name == category.details.name);
+                const currentSpend = transactions.reduce((acc, item) => acc + item.amount, 0);
+                return { ...category, currentSpend: Math.round(currentSpend) };
+            });
+            // console.log(categories);
+    
+            setBudgetModeCategories(categories);
+            setRefreshing(false);
+    
+            setTimeout(() => setLoading(false), 1000);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     useEffect(() => {
-        // calculate current month spendings in each category 
-        const currentMonthTransactions = alltransactions.filter(item => {
-            const date = new Date(item.date);
-            return date.getMonth() == new Date().getMonth() && date.getFullYear() == new Date().getFullYear();
-        });
-        
-        // get categories only those limit is greater than 0
-        const categories = Categories.filter(item => item.limit > 0).map(category => {
-            const transactions = currentMonthTransactions.filter(item => item.category.name == category.details.name);
-            const currentSpend = transactions.reduce((acc, item) => acc + item.amount, 0);
-            return { ...category, currentSpend: Math.round(currentSpend) };
-        });
-        // console.log(categories);
-
-        setBudgetModeCategories(categories);
-
-        setTimeout(() => setLoading(false), 1000);
-
-
-    }, [Categories]);
+        getCategory();
+    }, [refreshing]);
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
@@ -66,15 +102,18 @@ const BudgetPage = ({ navigateTo }) => {
                     handleBudgetPress={() => {
                         setIsBottomBarOpen(false);
                         setIsAmountBarOpen(true);
+                        setIsAddCategory(false);
                     }}
                     isAddCategory={isAddCategory}
                     setIsAddCategory={setIsAddCategory}
+                    budgetModeCategories={budgetModeCategories}
+                    setRefreshing={setRefreshing}
                 />
 
                 <AmountBottomBar
                     visible={isAmountBarOpen}
                     setVisibility={setIsAmountBarOpen}
-                    title={selectedCategory.details? selectedCategory.details.name : ''}
+                    title={selectedCategory.details ? selectedCategory.details.name : selectedCategory.title}
                 />
 
                 <ScrollView
@@ -110,36 +149,37 @@ const BudgetPage = ({ navigateTo }) => {
                             />
                         </View>
 
-                        {isBudgetMode &&
+                        {isBudgetMode && getsettings() &&
                             <View style={styles.cardsContainer}>
-
-                                <BudgetCard
-                                    currentSpends={8000}
-                                    budgetSet={20000}
-                                    handlePress={() => {
-                                        setSelectedCategory({ details: {name: "Monthly Budget", img: null}, currentSpend: 8000, limit: 20000 });
-                                        setIsBottomBarOpen(true);
-                                    }}
-                                />
+                                {isMonthlyBudget &&
+                                    <BudgetCard
+                                        currentSpends={monthlyexpense}
+                                        budgetSet={MonthlyBudgetLimit}
+                                        handlePress={() => {
+                                            setSelectedCategory({ details: { name: "Monthly Budget", img: null }, currentSpend: monthlyexpense, limit: MonthlyBudgetLimit });
+                                            setIsBottomBarOpen(true);
+                                        }}
+                                    />
+                                }
 
                                 <Text style={styles.cardsHeader}>
                                     Categories
                                 </Text>
-                                { loading ? <Text>Loading...</Text> :
-                                budgetModeCategories.map((item, index) => (
-                                    <BudgetCard
-                                        key={index}
-                                        title={item.details.name}
-                                        image={item.details.img}
-                                        currentSpends={item.currentSpend}
-                                        budgetSet={item.limit}
-                                        handlePress={() => {
-                                            setSelectedCategory(item);
-                                            setIsBottomBarOpen(true);
-                                        }}
-                                    />
-                                ))
-                            }
+                                {loading ? <Text>Loading...</Text> :
+                                    budgetModeCategories.map((item, index) => (
+                                        <BudgetCard
+                                            key={index}
+                                            title={item.details.name}
+                                            image={item.details.img}
+                                            currentSpends={item.currentSpend}
+                                            budgetSet={item.limit}
+                                            handlePress={() => {
+                                                setSelectedCategory(item);
+                                                setIsBottomBarOpen(true);
+                                            }}
+                                        />
+                                    ))
+                                }
 
                             </View>
                         }
@@ -152,7 +192,7 @@ const BudgetPage = ({ navigateTo }) => {
                         <TouchableOpacity
                             activeOpacity={0.85}
                             style={styles.addButton}
-                            onPress={() => {setIsAddCategory(true); setIsBottomBarOpen(true);}}
+                            onPress={() => { setIsAddCategory(true); setIsBottomBarOpen(true); }}
                         >
                             <Text style={styles.buttonText}>
                                 Add Category

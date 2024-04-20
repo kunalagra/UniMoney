@@ -70,7 +70,8 @@ const SettingUpPage = () => {
                                     name: name ? name : 'Unknown',
                                     // image: name.includes('BNK') ? images.bank : images.payments,
                                     type: type,
-                                    txid: txid ? txid : 0
+                                    txid: txid ? txid : 0,
+                                    category: name.includes('BNK') ? 'Transfers':'Payments',
                                 }
                         );
                     }

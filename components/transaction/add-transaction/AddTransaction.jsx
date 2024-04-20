@@ -31,7 +31,8 @@ const CustomDropdown = ({data, value, setValue}) => {
 const AddTransactionPage = (props) => {
 
     const { ArrowleftIcon } = icons;
-
+    const { params } = props.route;
+    const categoryName = params ? params.categoryName : null;
     const typeOfPaymentList = [
         { label: "Expense", value: "debit" },
         { label: "Income", value: "credit" },
@@ -140,7 +141,7 @@ const AddTransactionPage = (props) => {
     const [typeOfPayment, setTypeOfPayment] = useState(typeOfPaymentList[0].value);
     const [debitAcc, setDebitAcc] = useState(0);
     const [desc, setDesc] = useState("");
-    const [category, setCategory] = useState('');
+    const [category, setCategory] = useState(categoryName ? categoryName : '');
     const [date, setDate] = useState(new Date());
     const [isDateModalOpen, setIsDateModalOpen] = useState(false);
     const [amount, setAmount] = useState("");

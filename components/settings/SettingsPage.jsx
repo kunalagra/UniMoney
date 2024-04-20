@@ -1,22 +1,32 @@
 "use strict";
 import { SafeAreaView, View, Text, ScrollView, StatusBar, TouchableOpacity, Image, Switch } from "react-native";
 import { COLORS, icons, images } from "../../constants";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./settingspage.style";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector } from "react-redux";
 
+
 const SettingsPage = (props) => {
 
     const { ArrowleftIcon } = icons;
     const navigation = useNavigation();
-
     const { username, email } = useSelector(state => state.profilecreation);
-
     const [isBudgetMode, setIsBudgetMode] = useState(false);
     const [isPushNotifications, setIsPushNotifications] = useState(false);
     const [isExpenseReminderOn, setIsExpenseRemainderOn] = useState(false);
+
+    useEffect(() => {
+        const getsettings = async () => {
+            const isMonthlyBudget = await AsyncStorage.getItem('isMonthlyBudget');
+            setIsBudgetMode(isMonthlyBudget === 'true');
+        }
+        getsettings();
+        // console.log(isBudgetMode)
+    }, [])
+
+
 
     const settingData = [
         {
@@ -35,7 +45,10 @@ const SettingsPage = (props) => {
             title: "Monthly budget",
             image: images.wallet2,
             desc: "ON ₹20,000",
-            handlePress: () => setIsBudgetMode(prev => !prev),
+            handlePress: () => {
+                setIsBudgetMode(prev => !prev);
+                AsyncStorage.setItem('isMonthlyBudget', (!isBudgetMode).toString());
+            },
             isToggle: true
         },
         {
@@ -103,7 +116,7 @@ const SettingsPage = (props) => {
                 return <Switch
                     trackColor={{ false: COLORS.gray1, true: COLORS.main4 }}
                     thumbColor={isBudgetMode ? COLORS.main3 : COLORS.white4}
-                    onValueChange={() => setIsBudgetMode(prev => !prev)}
+                    onValueChange={() => {setIsBudgetMode(prev => !prev), AsyncStorage.setItem('isMonthlyBudget', (!isBudgetMode).toString());}}
                     value={isBudgetMode}
                 />
             case "Instant notifications":
