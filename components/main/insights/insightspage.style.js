@@ -276,6 +276,26 @@ const styles = StyleSheet.create({
         fontSize: SIZES.regular, 
         color: COLORS.gray3
     },
+
+    bankCardsContainer:{
+        width: '100%',
+        gap: 8,
+        flexDirection: 'row',
+    },
+    bankCard: {
+        backgroundColor: COLORS.green0,
+        borderRadius: 10,
+        padding: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        ...SHADOWS.small
+    },
+    bankName:{
+        fontFamily: FONT.bold,
+        fontSize: SIZES.regular,
+        color: COLORS.black
+    },
     
 });
 

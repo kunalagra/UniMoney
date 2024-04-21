@@ -15,6 +15,8 @@ import CustomImport from './components/settings/custom-import/CustomImport';
 import GamePage from './components/gamification/GamePage';
 import Banks from './components/banks/banks';
 import TransactionByBank from './components/banks/getTransactionsBy-bank/TransactionByBank';
+import TransactionByCat from './components/main/budget/transactionByCat/transactionByCat';
+import TransactionByInsights from './components/main/insights/transactionbyinsights/transactionByInsights';
 
 const Stack = createNativeStackNavigator();
 
@@ -154,6 +156,16 @@ function AppRoutes({ token }) {
           }}
         />
         <Stack.Screen name="TransactionByBank" component={TransactionByBank}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="TransactionByCat" component={TransactionByCat}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="TransactionByInsights" component={TransactionByInsights}
           options={{
             headerShown: false,
           }}

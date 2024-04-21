@@ -7,17 +7,15 @@ import { Dropdown } from "react-native-element-dropdown";
 import { useEffect, useState } from "react";
 // import { spendingCategories } from "../../../../utils";
 // import { budgetModeCategories } from "../../../../constants/fakeData";
-import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
-const BudgetDetailsBar = ({ visible, setVisibility, selectedCategory, setSelectedCategory, handleBudgetPress, isAddCategory, setIsAddCategory, budgetModeCategories, setRefreshing}) => {
+const BudgetDetailsBar = ({ visible, setVisibility, selectedCategory, setSelectedCategory, handleBudgetPress, isAddCategory, setIsAddCategory, budgetModeCategories, setRefreshing, navigateTo}) => {
 
     const { details, currentSpend, limit } = selectedCategory;
     const { Categories } = useSelector(state => state.transactiondata);
 
-    const navigation = useNavigation();
 
     const { WalletIcon, DocumentIcon, AddIcon } = icons;
 
@@ -219,6 +217,16 @@ const BudgetDetailsBar = ({ visible, setVisibility, selectedCategory, setSelecte
 
                             <TouchableOpacity
                                 style={styles.optionContainer}
+                                onPress={() => {
+                                    if (details.name === "Monthly Budget") {
+                                        navigateTo('TransactionByCat', { name: "Month" }),
+                                            setVisibility(false);
+                                    } else {
+                                        navigateTo('TransactionByCat', { name: details.name }),
+                                            setVisibility(false);
+                                }
+
+                                }}
                             >
                                 <DocumentIcon
                                     width={30}

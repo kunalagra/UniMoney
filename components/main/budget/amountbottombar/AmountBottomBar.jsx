@@ -4,8 +4,9 @@ import { COLORS } from "../../../../constants";
 import styles from "./amountbottombar.style";
 import React, { useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
-const AmountBottomBar = ({ visible, setVisibility, title }) => {
+const AmountBottomBar = ({ visible, setVisibility, title, setRefreshing }) => {
 
     const [amount, setAmount] = useState('');
     
@@ -49,12 +50,13 @@ const AmountBottomBar = ({ visible, setVisibility, title }) => {
                         style={styles.buttonContainer}
                         activeOpacity={0.85}
                         onPress= {async () => {
+                            // console.log(title, amount);
                             if (title === 'Monthly Budget'){
                                 await AsyncStorage.setItem('monthlyBudgetLimit', amount);
                                 setVisibility(false);
                             }else {
                                 const options = {
-                                    method: 'POST',
+                                    method: 'PUT',
                                     url: 'https://unimoney-backend.onrender.com/category/limit',
                                     headers: {
                                         "Content-type": "application/json",
@@ -67,8 +69,9 @@ const AmountBottomBar = ({ visible, setVisibility, title }) => {
                                 }
                                 try {
                                     const response = await axios(options);
-                                    console.log(response.data);
+                                    // console.log(response.data);
                                     setVisibility(false);
+                                    setRefreshing(true);
                                 } catch (error) {
                                     console.log(error);
                                 }

@@ -79,6 +79,7 @@ const Banks = ({ navigation }) => {
                 linkedBanks.push(item.number);
             })
             getUniqueBanksNumber(linkedBanks);
+            setRefreshing(false);
         } catch (error) {
             console.error(error);
         }
@@ -86,7 +87,7 @@ const Banks = ({ navigation }) => {
 
     useEffect(() => {
         getMyBanks();
-    }, [])
+    }, [refreshing]);
 
     const { ArrowleftIcon } = icons;
 

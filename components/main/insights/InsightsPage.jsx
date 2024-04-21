@@ -10,6 +10,8 @@ import CustomButton from '../../profilecreation/common/button/CustomButton';
 import DatePicker from 'react-native-date-picker';
 import MonthPicker from 'react-native-month-year-picker';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const getMaxPortion = (categories) => {
     if (categories.length === 0) return {category: '', value: 0};
@@ -47,27 +49,72 @@ const InsightsPage = (props) => {
 
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const [date, setDate] = useState(new Date());
-    const [filterDate, setFilterDate] = useState({start: new Date(), end: new Date()});
+    const [filterDate, setFilterDate] = useState({start: new Date(date.getFullYear(), date.getMonth()), end: new Date()});
     const [isMonthModalOpen, setIsMonthModalOpen] = useState(false);
     const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
     const [isFilterStartOpen, setIsFilterStartOpen] = useState(false);
     const [isFilterEndOpen, setIsFilterEndOpen] = useState(false);
+    const [bankData, setBankData] = useState([{id: {name: 'All Banks'}}]);
+    const [bankNumber, setBankNumber] = useState(0);
+    
 
     const [maxExpense, setMaxExpense] = useState({category: '', value: 0});
     const [maxIncome, setMaxIncome] = useState({category: '', value: 0});
 
     const [expenseSplitData, setExpenseSplitData] = useState([]);
     const [incomeSplitData, setIncomeSplitData] = useState([]);
+    const [isFilter, setIsFilter] = useState(false);
+    const [spendTransactions, setSpendTransactions] = useState([]);
+    const [incomeTransactions, setIncomeTransactions] = useState([]);
 
     useEffect(() => {
-        const monthWiseTransactions = alltransactions.filter((item) => {
+        const fetchData = async () => {
+            const options = {
+                method: 'GET',
+                url: 'https://unimoney-backend.onrender.com/bank/my',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + await AsyncStorage.getItem('token')
+                }
+            };
+            try {
+                const response = await axios(options);
+                setBankData([...bankData, ...response.data]);
+            }
+            catch (error) {
+                console.log(error);
+            }
+        }
+
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        let monthWiseTransactions = [];
+        if (isFilter) {
+            if (bankNumber) {
+                monthWiseTransactions = alltransactions.filter((item) => {
+                    let itemDate = new Date(item.date);
+                    return itemDate >= filterDate.start && itemDate <= filterDate.end && item.acc === bankNumber;
+                });
+            }
+            else {
+                monthWiseTransactions = alltransactions.filter((item) => {
+                    let itemDate = new Date(item.date);
+                    return itemDate >= filterDate.start && itemDate <= filterDate.end;
+                });
+            }
+        } else {
+        monthWiseTransactions = alltransactions.filter((item) => {
             const itemDate = new Date(item.date);
             return itemDate.getMonth() === date.getMonth() && itemDate.getFullYear() === date.getFullYear();
         });
+    }
 
         const spends = monthWiseTransactions.filter((item) => item.isExpense);
         const income = monthWiseTransactions.filter((item) => !item.isExpense);
-
+        setSpendTransactions(spends);
+        setIncomeTransactions(income);
         
         let spendsData = Categories.map((category) => {
             const categoryTransactions = spends.filter((item) => item.category.name === category.details.name);
@@ -149,9 +196,10 @@ const InsightsPage = (props) => {
     // console.log(allMonthsWiseIncomes);
     setMonthlyExpense(allMonthsWiseExpenses);
     setMonthlyIncome(allMonthsWiseIncomes);
+    setRefreshing(false);
 
         
-    }, [alltransactions, Categories, date]);
+    }, [alltransactions, Categories, date, refreshing]);
 
 
 
@@ -300,11 +348,29 @@ const InsightsPage = (props) => {
                         >
                             {isFilterModalOpen && (
                                 <View style={styles.filterModal}>
+                                    <ScrollView 
+                                    showsHorizontalScrollIndicator={false}
+                                    horizontal
+                                    >
+                                        <View style={styles.bankCardsContainer}>
+                                        {bankData && bankData.map((item, index) => (
+                                            <TouchableOpacity
+                                                key={index}
+                                                style={styles.bankCard}
+                                                onPress={() => {setBankNumber(item.number)}}
+                                            >
+                                                <Text style={styles.bankName}>
+                                                    {item.id.name}
+                                                </Text>
+                                            </TouchableOpacity>
+                                        ))}
+                                        </View>
+                                    </ScrollView>
                                     <View style={styles.filterDatePickersContainer}>
                                         <FilterDatePicker isStart={true} />
                                         <FilterDatePicker isStart={false} />
                                     </View>
-                                    <CustomButton title="Filter" />
+                                    <CustomButton title="Filter" handlePress={() => { setIsFilter(true), setIsFilterModalOpen(false), setRefreshing(true) }} />
                                 </View>
                             )}
                             <View style={styles.analysisContainer}>
@@ -347,7 +413,7 @@ const InsightsPage = (props) => {
                                                 description={`${Math.round((item.amount/totalSpends).toFixed(2) * 100)}% of total spends`}
                                                 amount={item.amount}
                                                 isExpense={true}
-                                                navigateTo={() => {}} 
+                                                navigateTo={() => { props.navigation.navigate('TransactionByInsights', { alltransactions: spendTransactions, name: item.name }) }} 
                                             />
                                         )) : 
                                         incomeData.map((item, index) => (
@@ -359,7 +425,7 @@ const InsightsPage = (props) => {
                                                 description={`${Math.round((item.amount/totalIncome).toFixed(2) * 100)}% of total income`}
                                                 amount={item.amount}
                                                 isExpense={false}
-                                                navigateTo={() => {}} 
+                                                navigateTo={() => { props.navigation.navigate('TransactionByInsights', { alltransactions: incomeTransactions, name: item.name }) }}
                                             />
                                         ))
                                     }

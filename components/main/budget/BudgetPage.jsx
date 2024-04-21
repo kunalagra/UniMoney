@@ -34,6 +34,16 @@ const BudgetPage = ({ navigateTo }) => {
         setMonthlyBudgetLimit( monthlyBudgetLimit ? parseInt(monthlyBudgetLimit) : 20000);
         return isMonthlyBudget === 'true';
     }
+
+    useEffect(() => {
+        const getsettings = async () => {
+            const isMonthlyBudget = await AsyncStorage.getItem('BudgetMode');
+            setIsBudgetMode(isMonthlyBudget === 'true');
+        }
+        getsettings();
+        // console.log(isBudgetMode)
+    }, [])
+
     useEffect(() => {
         // console.log(monthlyexpense);
         getsettings();
@@ -108,11 +118,13 @@ const BudgetPage = ({ navigateTo }) => {
                     setIsAddCategory={setIsAddCategory}
                     budgetModeCategories={budgetModeCategories}
                     setRefreshing={setRefreshing}
+                    navigateTo={navigateTo}
                 />
 
                 <AmountBottomBar
                     visible={isAmountBarOpen}
                     setVisibility={setIsAmountBarOpen}
+                    setRefreshing={setRefreshing}
                     title={selectedCategory.details ? selectedCategory.details.name : selectedCategory.title}
                 />
 
@@ -144,7 +156,10 @@ const BudgetPage = ({ navigateTo }) => {
                             <Switch
                                 trackColor={{ false: COLORS.gray1, true: COLORS.main4 }}
                                 thumbColor={isBudgetMode ? COLORS.main3 : COLORS.white4}
-                                onValueChange={() => setIsBudgetMode(prev => !prev)}
+                                onValueChange={() => {setIsBudgetMode(prev => !prev),
+                                    AsyncStorage.setItem('BudgetMode', (!isBudgetMode).toString());
+                                    getCategory();
+                                }}
                                 value={isBudgetMode}
                             />
                         </View>
