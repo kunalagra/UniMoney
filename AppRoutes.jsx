@@ -17,6 +17,7 @@ import Banks from './components/banks/banks';
 import TransactionByBank from './components/banks/getTransactionsBy-bank/TransactionByBank';
 import TransactionByCat from './components/main/budget/transactionByCat/transactionByCat';
 import TransactionByInsights from './components/main/insights/transactionbyinsights/transactionByInsights';
+import Profile from './components/settings/profile/Profile';
 
 const Stack = createNativeStackNavigator();
 
@@ -166,6 +167,11 @@ function AppRoutes({ token }) {
           }}
         />
         <Stack.Screen name="TransactionByInsights" component={TransactionByInsights}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="ProfilePage" component={Profile}
           options={{
             headerShown: false,
           }}

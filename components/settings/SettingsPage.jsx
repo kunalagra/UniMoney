@@ -164,7 +164,9 @@ const SettingsPage = (props) => {
 
                     <View style={styles.mainContainer}>
                         <TouchableOpacity 
-                            style={styles.profileContainer}>
+                            style={styles.profileContainer}
+                            onPress={() => {props.navigation.navigate('ProfilePage')}}
+                        >
                             <View style={styles.profileDetails}>
                                 <Image
                                     source={images.profileicon}

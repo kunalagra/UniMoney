@@ -97,7 +97,7 @@ const HomePage = ({ navigateTo }) => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
 
-    const { ArrowleftIcon } = icons;
+    const { Loader } = icons;
 
     const [refreshing, setRefreshing] = useState(false);
 
@@ -455,7 +455,13 @@ const HomePage = ({ navigateTo }) => {
 
                         <StreakBanner navigateTo={navigateTo} />
 
-                    {loading ? <Text style={{color: COLORS.black, fontSize:25, fontWeight: 'bold', alignContent:'center', justifyContent:"center", alignSelf: "center", marginTop:20}}>Loading...</Text> : (
+                    {loading ? 
+                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', paddingVertical: 10 }}>
+                            <Loader 
+                                style={{ width: 24, height: 24, objectFit: 'contain' }}
+                            /> 
+                        </View>
+                        : (
                         <>
                         <View style={styles.expenseCardsContainer}>
                             <ScrollView

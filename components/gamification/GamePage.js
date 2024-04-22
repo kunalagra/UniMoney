@@ -1,7 +1,7 @@
 import { RefreshControl, SafeAreaView, ScrollView, StatusBar, TouchableOpacity, View, Text, Image, ToastAndroid } from "react-native";
 import styles from "./gamepage.style";
 import { COLORS, FONT, SIZES, SHADOWS, icons, images } from "../../constants";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import LinearGradient from "react-native-linear-gradient";
 import { Dialog } from "@rneui/themed";
 
@@ -11,9 +11,10 @@ const GamePage = (props) => {
 
   const [refreshing, setRefreshing] = useState(false);
   const [diceModalVisible, setDiceModalVisible] = useState(false);
-  const [curProgress, setCurProgress] = useState(0);
+  const [curProgress, setCurProgress] = useState(1);
   const [curDiceNo, setCurDiceNo] = useState(1);
   const done = false;
+  const scrollViewRef = useRef(null);
 
   const onRefresh = useCallback(() => {
       setRefreshing(true);
@@ -43,13 +44,13 @@ const GamePage = (props) => {
 
   const StatView = ({ image, stat, title, size=16 }) => {
     return (
-      <View style={{ flexDirection: 'row', gap: 2, alignItems: 'center' }}>
+      <View style={styles.statContainer}>
         <Image 
           source={image}
           alt={title}
-          style={{ width: size, height: size, objectFit: 'contain' }}
+          style={styles.statImage(size)}
         />
-        <Text style={{fontFamily: FONT.bold, fontSize: SIZES.large, color: COLORS.gray3}}>
+        <Text style={styles.statContainerText}>
           {stat}
         </Text>
       </View>
@@ -62,11 +63,11 @@ const GamePage = (props) => {
 
     return (
       <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'white', paddingVertical: 12, paddingHorizontal: 14, borderRadius: 12, borderBottomWidth: 2, borderBottomColor: colors[rank-1], ...SHADOWS.small }}>
-        <Text style={{fontFamily: FONT.medium2, fontSize: SIZES.medium, color: COLORS.gray3}}>
+        <Text style={styles.leaderboardRowText}>
           {rank}
         </Text>
         <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
-          <Text style={{fontFamily: FONT.medium2, fontSize: SIZES.medium, color: COLORS.gray3}}>
+          <Text style={styles.leaderboardRowText}>
             {username}
           </Text>
         </View>
@@ -76,7 +77,7 @@ const GamePage = (props) => {
             alt={'trophies'}
             style={{ width: 18, height: 18, objectFit: 'contain' }}
           />
-          <Text style={{fontFamily: FONT.medium2, fontSize: SIZES.medium, color: COLORS.gray3}}>
+          <Text style={styles.leaderboardRowText}>
             {trophies}
           </Text>
         </View>
@@ -89,18 +90,26 @@ const GamePage = (props) => {
       <View style={{ position: 'relative', flexDirection: 'row' }}>
         <Image
           source={images.star_filled}
-          style={{ width: size, height: size, tintColor: COLORS.white1, opacity: 0.5 }}
+          style={styles.backStarImg}
         />
-        <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
-          <View style={{ width: 0, height: '100%', overflow: 'hidden', paddingRight: `${progress * 100}%` }}>
+        <View style={styles.frontStarContainer}>
+          <View style={styles.frontStarProgressContainer(progress)}>
             <Image
               source={images.star_filled}
-              style={{ width: size, height: size, tintColor: COLORS.gold1 }}
+              style={styles.frontStarImg(size)}
             />
           </View>
         </View>
     </View>
     )
+  }
+
+  const toRulesSection = () => {
+    scrollViewRef.current?.scrollTo({ x: 980, animated: true });
+  }
+
+  const toLeaderboardSection = () => {
+    scrollViewRef.current?.scrollTo({ x: 600, animated: true });
   }
 
   return (
@@ -118,38 +127,43 @@ const GamePage = (props) => {
 
           <View style={styles.container}>
             <ScrollView
-                showsVerticalScrollIndicator={false}
-                refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[COLORS.main3]} />
-                }
+              ref={scrollViewRef}
+              showsVerticalScrollIndicator={false}
+              refreshControl={
+                  <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[COLORS.main3]} />
+              }
             >
-              <View style={{ width: '100%', gap: 20, paddingBottom: 200 }}>
-                <View style={{ flexDirection: 'row', gap: 6, alignItems: 'center', justifyContent: 'flex-end' }}>
-                  <TouchableOpacity style={{ flexDirection: 'row', gap: 4, alignItems: 'center', justifyContent: 'flex-end' }}>
+              <View style={styles.scrollViewInnerContainer}>
+                <View style={styles.gameSectionsContainer}>
+                  <TouchableOpacity style={styles.rulesButton}
+                    onPress={toRulesSection}
+                  >
                     <Image 
                       source={images. question_mark}
-                      style={{ width: 16, height: 16, objectFit: 'contain', tintColor: COLORS.gray2 }}
+                      style={styles.rulesButtonImg}
                     />
-                    <Text style={{fontFamily: FONT.medium, fontSize: SIZES.medium, color: COLORS.gray2}}>
+                    <Text style={styles.rulesButtonText}>
                       Rules
                     </Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={{ flexDirection: 'row', gap: 4, alignItems: 'center', justifyContent: 'flex-end' }}>
+                  <TouchableOpacity style={styles.leaderboardButton}
+                    onPress={toLeaderboardSection}
+                  >
                     <Image 
                       source={images.leaderboard}
-                      style={{ width: 19, height: 19, objectFit: 'contain', tintColor: COLORS.gray2 }}
+                      style={styles.leaderboardButtonImg}
                     />
-                    <Text style={{fontFamily: FONT.medium, fontSize: SIZES.medium, color: COLORS.gray2}}>
+                    <Text style={styles.leaderboardButtonText}>
                       Leaderboard
                     </Text>
                   </TouchableOpacity>
                 </View>
 
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end'}}>
-                  <Text style={{fontFamily: FONT.bold, fontSize: SIZES.large, color: COLORS.gray3}}>
+                <View style={styles.statsContainer}>
+                  <Text style={styles.statsHeading}>
                     Stats
                   </Text>
-                  <View style={{ flexDirection: 'row', gap: 10 }}>
+                  <View style={styles.statsInnerContainer}>
                     <StatView image={images.flame} title={'streak'} stat={5} size={23} />
                     <StatView image={images.coin} title={'coins'} stat={48} />
                     <StatView image={images.trophy} title={'trophies'} stat={17} size={20} />
@@ -158,23 +172,23 @@ const GamePage = (props) => {
 
                 <View style={{}}>
                   <TouchableOpacity 
-                      style={{ borderRadius: 10, elevation: 10, ...SHADOWS.medium, }}
+                      style={styles.starProgressContainer}
                       activeOpacity={0.8}
                   >
                       <LinearGradient
                           colors={[ COLORS.purple2, COLORS.purple1, COLORS.purple1, COLORS.purple2 ]}
-                          style={{ width: '100%', paddingHorizontal: 8, paddingVertical: 10, borderRadius: 10 }}
+                          style={styles.starProgressGradientContainer}
                           start={{x: 0, y: 0}} end={{x: 1, y: 0}}
                       >
                           <View style={{ gap: 10, alignItems: 'center' }}>
                             <View style={{ gap: 10, alignItems: 'flex-end', flexDirection: 'row' }}>
-                              <View style={{ height: 0, borderWidth: 0.6, borderColor: COLORS.lightblue1, width: '20%' }} />
-                              <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-end' }}>
+                              <View style={styles.horizontalLine} />
+                              <View style={styles.starsContainer}>
                                 <Star size={24} progress={curProgress/16} />
                                 <Star size={32} progress={curProgress > 16? (curProgress-16)/17 : 0} />
                                 <Star size={24} progress={curProgress > 33? (curProgress-33)/16 : 0} />
                               </View>
-                              <View style={{ height: 0, borderWidth: 0.6, borderColor: COLORS.lightblue1, width: '20%' }} />
+                              <View style={styles.horizontalLine} />
                             </View>
                             <Text style={{fontFamily: FONT.regular, fontSize: SIZES.small, color: COLORS.lightblue1}}>
                               {`(10 coins, 2 trophies) collected in this month`}
@@ -187,24 +201,24 @@ const GamePage = (props) => {
                 <LinearGradient
                   colors={[ '#B83D00', '#FF7733', '#FF7733', '#B83D00' ]}
                   start={{x: 0, y: 0}} end={{x: 1, y: 0}}
-                  style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: '100%', paddingHorizontal: 8, paddingVertical: 10, borderRadius: 10 }}>
-                  <View style={{ width: 305, height: 305, flexDirection: 'row', gap: 10, flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
+                  style={styles.tilesGradientContainer}>
+                  <View style={styles.tilesContainer}>
                     {tiles.map((tile) => (
                       <TouchableOpacity key={tile} 
                         style={{ position: 'relative', width: 35, height: 35, backgroundColor: curProgress >= tile? COLORS.white1 : COLORS.white3, borderRadius: 5, opacity: curProgress >= tile? 0.7 : 0.5 }}>
                           {curProgress===tile && (
-                            <View style={{ position: 'absolute', top: 0, left: 0}}>
+                            <View style={styles.tileInnerImgContainer}>
                               <Image 
                                 source={images.boy_gamer}
-                                style={{ width: 34, height: 34, objectFit: 'contain' }}
+                                style={styles.tileInnerImg}
                               />
                             </View>
                           )}
                           {curProgress > tile && (
-                            <View style={{ position: 'absolute', top: 0, left: 0}}>
+                            <View style={styles.tileInnerImgContainer}>
                               <Image 
                                 source={images.tick}
-                                style={{ width: 34, height: 34, objectFit: 'contain' }}
+                                style={styles.tileInnerImg}
                               />
                             </View>
                           )}
@@ -213,28 +227,28 @@ const GamePage = (props) => {
                   </View>
                 </LinearGradient>
 
-                <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
+                <View style={styles.myRankContainer}>
+                  <View style={styles.trophyHeadingContainer}>
                     <Image 
                       source={images.trophy}
-                      style={{ width: 20, height: 20, objectFit: 'contain' }}
+                      style={styles.rankImg}
                     />
-                    <Text style={{fontFamily: FONT.medium, fontSize: SIZES.large, color: COLORS.gray3}}>
+                    <Text style={styles.rankHeading}>
                       My Rank
                     </Text>
                   </View>
-                  <Text style={{fontFamily: FONT.medium, fontSize: SIZES.large, color: COLORS.gray3}}>
+                  <Text style={styles.rankNumber}>
                     # 123
                   </Text>
                 </View>
 
-                <View style={{ marginTop: 10, gap: 14 }}>
-                  <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
+                <View style={styles.gameDetailSectionContainer}>
+                  <View style={styles.gameDetailSectionHeadingContainer}>
                     <Image 
                       source={images.leaderboard}
-                      style={{ width: 19, height: 19, objectFit: 'contain' }}
+                      style={styles.gameDetailSectionTrophyImg}
                     />
-                    <Text style={{fontFamily: FONT.medium, fontSize: SIZES.large, color: COLORS.gray3}}>
+                    <Text style={styles.gameDetailSectionHeading}>
                       Leaderboard
                     </Text>
                   </View>
@@ -248,19 +262,19 @@ const GamePage = (props) => {
                   ))}
                 </View>
 
-                <View style={{ marginTop: 10, gap: 14 }}>
-                  <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
+                <View style={styles.gameDetailSectionContainer}>
+                  <View style={styles.gameDetailSectionHeadingContainer}>
                     <Image 
                       source={images.question_mark}
-                      style={{ width: 16, height: 16, objectFit: 'contain' }}
+                      style={styles.gameDetailSectionRulesImg}
                     />
-                    <Text style={{fontFamily: FONT.medium, fontSize: SIZES.large, color: COLORS.gray3}}>
+                    <Text style={styles.gameDetailSectionHeading}>
                       Rules
                     </Text>
                   </View>
                   <View style={{ gap: 8 }}>
                     {rules.map((rule, index) => (
-                      <Text key={index} style={{fontFamily: FONT.regular, fontSize: SIZES.regular, color: COLORS.gray3}}>
+                      <Text key={index} style={styles.ruleText}>
                         {`\u2022 ${rule}`}
                       </Text>
                     ))}
