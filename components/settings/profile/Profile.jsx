@@ -3,14 +3,19 @@ import {Image, RefreshControl, SafeAreaView, ScrollView, StatusBar, Text, ToastA
 import { COLORS, icons, images } from '../../../constants';
 import styles from './profile.style';
 import { Icon, Input } from '@rneui/themed';
+import { useSelector } from 'react-redux';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 const Profile = (props) => {
 
   const [refreshing, setRefreshing] = useState(false);
   const { ArrowleftIcon, Loader } = icons;
+  const { username: user_name, email: user_email } = useSelector(state => state.profilecreation);
   const [updating, setUpdating] = useState(false);
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState(user_name || '');
+  const [email, setEmail] = useState(user_email || '');
+  const [imageData, setImageData] = useState('');
+  const [imageUri, setImageUri] = useState('');
 
   const onRefresh = useCallback(() => {
       setRefreshing(true);
@@ -31,6 +36,31 @@ const Profile = (props) => {
         ToastAndroid.show('Details updated successfully!!', 3);
       }, 2000);
     }
+  }
+
+
+  const chooseImage = () => {
+      let options = {
+          mediaType: 'photo',
+          quality: 1,
+          includeBase64: true,
+          saveToPhotos: true,
+      };
+      launchImageLibrary(options, (response) => {
+          if (response.didCancel) {
+              console.log('User cancelled image picker');
+          } else if (response.errorCode == 'camera_unavailable') {
+              console.log('Camera not available on device');
+          } else if (response.errorCode == 'permission') {
+              console.log('Permission not satisfied');
+          } else if (response.errorCode == 'others') {
+              console.log(response.errorMessage);
+          } else {
+              setImageData(response.assets[0].base64);
+              setImageUri(response.assets[0].uri);
+              ToastAndroid.show('Profile picture updated successfully!!', 3);
+          }
+      });
   }
 
   return (
@@ -60,15 +90,19 @@ const Profile = (props) => {
           </View>
 
           <View style={styles.detailsContainer}>
-            <View style={{ position: 'relative', width: 200, height: 200, borderRadius: 100, backgroundColor: COLORS.white3, borderWidth: 5, borderColor: COLORS.white4, marginBottom: 20, padding: 4 }}>
+            <TouchableOpacity 
+              style={{ position: 'relative', width: 200, height: 200, borderRadius: 100, backgroundColor: COLORS.white3, borderWidth: 5, borderColor: COLORS.white4, marginBottom: 20, padding: 4 }}
+              activeOpacity={0.5}
+              onPress={chooseImage}
+            >
                 <Image
-                  source={images.category}
-                  style={{ width: '100%', height: '100%' }}
+                  source={imageUri? {uri: imageUri} : images.profileicon}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 100 }}
                 />
                 <View style={{ position: 'absolute', right: 20, bottom: 5, backgroundColor: COLORS.white3, borderWidth: 4, borderColor: COLORS.white4, padding: 4, borderRadius: 100 }}>
                   <Icon name={"photo-camera"} color={COLORS.gray1} size={24} onPress={() => {}} />
                 </View>
-            </View>
+            </TouchableOpacity>
             <Input
                 containerStyle={styles.inputOuterContainerStyle}
                 inputContainerStyle={styles.inputInnerContainerStyle}
