@@ -11,12 +11,14 @@ import DatePicker from 'react-native-date-picker';
 import { useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const HistoryPage = ({ navigateTo }) => {
 
     const { ArrowleftIcon } = icons;
 
     const [refreshing, setRefreshing] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const [transactionsData, setTransactionsData] = useState();
 
@@ -67,6 +69,7 @@ const HistoryPage = ({ navigateTo }) => {
     }, [date, alltransactions]);
 
     useEffect(() => {
+        setLoading(true);
         const fetchData = async () => {
             const options = {
                 method: 'GET',
@@ -82,6 +85,8 @@ const HistoryPage = ({ navigateTo }) => {
             }
             catch (error) {
                 console.log(error);
+            } finally {
+                setLoading(false);
             }
         }
 
@@ -231,57 +236,72 @@ const HistoryPage = ({ navigateTo }) => {
                             </View>
                         </View>
 
-                        <ScrollView
-                            showsVerticalScrollIndicator={false}
-                            refreshControl={
-                                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[COLORS.main3]} />
-                            }
-                        >
-                            {isFilterModalOpen && (
-                                <View style={styles.filterModal}>
-                                    <ScrollView 
-                                    showsHorizontalScrollIndicator={false}
-                                    horizontal
-                                    >
-                                        <View style={styles.bankCardsContainer}>
-                                        {bankData && bankData.map((item, index) => (
-                                            <TouchableOpacity
-                                                key={index}
-                                                style={styles.bankCard}
-                                                onPress={() => {setBankNumber(item.number)}}
-                                            >
-                                                <Text style={styles.bankName}>
-                                                    {item.id.name}
-                                                </Text>
-                                            </TouchableOpacity>
-                                        ))}
-                                        </View>
-                                    </ScrollView>
-                                    <View style={styles.filterDatePickersContainer}>
-                                        <FilterDatePicker isStart={true} />
-                                        <FilterDatePicker isStart={false} />
-                                    </View>
-                                    <CustomButton title="Filter" handlePress={() => { filterByDate() }}  />
-                                </View>
-                            )}
-                            {transactionsData && 
-                            <View style={styles.transactionsContainer}>
-                                {transactionsData.map((item, index) => (
-                                    <TransactionCard
-                                    key={index}
-                                    name={item.name}
-                                    image={item.image}
-                                    description={item.timestamp}
-                                    amount={item.amount}
-                                    isExpense={item.isExpense}
-                                    navigateTo={navigateTo}
-                                    category={item.category.name}
-                                    id={item._id}
-                                />
-                                ))}
+                        {loading? (
+                            <View style={{ width: '100%', height: '100%'}}>
+                                <SkeletonPlaceholder borderRadius={4} direction='right'>
+                                    <SkeletonPlaceholder.Item gap={15} height={'100%'}>
+                                        <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
+                                        <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
+                                        <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
+                                        <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
+                                        <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
+                                    </SkeletonPlaceholder.Item>
+                                </SkeletonPlaceholder>
                             </View>
-                        }
-                        </ScrollView>
+                        ) : (
+                            <ScrollView
+                                showsVerticalScrollIndicator={false}
+                                refreshControl={
+                                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[COLORS.main3]} />
+                                }
+                            >
+                                {isFilterModalOpen && (
+                                    <View style={styles.filterModal}>
+                                        <ScrollView 
+                                        showsHorizontalScrollIndicator={false}
+                                        horizontal
+                                        >
+                                            <View style={styles.bankCardsContainer}>
+                                            {bankData && bankData.map((item, index) => (
+                                                <TouchableOpacity
+                                                    key={index}
+                                                    style={styles.bankCard}
+                                                    onPress={() => {setBankNumber(item.number)}}
+                                                >
+                                                    <Text style={styles.bankName}>
+                                                        {item.id.name}
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            ))}
+                                            </View>
+                                        </ScrollView>
+                                        <View style={styles.filterDatePickersContainer}>
+                                            <FilterDatePicker isStart={true} />
+                                            <FilterDatePicker isStart={false} />
+                                        </View>
+                                        <CustomButton title="Filter" handlePress={() => { filterByDate() }}  />
+                                    </View>
+                                )}
+                                {transactionsData && 
+                                <View style={styles.transactionsContainer}>
+                                    {transactionsData.map((item, index) => (
+                                        <TransactionCard
+                                        key={index}
+                                        name={item.name}
+                                        image={item.image}
+                                        description={item.timestamp}
+                                        amount={item.amount}
+                                        isExpense={item.isExpense}
+                                        navigateTo={navigateTo}
+                                        category={item.category.name}
+                                        id={item._id}
+                                    />
+                                    ))}
+                                </View>
+                            }
+                            </ScrollView>
+                        )}
+
                     </View>
                 </View>
 

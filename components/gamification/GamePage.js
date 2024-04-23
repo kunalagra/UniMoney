@@ -90,7 +90,7 @@ const GamePage = (props) => {
       <View style={{ position: 'relative', flexDirection: 'row' }}>
         <Image
           source={images.star_filled}
-          style={styles.backStarImg}
+          style={styles.backStarImg(size)}
         />
         <View style={styles.frontStarContainer}>
           <View style={styles.frontStarProgressContainer(progress)}>

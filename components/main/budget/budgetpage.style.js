@@ -4,7 +4,8 @@ import { SIZES, COLORS, FONT, SHADOWS } from "../../../constants";
 const styles = StyleSheet.create({
 
     sectionContainer: {
-        position: 'relative'
+        position: 'relative',
+        height: '100%'
     },
 
     mainContainer: {
@@ -61,8 +62,9 @@ const styles = StyleSheet.create({
     addButtonContainer: {
         position: 'absolute', 
         bottom: 10, 
-        left: '50%', 
-        transform: [{ translateX: -68 }]
+        left: 0,
+        alignItems: 'center',
+        width: '100%'
     },
 
     addButton: {
@@ -77,6 +79,12 @@ const styles = StyleSheet.create({
         fontFamily: FONT.medium, 
         fontSize: SIZES.regular, 
         color: COLORS.white1
+    },
+
+    noCategoriesFoundText: {
+        fontFamily: FONT.medium, 
+        fontSize: SIZES.regular, 
+        color: COLORS.gray1,
     }
     
 });

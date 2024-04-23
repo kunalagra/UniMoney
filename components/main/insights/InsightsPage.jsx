@@ -12,6 +12,7 @@ import MonthPicker from 'react-native-month-year-picker';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const getMaxPortion = (categories) => {
     if (categories.length === 0) return {category: '', value: 0};
@@ -36,6 +37,7 @@ const InsightsPage = (props) => {
     const [totalIncome, setTotalIncome] = useState(0);
     const [monthlyExpense, setMonthlyExpense] = useState([]);
     const [monthlyIncome, setMonthlyIncome] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const [isExpenseSelected, setIsExpenseSelected] = useState(true);
     
@@ -68,6 +70,7 @@ const InsightsPage = (props) => {
     const [incomeTransactions, setIncomeTransactions] = useState([]);
 
     useEffect(() => {
+        setLoading(true);
         const fetchData = async () => {
             const options = {
                 method: 'GET',
@@ -83,6 +86,9 @@ const InsightsPage = (props) => {
             }
             catch (error) {
                 console.log(error);
+            }
+            finally {
+                setLoading(false);
             }
         }
 
@@ -340,6 +346,21 @@ const InsightsPage = (props) => {
                             </View>
                         </View>
 
+                        {loading? (
+                            <View style={{ width: '100%', height: '100%'}}>
+                                <SkeletonPlaceholder direction='right'>
+                                    <SkeletonPlaceholder.Item gap={15} height={'100%'}>
+                                        <SkeletonPlaceholder.Item width={'100%'} height={80} borderRadius={12} />
+                                        <SkeletonPlaceholder.Item width={'70%'} height={20} borderRadius={6} marginTop={10} />
+                                        <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
+                                        <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
+                                        <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
+                                        <SkeletonPlaceholder.Item width={'80%'} height={30} borderRadius={6} marginTop={10} />
+                                        <SkeletonPlaceholder.Item width={'100%'} height={200} borderRadius={12} />
+                                    </SkeletonPlaceholder.Item>
+                                </SkeletonPlaceholder>
+                            </View>
+                        ) : (
                         <ScrollView
                             showsVerticalScrollIndicator={false}
                             refreshControl={
@@ -531,6 +552,8 @@ const InsightsPage = (props) => {
                                 </View>
                             </View>
                         </ScrollView>
+                        )}
+
                     </View>
                 </View>
             </View>

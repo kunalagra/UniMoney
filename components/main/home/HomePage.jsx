@@ -15,6 +15,7 @@ import SmsAndroid from 'react-native-get-sms-android';
 import { setDailyIncome, setMonthlyIncome, setYearlyIncome, setDailyExpense, setMonthlyExpense, setYearlyExpense, setAllTransactions, setCategories } from '../../../store/transactiondata';
 import { getTransactionInfo } from 'transaction-sms-parser';
 import { formatDateTime } from '../../../utils';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const ChatModal = ({ visible, setVisibility }) => {
 
@@ -422,6 +423,27 @@ const HomePage = ({ navigateTo }) => {
 
                 <ChatModal visible={isChatModalOpen} setVisibility={setIsChatModalOpen} />
 
+                {loading? (
+                    <View style={{ width: '100%', height: '100%'}}>
+                        <SkeletonPlaceholder borderRadius={4} direction='right'>
+                            <SkeletonPlaceholder.Item padding={10} gap={15} height={'100%'}>
+                                <View style={{ flexDirection: 'row', gap: 10, justifyContent: 'flex-end' }}>
+                                    <SkeletonPlaceholder.Item width={40} height={40} borderRadius={100} />
+                                    <SkeletonPlaceholder.Item width={40} height={40} borderRadius={100} />
+                                </View>
+                                <SkeletonPlaceholder.Item width={'70%'} height={50} borderRadius={12} />
+                                <SkeletonPlaceholder.Item width={'100%'} height={150} borderRadius={12} />
+                                <SkeletonPlaceholder.Item width={'100%'} height={150} borderRadius={12} />
+                                <View style={{ marginTop: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                                    <SkeletonPlaceholder.Item width={'60%'} height={40} borderRadius={12} />
+                                    <SkeletonPlaceholder.Item width={70} height={25} borderRadius={8} />
+                                </View>
+                                <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
+                                <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
+                            </SkeletonPlaceholder.Item>
+                        </SkeletonPlaceholder>
+                    </View>
+                ) : (
                 <ScrollView
                     refreshControl={
                         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[COLORS.main3]} />
@@ -455,14 +477,6 @@ const HomePage = ({ navigateTo }) => {
 
                         <StreakBanner navigateTo={navigateTo} />
 
-                    {loading ? 
-                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', paddingVertical: 10 }}>
-                            <Loader 
-                                style={{ width: 24, height: 24, objectFit: 'contain' }}
-                            /> 
-                        </View>
-                        : (
-                        <>
                         <View style={styles.expenseCardsContainer}>
                             <ScrollView
                                 contentContainerStyle={styles.expenseCardsList}
@@ -504,9 +518,9 @@ const HomePage = ({ navigateTo }) => {
                             </View>
 
                         </View>
-                    </>)}
                     </View>
                 </ScrollView>
+                )}
             </View>
 
         </SafeAreaView>

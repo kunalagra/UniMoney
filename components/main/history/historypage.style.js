@@ -128,8 +128,9 @@ const styles = StyleSheet.create({
     addButtonContainer: { 
         position: 'absolute', 
         bottom: 195, 
-        left: '50%', 
-        transform: [{ translateX: -75 }]
+        left: 0,
+        alignItems: 'center',
+        width: '100%'
     },
 
     addButton: {
