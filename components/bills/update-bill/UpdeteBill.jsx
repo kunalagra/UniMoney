@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Dropdown } from 'react-native-element-dropdown';
 import { Icon, Input } from "@rneui/themed";
 import DatePicker from "react-native-date-picker";
-import styles from "./addbill.style";
+import styles from "./updatebill.style";
 import { useSelector } from "react-redux";
 import PushNotification from "react-native-push-notification";
 import axios from "axios";
@@ -30,7 +30,9 @@ const CustomDropdown = ({ data, value, setValue }) => {
 }
 
 
-const AddTransactionPage = (props) => {
+const UpdateBill = (props) => {
+
+    const { reminderData } = props.route.params;
 
     PushNotification.configure({
         onNotification: function (notification) {
@@ -91,19 +93,19 @@ const AddTransactionPage = (props) => {
         { label: "Yearly", value: "yearly" },
     ]
 
-    const [desc, setDesc] = useState("");
-    const [category, setCategory] = useState(categoryList[0].label);
-    const [date, setDate] = useState(new Date());
+    const [desc, setDesc] = useState(reminderData.description);
+    const [category, setCategory] = useState(reminderData.category.name);
+    const [date, setDate] = useState(new Date(reminderData.date));
     const [isDateModalOpen, setIsDateModalOpen] = useState(false);
-    const [amount, setAmount] = useState("");
-    const [name, setName] = useState("");
-    const [reminder, setReminder] = useState("");
+    const [amount, setAmount] = useState(JSON.stringify(reminderData.amount));
+    const [name, setName] = useState(reminderData.title);
+    const [reminder, setReminder] = useState(reminderData.repeat);
 
     const setReminderValue = async () => {
         console.log('Reminder set');
         const options = {
-            method: 'POST',
-            url: 'https://unimoney-backend.onrender.com/reminder/create',
+            method: 'PUT',
+            url: 'https://unimoney-backend.onrender.com/reminder/update',
             headers: {
                 "Content-type": "application/json",
                 "Authorization": "Bearer " + await AsyncStorage.getItem('token')
@@ -134,6 +136,25 @@ const AddTransactionPage = (props) => {
         }
     }
 
+    const deleteReminder = async () => {
+        const options = {
+            method: 'DELETE',
+            url: 'https://unimoney-backend.onrender.com/reminder/delete',
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + await AsyncStorage.getItem('token')
+            },
+            data: {
+                _id: reminderData._id
+            }
+        };
+        try {
+            const response = await axios.request(options)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <SafeAreaView style={{ backgroundColor: COLORS.white2 }}>
             <StatusBar
@@ -159,7 +180,7 @@ const AddTransactionPage = (props) => {
                     </View>
 
                     <Text style={styles.messageText}>
-                        Easily add bill / reminders for House rent, Society charges, Educational free, Insurance, etc with its recurring schedule and UniMoney will send you timely reminders.
+                        Easily Update bill / reminders for House rent, Society charges, Educational free, Insurance, etc with its recurring schedule and UniMoney will send you timely reminders.
                     </Text>
 
                     <View style={styles.mainContainer}>
@@ -282,16 +303,16 @@ const AddTransactionPage = (props) => {
                             onPress={() => { setReminderValue() }}
                         >
                             <Text style={styles.buttonText}>
-                                Save & Add more
+                                Update Reminder
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.lowerButton}
                             activeOpacity={0.85}
-                            onPress={() => { props.navigation.pop(), setReminderValue() }}
+                            onPress={() => { props.navigation.pop(), deleteReminder() }}
                         >
                             <Text style={styles.buttonText}>
-                                Save & Close
+                                Delete Reminder
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -303,4 +324,4 @@ const AddTransactionPage = (props) => {
     )
 }
 
-export default AddTransactionPage;
+export default UpdateBill;
