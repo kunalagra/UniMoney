@@ -491,7 +491,7 @@ const HomePage = ({ navigateTo }) => {
                                 onPress={() => navigateTo('SettingsPage')}
                             >
                                 <Image
-                                    source={img ? {uri: img} : images.profile}
+                                    source={img ? {uri: img} : images.profileicon}
                                     style={[styles.navIcon, !img ? {tintColor: COLORS.gray1} : {}]}
                                 />
                             </TouchableOpacity>
