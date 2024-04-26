@@ -16,6 +16,7 @@ import { setDailyIncome, setMonthlyIncome, setYearlyIncome, setDailyExpense, set
 import { getTransactionInfo } from 'transaction-sms-parser';
 import { formatDateTime } from '../../../utils';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import { REACT_APP_BACKEND_URL } from '@env';
 
 const ChatModal = ({ visible, setVisibility }) => {
 
@@ -124,7 +125,7 @@ const HomePage = ({ navigateTo }) => {
             return /(?:credited|received|deposited|has sent)/i.test(str);
         };
         const bankKeywordsRegex = /(credited|debited|payment|withdraw|received|sent)/i;
-        const spamKeywordsRegex = /(Congratulations|won|win|prize|lucky|offer|discount|sale|reward|requested money)/i;
+        const spamKeywordsRegex = /(Congratulations|won|win|prize|lucky|offer|discount|sale|reward|requested money|RAZORPAY|PAYPAL)/i;
 
         console.log('Permission granted');
         const date = new Date();
@@ -155,7 +156,7 @@ const HomePage = ({ navigateTo }) => {
                     // console.log(transaction.body);
                     // console.log(transactionInfo);
                     const type = isCredited(transaction.body) ? 'credit' : 'debit';
-                    const name = transactionInfo.transaction.detail ? transactionInfo.transaction.detail : transaction.address;
+                    const name = transactionInfo.transaction.merchant ? transactionInfo.transaction.merchant : transactionInfo.transaction.detail ? transactionInfo.transaction.detail : transaction.address;
                     const date = formatDateTime(transaction.date);
                     const amountValue = transactionInfo.transaction.amount;
                     const accNumber = transactionInfo.account.number;
@@ -189,7 +190,7 @@ const HomePage = ({ navigateTo }) => {
 
                 const messages = smsdata.filter((sms, index, self) =>
                     index === self.findIndex((t) => (
-                        t.txid === sms.txid && t.amount === sms.amount
+                        t.txid === sms.txid && t.amount === sms.amount && t.type === sms.type
                     ))
                 );
 
@@ -200,14 +201,14 @@ const HomePage = ({ navigateTo }) => {
                 // console.log(smsdata);
                 messages.forEach((sms) => {
                     const isPresent = prevData.find((transaction) => {
-                        return (transaction.date === sms.date && transaction.amount === sms.amount) || transaction.txid === sms.txid;
+                        return (transaction.date === sms.date && transaction.amount === sms.amount) || (transaction.txid !== 0 && transaction.txid === sms.txid);
                     });
                     // console.log(isPresent);
                     if (!isPresent) {
                         newtransactions.push(sms);
                     }
                 });
-                // console.log(newtransactions);
+                console.log(newtransactions);
 
 
                 // dispatch(setAllTransactions(alllocaltransactions));
@@ -226,7 +227,7 @@ const HomePage = ({ navigateTo }) => {
     const postNewTransaction = async (transactions) => {
         const options = {
             method: 'POST',
-            url: 'https://unimoney-backend.onrender.com/transaction/',
+            url: `${REACT_APP_BACKEND_URL}/transaction/`,
             headers: {
                 "Content-type": "application/json",
                 "Authorization": "Bearer " + await AsyncStorage.getItem('token')
@@ -303,7 +304,7 @@ const HomePage = ({ navigateTo }) => {
     const fetchTransactions = async () => {
         const options = {
             method: 'GET',
-            url: 'https://unimoney-backend.onrender.com/transaction/',
+            url: `${REACT_APP_BACKEND_URL}/transaction/`,
             headers: {
                 "Content-type": "application/json",
                 "Authorization": "Bearer " + await AsyncStorage.getItem('token')
@@ -340,7 +341,7 @@ const HomePage = ({ navigateTo }) => {
         const fetchData = async () => {
             const options = {
                 method: 'GET',
-                url: 'https://unimoney-backend.onrender.com/auth/profile',
+                url: `${REACT_APP_BACKEND_URL}/auth/profile`,
                 headers: {
                     "Content-type": "application/json",
                     "Authorization": "Bearer " + await AsyncStorage.getItem('token')
@@ -350,7 +351,7 @@ const HomePage = ({ navigateTo }) => {
                 const response = await axios.request(options).then(async (response) => {
                     const options = {
                         method: 'GET',
-                        url: 'https://unimoney-backend.onrender.com/category/',
+                        url: `${REACT_APP_BACKEND_URL}/category/`,
                         headers: {
                             "Content-type": "application/json",
                             "Authorization": "Bearer " + await AsyncStorage.getItem('token')

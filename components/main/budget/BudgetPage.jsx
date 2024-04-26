@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import { REACT_APP_BACKEND_URL } from "@env";
 
 
 const BudgetPage = ({ navigateTo }) => {
@@ -54,7 +55,7 @@ const BudgetPage = ({ navigateTo }) => {
         setLoading(true);
         const options = {
             method: 'GET',
-            url: 'https://unimoney-backend.onrender.com/category/',
+            url: `${REACT_APP_BACKEND_URL}/category/`,
             headers: {
                 "Content-type": "application/json",
                 "Authorization": "Bearer " + await AsyncStorage.getItem('token')

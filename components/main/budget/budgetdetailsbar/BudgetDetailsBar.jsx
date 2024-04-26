@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { REACT_APP_BACKEND_URL } from "@env";
 
 const BudgetDetailsBar = ({ visible, setVisibility, selectedCategory, setSelectedCategory, handleBudgetPress, isAddCategory, setIsAddCategory, budgetModeCategories, setRefreshing, navigateTo}) => {
 
@@ -174,7 +175,7 @@ const BudgetDetailsBar = ({ visible, setVisibility, selectedCategory, setSelecte
                                         console.log(title, amount);
                                         const options = {
                                             method: 'PUT',
-                                            url: 'https://unimoney-backend.onrender.com/category/limit',
+                                            url: `${REACT_APP_BACKEND_URL}/category/limit`,
                                             headers: {
                                                 "Content-type": "application/json",
                                                 "Authorization": "Bearer " + await AsyncStorage.getItem('token')

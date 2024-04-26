@@ -1,7 +1,8 @@
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { REACT_APP_BACKEND_URL } from "@env";
 
-const url = "https://unimoney-backend.onrender.com/";
+const url =  `${REACT_APP_BACKEND_URL}`;
 
 const axiosInstance = axios.create({
   baseURL: url,

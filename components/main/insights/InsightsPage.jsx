@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import { REACT_APP_BACKEND_URL } from '@env';
 
 const getMaxPortion = (categories) => {
     if (categories.length === 0) return {category: '', value: 0};
@@ -74,7 +75,7 @@ const InsightsPage = (props) => {
         const fetchData = async () => {
             const options = {
                 method: 'GET',
-                url: 'https://unimoney-backend.onrender.com/bank/my',
+                url: `${REACT_APP_BACKEND_URL}/bank/my`,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + await AsyncStorage.getItem('token')
@@ -194,8 +195,8 @@ const InsightsPage = (props) => {
 
     // if (totalSpends === 0 && totalIncome === 0) continue;
 
-    allMonthsWiseExpenses.push({label: `${months[i]} ${date.getFullYear()}`, value: Math.round(totalSpends/100000), dataPointText: `${Math.round(totalSpends/100000)}K`});
-    allMonthsWiseIncomes.push({label: `${months[i]} ${date.getFullYear()}`, value: Math.round(totalIncome/100000), dataPointText: `${Math.round(totalIncome/100000)}K`});
+    allMonthsWiseExpenses.push({label: `${months[i]} ${date.getFullYear()}`, value: Math.round(totalSpends/100000), dataPointText: `${Math.round(totalSpends/100000)}L`});
+    allMonthsWiseIncomes.push({label: `${months[i]} ${date.getFullYear()}`, value: Math.round(totalIncome/100000), dataPointText: `${Math.round(totalIncome/100000)}L`});
 
     }
     // console.log(allMonthsWiseExpenses);
@@ -523,7 +524,7 @@ const InsightsPage = (props) => {
                                             dataPointsColor2={COLORS.main3}
                                             yAxisTextStyle={styles.lineChartAxisText}
                                             xAxisLabelTextStyle={styles.lineChartAxisText}
-                                            maxValue={50}
+                                            maxValue={5}
                                             noOfSections={5}
                                             spacing={40}
                                             thickness={3}

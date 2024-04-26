@@ -6,6 +6,7 @@ import styles from "./addcategory.style";
 import { launchImageLibrary } from 'react-native-image-picker';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from 'axios';
+import { REACT_APP_BACKEND_URL } from "@env";
 
 
 
@@ -13,8 +14,6 @@ import axios from 'axios';
 const AddCategory = (props) => {
 
     const { ArrowleftIcon } = icons;
-
-    const imgDir = 'https://unimoney-backend.onrender.com/uploads/';
 
 
     const [categoryName, setCategoryName] = useState('');
@@ -67,7 +66,7 @@ const AddCategory = (props) => {
                 // console.log(response.data.data.url);
                 const option = {
                     method: 'POST',
-                    url: 'https://unimoney-backend.onrender.com/category/',
+                    url: `${REACT_APP_BACKEND_URL}/category/`,
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer ' + await AsyncStorage.getItem('token')

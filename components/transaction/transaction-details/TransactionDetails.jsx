@@ -7,6 +7,7 @@ import { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { REACT_APP_BACKEND_URL } from "@env";
 
 
 const CategoryCard = ({id, category, selectedCategory, setSelectedCategory, tranID}) => {
@@ -18,7 +19,7 @@ const CategoryCard = ({id, category, selectedCategory, setSelectedCategory, tran
                 console.log(tranID, category.name);
                 const options = {
                     method: 'PUT',
-                    url: `https://unimoney-backend.onrender.com/transaction/${tranID}`,
+                    url: `${REACT_APP_BACKEND_URL}/transaction/${tranID}`,
                     headers: {
                         'Content-Type': 'application/json',
                         "Authorization": "Bearer " + await AsyncStorage.getItem('token')

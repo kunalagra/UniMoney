@@ -5,6 +5,7 @@ import styles from "./amountbottombar.style";
 import React, { useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { REACT_APP_BACKEND_URL } from "@env";
 
 const AmountBottomBar = ({ visible, setVisibility, title, setRefreshing }) => {
 
@@ -57,7 +58,7 @@ const AmountBottomBar = ({ visible, setVisibility, title, setRefreshing }) => {
                             }else {
                                 const options = {
                                     method: 'PUT',
-                                    url: 'https://unimoney-backend.onrender.com/category/limit',
+                                    url: `${REACT_APP_BACKEND_URL}/category/limit`,
                                     headers: {
                                         "Content-type": "application/json",
                                         "Authorization": "Bearer " + await AsyncStorage.getItem('token')

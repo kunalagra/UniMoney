@@ -11,6 +11,7 @@ import DatePicker from 'react-native-date-picker';
 import { useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { REACT_APP_BACKEND_URL } from "@env";
 
 
 
@@ -81,7 +82,7 @@ const TransactionByCat = (props) => {
         const fetchData = async () => {
             const options = {
                 method: 'GET',
-                url: 'https://unimoney-backend.onrender.com/bank/my',
+                url: `${REACT_APP_BACKEND_URL}/bank/my`,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + await AsyncStorage.getItem('token')

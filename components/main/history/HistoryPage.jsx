@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import { REACT_APP_BACKEND_URL } from "@env";
 
 const HistoryPage = ({ navigateTo }) => {
 
@@ -73,7 +74,7 @@ const HistoryPage = ({ navigateTo }) => {
         const fetchData = async () => {
             const options = {
                 method: 'GET',
-                url: 'https://unimoney-backend.onrender.com/bank/my',
+                url: `${REACT_APP_BACKEND_URL}/bank/my`,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + await AsyncStorage.getItem('token')

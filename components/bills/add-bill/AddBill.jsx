@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import PushNotification from "react-native-push-notification";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { REACT_APP_BACKEND_URL } from "@env";
 
 const CustomDropdown = ({ data, value, setValue }) => {
     return (
@@ -103,7 +104,7 @@ const AddTransactionPage = (props) => {
         console.log('Reminder set');
         const options = {
             method: 'POST',
-            url: 'https://unimoney-backend.onrender.com/reminder/create',
+            url: `${REACT_APP_BACKEND_URL}/reminder/create`,
             headers: {
                 "Content-type": "application/json",
                 "Authorization": "Bearer " + await AsyncStorage.getItem('token')

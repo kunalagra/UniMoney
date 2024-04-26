@@ -7,6 +7,7 @@ import DatePicker from "react-native-date-picker";
 import styles from "./addtransaction.style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from 'axios';
+import { REACT_APP_BACKEND_URL } from "@env";
 
 const CustomDropdown = ({data, value, setValue}) => {
     return (
@@ -73,7 +74,7 @@ const AddTransactionPage = (props) => {
         const getInitialData = async () => {
             const options = {
                 method: 'GET',
-                url: 'https://unimoney-backend.onrender.com/transaction/info',
+                url: `${REACT_APP_BACKEND_URL}/transaction/info`,
                 headers: {
                     "Content-type": "application/json",
                     "Authorization": "Bearer " + await AsyncStorage.getItem('token')
@@ -111,7 +112,7 @@ const AddTransactionPage = (props) => {
         }
         const options = {
             method: 'POST',
-            url: 'https://unimoney-backend.onrender.com/transaction/',
+            url: `${REACT_APP_BACKEND_URL}/transaction/`,
             headers: {
                 "Content-type": "application/json",
                 "Authorization": "Bearer " + await AsyncStorage.getItem('token')

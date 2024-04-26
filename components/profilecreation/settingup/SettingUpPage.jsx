@@ -9,6 +9,7 @@ import axios from 'axios';
 import SmsAndroid from 'react-native-get-sms-android';
 import { getTransactionInfo } from 'transaction-sms-parser';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { REACT_APP_BACKEND_URL } from "@env";
 
 let i = 0;
 const SettingUpPage = () => {
@@ -26,8 +27,8 @@ const SettingUpPage = () => {
         const isCredited = (str) => {
             return /(?:credited|received|deposited|has sent)/i.test(str);
         };
-        const bankKeywordsRegex = /(credited|debited|payment|withdraw|received)/i;
-        const spamKeywordsRegex = /(Congratulations|won|win|prize|lucky|offer|discount|sale|reward|requested money)/i;
+        const bankKeywordsRegex = /(credited|debited|payment|withdraw|received|sent)/i;
+        const spamKeywordsRegex = /(Congratulations|won|win|prize|lucky|offer|discount|sale|reward|requested money|RAZORPAY|PAYPAL)/i;
 
         console.log('Permission granted');
         const date = new Date();
@@ -56,7 +57,7 @@ const SettingUpPage = () => {
                         // const amountValue = amount ? parseFloat(amount[1].replace(/,/g, '')) : null;
                     const transactionInfo = getTransactionInfo(transaction.body);
                     const type = isCredited(transaction.body) ? 'credit' : 'debit';
-                    const name = transactionInfo.transaction.detail ? transactionInfo.transaction.detail : transaction.address;
+                    const name = transactionInfo.transaction.merchant ? transactionInfo.transaction.merchant : transactionInfo.transaction.detail ? transactionInfo.transaction.detail : transaction.address;
                     // const date = formatDateTime(transaction.date);
                     const amountValue = transactionInfo.transaction.amount;
                     const accNumber = transactionInfo.account.number;
@@ -81,7 +82,7 @@ const SettingUpPage = () => {
 
                 const messages = smsdata.filter((sms, index, self) =>
                     index === self.findIndex((t) => (
-                        t.txid === sms.txid && t.amount === sms.amount
+                        t.txid === sms.txid && t.amount === sms.amount && t.type === sms.type
                     ))
                 );
 
@@ -112,7 +113,7 @@ const SettingUpPage = () => {
 
         const options = {
             method: 'POST',
-            url: 'https://unimoney-backend.onrender.com/auth/register',
+            url: `${REACT_APP_BACKEND_URL}/auth/register`,
             data : {
                 username: username,
                 email: email,
@@ -134,7 +135,7 @@ const SettingUpPage = () => {
             if (response.status === 201) {
                 const options = {
                     method: 'POST',
-                    url: 'https://unimoney-backend.onrender.com/auth/login',
+                    url: `${REACT_APP_BACKEND_URL}/auth/login`,
                     data: {
                         email: email,
                         password: password

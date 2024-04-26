@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import PushNotification from "react-native-push-notification";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { REACT_APP_BACKEND_URL } from "@env";
 
 const CustomDropdown = ({ data, value, setValue }) => {
     return (
@@ -105,7 +106,7 @@ const UpdateBill = (props) => {
         console.log('Reminder set');
         const options = {
             method: 'PUT',
-            url: 'https://unimoney-backend.onrender.com/reminder/update',
+            url: `${REACT_APP_BACKEND_URL}/reminder/update`,
             headers: {
                 "Content-type": "application/json",
                 "Authorization": "Bearer " + await AsyncStorage.getItem('token')
@@ -139,7 +140,7 @@ const UpdateBill = (props) => {
     const deleteReminder = async () => {
         const options = {
             method: 'DELETE',
-            url: 'https://unimoney-backend.onrender.com/reminder/delete',
+            url: `${REACT_APP_BACKEND_URL}/reminder/delete`,
             headers: {
                 "Content-type": "application/json",
                 "Authorization": "Bearer " + await AsyncStorage.getItem('token')

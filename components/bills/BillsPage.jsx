@@ -6,6 +6,7 @@ import { moneyTextHelper } from "../../utils";
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { REACT_APP_BACKEND_URL } from "@env";
 
 
 const BillsPage = (props) => {
@@ -18,37 +19,39 @@ const BillsPage = (props) => {
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
+        fetchReminders();
         setTimeout(() => setRefreshing(false), 1000);
     }, []);
+
+    const fetchReminders = async () => {
+        const options = {
+            method: 'GET',
+            url: `${REACT_APP_BACKEND_URL}/reminder/`,
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + await AsyncStorage.getItem('token')
+            }
+        };
+        try {
+            const response = await axios.request(options);
+            // console.log(response.data);
+            setReminders(response.data);
+            setLoading(false);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     useEffect(() => {
         setLoading(true);
         // console.log(new Date().getTime());
-        const fetchReminders = async () => {
-            const options = {
-                method: 'GET',
-                url: 'https://unimoney-backend.onrender.com/reminder/',
-                headers: {
-                    "Content-type": "application/json",
-                    "Authorization": "Bearer " + await AsyncStorage.getItem('token')
-                }
-            };
-            try {
-                const response = await axios.request(options);
-                // console.log(response.data);
-                setReminders(response.data);
-                setLoading(false);
-            } catch (error) {
-                console.error(error);
-            }
-        }
+        
         fetchReminders();
     }
         , []);
 
     const dateFormater = (date) => {
         const dateObj = new Date(date);
-        console.log(dateObj);
         return dateObj.toDateString();
     }
 

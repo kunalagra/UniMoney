@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import axios from 'axios';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { REACT_APP_GOOGLE_CLIENT_ID, REACT_APP_ANDROID_CLIENT_ID} from '@env';
+import { REACT_APP_GOOGLE_CLIENT_ID, REACT_APP_ANDROID_CLIENT_ID,REACT_APP_BACKEND_URL} from '@env';
 
 
 const Login = (props) => {
@@ -22,7 +22,7 @@ const Login = (props) => {
         setLoading(true);
         const options = {
             method: 'POST',
-            url: 'https://unimoney-backend.onrender.com/auth/login',
+            url: `${REACT_APP_BACKEND_URL}/auth/login`,
             data: {
                 email: email ? email : gemail,
                 password: password ? password : gpassword
@@ -46,6 +46,7 @@ const Login = (props) => {
             if (error.response.status === 401) {
                 alert('Invalid email or password done');
             }
+            setLoading(false);
         }
     }
 
@@ -61,14 +62,17 @@ const Login = (props) => {
         try {
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
+            // console.log(userInfo);
             if (userInfo) {
                 handleLogin({gemail: userInfo.user.email, gpassword: 'google'});
             } else {
                 console.log('error');
                 alert('Google Signin failed');
             }
+            setLoading(false);
 
         } catch (error) {
+            setLoading(false);
             console.log(error);
         }
     }

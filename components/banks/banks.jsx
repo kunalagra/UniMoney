@@ -7,6 +7,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector } from "react-redux";
 import { Dialog } from "@rneui/base";
+import { REACT_APP_BACKEND_URL } from "@env";
 
 
 const Banks = ({ navigation }) => {
@@ -41,7 +42,7 @@ const Banks = ({ navigation }) => {
     const fetchBanks = async () => {
         const options = {
             method: 'GET',
-            url: 'https://unimoney-backend.onrender.com/bank/',
+            url: `${REACT_APP_BACKEND_URL}/bank/`,
             headers: {
                 "Content-type": "application/json",
                 "Authorization": "Bearer " + await AsyncStorage.getItem('token')
@@ -65,7 +66,7 @@ const Banks = ({ navigation }) => {
     const getMyBanks = async () => {
         const options = {
             method: 'GET',
-            url: 'https://unimoney-backend.onrender.com/bank/my',
+            url: `${REACT_APP_BACKEND_URL}/bank/my`,
             headers: {
                 "Content-type": "application/json",
                 "Authorization": "Bearer " + await AsyncStorage.getItem('token')
@@ -165,7 +166,7 @@ const Banks = ({ navigation }) => {
                         onPress={async () => {
                             const options = {
                                 method: 'POST',
-                                url: 'https://unimoney-backend.onrender.com/bank/add',
+                                url: `${REACT_APP_BACKEND_URL}/bank/add`,
                                 headers: {
                                     "Content-type": "application/json",
                                     "Authorization": "Bearer " + await AsyncStorage.getItem('token')
