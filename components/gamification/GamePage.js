@@ -4,6 +4,9 @@ import { COLORS, FONT, SIZES, SHADOWS, icons, images } from "../../constants";
 import { useCallback, useEffect, useRef, useState } from "react";
 import LinearGradient from "react-native-linear-gradient";
 import { Dialog } from "@rneui/themed";
+import { REACT_APP_BACKEND_URL } from "@env";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const GamePage = (props) => {
 
@@ -13,13 +16,72 @@ const GamePage = (props) => {
   const [diceModalVisible, setDiceModalVisible] = useState(false);
   const [curProgress, setCurProgress] = useState(1);
   const [curDiceNo, setCurDiceNo] = useState(1);
-  const done = false;
+  const [done, setDone] = useState(0);
   const scrollViewRef = useRef(null);
+  const [streak, setStreak] = useState(0);
+  const [coins, setCoins] = useState(0);
+  const [trophies, setTrophies] = useState(0);
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [MyRank, setMyRank] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const onRefresh = useCallback(() => {
       setRefreshing(true);
+      fetchStreak();
       setTimeout(() => setRefreshing(false), 1000);
   }, []);
+
+  const fetchLeaderboard = async () => {
+    const options = {
+      method: 'GET',
+      url: `${REACT_APP_BACKEND_URL}/streak/leaderboard`,
+      headers: {
+          "Content-type": "application/json",
+          "Authorization": "Bearer " + await AsyncStorage.getItem('token')
+      }
+    }
+    try {
+      const response = await axios(options);
+      setLeaderboard(response.data.top5);
+      setMyRank(response.data.currentRank);
+      setLoading(false);
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+
+  const fetchStreak = async () => {
+    const options = {
+      method: 'GET',
+      url: `${REACT_APP_BACKEND_URL}/streak/`,
+      headers: {
+          "Content-type": "application/json",
+          "Authorization": "Bearer " + await AsyncStorage.getItem('token')
+      }
+  }
+  try {
+      const response = await axios(options);
+      // console.log(response.data);
+      setStreak(response.data.streak.consecutiveLoginDays);
+      setCoins(response.data.streak.totalPoints);
+      setTrophies(response.data.streak.trophies);
+      setCurProgress(response.data.streak.totalPoints%50);
+      setDone(response.data.streak.rolls);
+      fetchLeaderboard();
+  }
+  catch (error) {
+      console.log(error);
+  }
+  }
+
+  useEffect(() => {
+    setLoading(true);
+  fetchStreak();
+  }, []);
+
+
+
 
   const getRandomDiceNo = () => {
     const num = Math.floor(Math.random() * 6 + 1);
@@ -28,13 +90,13 @@ const GamePage = (props) => {
   }
 
   const tiles = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49];
-  const leaders = [
-    { trophies: 71, username: 'John Doe' },
-    { trophies: 63, username: 'Harry Potter' },
-    { trophies: 59, username: 'John Snow' },
-    { trophies: 52, username: 'Super Mario' },
-    { trophies: 50, username: 'Uncle Roger' },
-  ];
+  // const leaders = [
+  //   { trophies: 71, username: 'John Doe' },
+  //   { trophies: 63, username: 'Harry Potter' },
+  //   { trophies: 59, username: 'John Snow' },
+  //   { trophies: 52, username: 'Super Mario' },
+  //   { trophies: 50, username: 'Uncle Roger' },
+  // ];
   const rules = [
     `The game board consists of 49 tiles arranged linearly, with each tile representing a step towards a milestone or progress towards achieving the goal.`,
     `Users' progress is incremented by 1 for each day they check in the app, and after maintaining a streak of 10 days, they receive additional movements based on a dice roll (1-5 extra movements).`,
@@ -126,6 +188,7 @@ const GamePage = (props) => {
           </TouchableOpacity>
 
           <View style={styles.container}>
+            { loading ? <Text>Loading...</Text> : 
             <ScrollView
               ref={scrollViewRef}
               showsVerticalScrollIndicator={false}
@@ -164,9 +227,9 @@ const GamePage = (props) => {
                     Stats
                   </Text>
                   <View style={styles.statsInnerContainer}>
-                    <StatView image={images.flame} title={'streak'} stat={5} size={23} />
-                    <StatView image={images.coin} title={'coins'} stat={48} />
-                    <StatView image={images.trophy} title={'trophies'} stat={17} size={20} />
+                    <StatView image={images.flame} title={'streak'} stat={streak} size={23} />
+                    <StatView image={images.coin} title={'coins'} stat={coins} />
+                    <StatView image={images.trophy} title={'trophies'} stat={trophies} size={20} />
                   </View>
                 </View>
 
@@ -238,7 +301,7 @@ const GamePage = (props) => {
                     </Text>
                   </View>
                   <Text style={styles.rankNumber}>
-                    # 123
+                    # {MyRank}
                   </Text>
                 </View>
 
@@ -252,11 +315,11 @@ const GamePage = (props) => {
                       Leaderboard
                     </Text>
                   </View>
-                  {leaders.map((member, index) => (
+                  {leaderboard.map((member, index) => (
                     <LeaderboardRowCard 
                       key={index}
                       rank={index+1}
-                      username={member.username}
+                      username={member.name}
                       trophies={member.trophies}
                     />
                   ))}
@@ -283,6 +346,7 @@ const GamePage = (props) => {
 
               </View>
             </ScrollView>
+}
           </View>
         </View>
 
@@ -291,8 +355,8 @@ const GamePage = (props) => {
           <View style={{ position: 'absolute', bottom: 120, alignItems: 'center', width: '100%' }}>
             <TouchableOpacity style={{ width: 80, height: 80, borderRadius: 100, backgroundColor: COLORS.main2, justifyContent: 'center', alignItems: 'center' }}
               onPress={() => {
-                if (done) {
-                  ToastAndroid.show('You already rolled the die today!!', 4);
+                if (!done) {
+                  ToastAndroid.show('You need to maintain a streak of 10 days to roll the dice!!', 4);
                 } else if (curProgress===49) {
                   ToastAndroid.show('You already crossed all the tiles!!', 4);
                 } else {

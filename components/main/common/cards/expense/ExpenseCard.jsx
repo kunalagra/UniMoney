@@ -61,7 +61,7 @@ const ExpenseCard = ({ item }) => {
                     >
                         <Text style={styles.insightsLink}>
                             <Text style={styles.insightsLinkText}>
-                                Check your spendings 
+                                Check your insights 
                             </Text>
                             {' >'}
                         </Text>

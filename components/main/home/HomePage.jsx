@@ -369,11 +369,31 @@ const HomePage = ({ navigateTo }) => {
                     dispatch(setEmail(response.data.user.email));
                 });
             } catch (error) {
+                // console.log("Error in fetching profile data");
                 console.log(error);
             }
             
         }
         fetchData();
+        const firstTime = async () => {
+            const options = {
+                method: 'GET',
+                url: `${REACT_APP_BACKEND_URL}/streak/visit`,
+                headers: {
+                    "Content-type": "application/json",
+                    "Authorization": "Bearer " + await AsyncStorage.getItem('token')
+                }
+            };
+            try {
+                const response = await axios.request(options);
+                console.log(response.data);
+            } catch (error) {
+                // console.log("Error in first time visit");
+                console.log(error);
+            }
+        }
+
+        firstTime();
         fetchTransactions();
     }, []);
 
