@@ -53,8 +53,8 @@ const styles = StyleSheet.create({
     profileImage: {
         width: 50, 
         height: 50, 
-        tintColor: COLORS.gray1, 
-        resizeMode: 'contain'
+        // tintColor: COLORS.gray1, 
+        resizeMode: 'contain',
     },
 
     profileTitleContainer: {

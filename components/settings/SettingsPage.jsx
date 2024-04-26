@@ -12,7 +12,7 @@ const SettingsPage = (props) => {
 
     const { ArrowleftIcon } = icons;
     const navigation = useNavigation();
-    const { username, email } = useSelector(state => state.profilecreation);
+    const { username, email, image } = useSelector(state => state.profilecreation);
     const [isBudgetMode, setIsBudgetMode] = useState(false);
     const [isPushNotifications, setIsPushNotifications] = useState(false);
     const [isExpenseReminderOn, setIsExpenseRemainderOn] = useState(false);
@@ -169,8 +169,8 @@ const SettingsPage = (props) => {
                         >
                             <View style={styles.profileDetails}>
                                 <Image
-                                    source={images.profileicon}
-                                    style={styles.profileImage}
+                                    source={ image ? {uri: image} : images.profileicon}
+                                    style={[styles.profileImage, !image ? {tintColor: COLORS.gray1} : {}]}
                                 />
                                 <View style={styles.profileTitleContainer}>
                                     <Text style={styles.profileName}>

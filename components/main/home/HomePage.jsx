@@ -9,7 +9,7 @@ import styles from './homepage.style';
 import { Dialog, Input } from '@rneui/themed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { setUsername, setEmail } from '../../../store/profilecreation';
+import { setUsername, setEmail, setImage } from '../../../store/profilecreation';
 import { useDispatch, useSelector } from 'react-redux';
 import SmsAndroid from 'react-native-get-sms-android';
 import { setDailyIncome, setMonthlyIncome, setYearlyIncome, setDailyExpense, setMonthlyExpense, setYearlyExpense, setAllTransactions, setCategories } from '../../../store/transactiondata';
@@ -105,6 +105,7 @@ const HomePage = ({ navigateTo }) => {
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
+        fetchData();
         fetchTransactions();
         setTimeout(() => setRefreshing(false), 1000);
     }, []);
@@ -113,6 +114,7 @@ const HomePage = ({ navigateTo }) => {
 
     const [transactionsData, setTransactionsData] = useState([]);
     const [name, setName] = useState('');
+    const [img , setImg] = useState('');
 
     const { dailyincome, monthlyincome, yearlyincome, dailyexpense, monthlyexpense, yearlyexpense } = useSelector(state => state.transactiondata);
 
@@ -336,44 +338,48 @@ const HomePage = ({ navigateTo }) => {
         }
     }
 
+    const fetchData = async () => {
+        const options = {
+            method: 'GET',
+            url: `${REACT_APP_BACKEND_URL}/auth/profile`,
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + await AsyncStorage.getItem('token')
+            }
+        };
+        try {
+            const response = await axios.request(options).then(async (response) => {
+                const options = {
+                    method: 'GET',
+                    url: `${REACT_APP_BACKEND_URL}/category/`,
+                    headers: {
+                        "Content-type": "application/json",
+                        "Authorization": "Bearer " + await AsyncStorage.getItem('token')
+                    }
+                };
+                try {
+                    const res = await axios.request(options);
+                    dispatch(setCategories(res.data));
+                    // console.log(res.data);
+                } catch (error) {
+                    console.log(error);
+                }
+                setName(response.data.user.username);
+                dispatch(setUsername(response.data.user.username));
+                dispatch(setEmail(response.data.user.email));
+                dispatch(setImage(response.data.user.image));
+                setImg(response.data.user.image);
+            });
+        } catch (error) {
+            // console.log("Error in fetching profile data");
+            console.log(error);
+        }
+        
+    }
+
     useEffect(() => {
         setLoading(true);
-        const fetchData = async () => {
-            const options = {
-                method: 'GET',
-                url: `${REACT_APP_BACKEND_URL}/auth/profile`,
-                headers: {
-                    "Content-type": "application/json",
-                    "Authorization": "Bearer " + await AsyncStorage.getItem('token')
-                }
-            };
-            try {
-                const response = await axios.request(options).then(async (response) => {
-                    const options = {
-                        method: 'GET',
-                        url: `${REACT_APP_BACKEND_URL}/category/`,
-                        headers: {
-                            "Content-type": "application/json",
-                            "Authorization": "Bearer " + await AsyncStorage.getItem('token')
-                        }
-                    };
-                    try {
-                        const res = await axios.request(options);
-                        dispatch(setCategories(res.data));
-                        // console.log(res.data);
-                    } catch (error) {
-                        console.log(error);
-                    }
-                    setName(response.data.user.username);
-                    dispatch(setUsername(response.data.user.username));
-                    dispatch(setEmail(response.data.user.email));
-                });
-            } catch (error) {
-                // console.log("Error in fetching profile data");
-                console.log(error);
-            }
-            
-        }
+        
         fetchData();
         const firstTime = async () => {
             const options = {
@@ -478,15 +484,15 @@ const HomePage = ({ navigateTo }) => {
                             >
                                 <Image
                                     source={images.alarm_fill}
-                                    style={styles.navIcon}
+                                    style={[styles.navIcon, { tintColor: COLORS.gray1 }]}
                                 />
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={() => navigateTo('SettingsPage')}
                             >
                                 <Image
-                                    source={images.profileicon}
-                                    style={styles.navIcon}
+                                    source={img ? {uri: img} : images.profile}
+                                    style={[styles.navIcon, !img ? {tintColor: COLORS.gray1} : {}]}
                                 />
                             </TouchableOpacity>
                         </View>

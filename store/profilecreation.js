@@ -13,6 +13,7 @@ const slice = createSlice({
     categories: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     categoriesLimits: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     token: '',
+    image: '',
   },
   reducers: {
     setUsernameReducer: (state, action) => {
@@ -45,13 +46,16 @@ const slice = createSlice({
     setTokenReducer: (state, action) => {
       state.token = action.payload.token;
     },
+    setImageReducer: (state, action) => {
+      state.image = action.payload.image;
+    },
   },
 });
 
 export default slice.reducer;
 
 // Actions
-const { setUsernameReducer, setEmailReducer, setPasswordReducer, setAgeGroupReducer, setGenderReducer, setGoalsReducer, setGoalsProgressReducer, setCategoriesReducer, setCategoriesLimitsReducer, setTokenReducer } = slice.actions;
+const { setUsernameReducer, setEmailReducer, setPasswordReducer, setAgeGroupReducer, setGenderReducer, setGoalsReducer, setGoalsProgressReducer, setCategoriesReducer, setCategoriesLimitsReducer, setTokenReducer, setImageReducer } = slice.actions;
 
 export const setUsername = (username) => async dispatch => {
   try {
@@ -128,6 +132,14 @@ export const setCategoriesLimits = (categoriesLimits) => async dispatch => {
 export const setToken = (token) => async dispatch => {
   try {
     return dispatch(setTokenReducer({ token }));
+  } catch (e) {
+    return console.error(e.message);
+  }
+}
+
+export const setImage = (image) => async dispatch => {
+  try {
+    return dispatch(setImageReducer({ image }));
   } catch (e) {
     return console.error(e.message);
   }

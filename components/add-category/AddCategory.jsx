@@ -6,7 +6,7 @@ import styles from "./addcategory.style";
 import { launchImageLibrary } from 'react-native-image-picker';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from 'axios';
-import { REACT_APP_BACKEND_URL } from "@env";
+import { REACT_APP_BACKEND_URL,REACT_APP_IMAGE_KEY } from "@env";
 
 
 
@@ -55,7 +55,7 @@ const AddCategory = (props) => {
         }
         const formData = new FormData();
         formData.append('name', categoryName);
-        formData.append('key', '99c156a8c49cb257d3305e9ef1ae780e')
+        formData.append('key', REACT_APP_IMAGE_KEY)
         formData.append('image', imageData);
         try {
             const response = await axios.post('https://api.imgbb.com/1/upload', formData, {

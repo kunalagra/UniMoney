@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
         width: 32, 
         height: 32, 
         resizeMode: 'contain',
-        tintColor: COLORS.gray1
+        // tintColor: COLORS.gray1
     },
 
     nameContainer: {

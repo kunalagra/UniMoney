@@ -3,26 +3,32 @@ import {Image, RefreshControl, SafeAreaView, ScrollView, StatusBar, Text, ToastA
 import { COLORS, icons, images } from '../../../constants';
 import styles from './profile.style';
 import { Icon, Input } from '@rneui/themed';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { launchImageLibrary } from 'react-native-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { REACT_APP_BACKEND_URL, REACT_APP_IMAGE_KEY } from '@env';
+import { setImage } from '../../../store/profilecreation';
 
 const Profile = (props) => {
 
+  const dispatch = useDispatch();
+
   const [refreshing, setRefreshing] = useState(false);
   const { ArrowleftIcon, Loader } = icons;
-  const { username: user_name, email: user_email } = useSelector(state => state.profilecreation);
+  const { username: user_name, email: user_email, image } = useSelector(state => state.profilecreation);
   const [updating, setUpdating] = useState(false);
   const [username, setUsername] = useState(user_name || '');
   const [email, setEmail] = useState(user_email || '');
   const [imageData, setImageData] = useState('');
-  const [imageUri, setImageUri] = useState('');
+  const [imageUri, setImageUri] = useState(image || '');
 
   const onRefresh = useCallback(() => {
       setRefreshing(true);
       setTimeout(() => setRefreshing(false), 1000);
   }, []);
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     if (username==='') {
       ToastAndroid.show('Username should contain atleast 3 characters', 3);
     } else if (email==='') {
@@ -31,6 +37,43 @@ const Profile = (props) => {
       ToastAndroid.show('Invalid email!!', 3);
     } else {
       setUpdating(true);
+      const formData = new FormData();
+        formData.append('key', REACT_APP_IMAGE_KEY)
+        formData.append('image', imageData);
+        try {
+            const response = await axios.post('https://api.imgbb.com/1/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+              }).then(async (response) => {
+                // console.log(response.data.data.url);
+                dispatch(setImage(response.data.data.url));
+                const option = {
+                    method: 'PUT',
+                    url: `${REACT_APP_BACKEND_URL}/auth/profile`,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + await AsyncStorage.getItem('token')
+                    },
+                    data: {
+                      username : username,
+                      email : email,
+                      image : response.data.data.url,
+                    }
+                }
+                try {
+                    const res = await axios.request(option);
+                    // console.log(res.data);
+                }
+                catch (error) {
+                    console.log(error);
+                }
+            });
+        }
+        catch (error) {
+            console.log(error);
+        }
+
       setTimeout(() => {
         setUpdating(false);
         ToastAndroid.show('Details updated successfully!!', 3);
