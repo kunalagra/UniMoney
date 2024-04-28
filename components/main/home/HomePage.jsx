@@ -77,7 +77,7 @@ const ChatModal = ({ visible, setVisibility }) => {
                     style={styles.inputStyle}
                     placeholder="Wanna say something..."
                     underlineColorAndroid="transparent"
-                    selectionColor={COLORS.gray3}
+                    selectionColor={COLORS.green0}
                     placeholderTextColor={COLORS.gray3}
                     numberOfLines={1}
                 />

@@ -189,7 +189,7 @@ const AddTransactionPage = (props) => {
                                 value={name}
                                 onChangeText={(val) => setName(val)}
                                 underlineColorAndroid="transparent"
-                                selectionColor={COLORS.gray3}
+                                selectionColor={COLORS.green0}
                                 placeholderTextColor={COLORS.gray3}
                                 numberOfLines={1}
                             />
@@ -207,7 +207,7 @@ const AddTransactionPage = (props) => {
                                 value={desc}
                                 onChangeText={(val) => setDesc(val)}
                                 underlineColorAndroid="transparent"
-                                selectionColor={COLORS.gray3}
+                                selectionColor={COLORS.green0}
                                 placeholderTextColor={COLORS.gray3}
                                 numberOfLines={1}
                             />
@@ -231,7 +231,7 @@ const AddTransactionPage = (props) => {
                                         setAmount(val);
                                 }}
                                 underlineColorAndroid="transparent"
-                                selectionColor={COLORS.gray3}
+                                selectionColor={COLORS.green0}
                                 placeholderTextColor={COLORS.gray3}
                                 numberOfLines={1}
                                 leftIconContainerStyle={{ paddingLeft: 10 }}

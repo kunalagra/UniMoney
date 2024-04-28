@@ -154,7 +154,7 @@ const Profile = (props) => {
                 value={username}
                 onChangeText={(e) => setUsername(e)}
                 underlineColorAndroid="transparent"
-                selectionColor={COLORS.gray2}
+                selectionColor={COLORS.green0}
                 placeholderTextColor={COLORS.gray2}
                 leftIcon={<Icon name={"account-circle"} color={COLORS.gray1} size={24} onPress={() => {}} />}
                 leftIconContainerStyle={{ paddingLeft: 15 }}
@@ -167,7 +167,7 @@ const Profile = (props) => {
                 value={email}
                 onChangeText={(e) => setEmail(e)}
                 underlineColorAndroid="transparent"
-                selectionColor={COLORS.gray2}
+                selectionColor={COLORS.green0}
                 placeholderTextColor={COLORS.gray2}
                 leftIcon={<Icon name={"email"} color={COLORS.gray1} size={24} onPress={() => {}} />}
                 leftIconContainerStyle={{ paddingLeft: 15 }}

@@ -117,7 +117,7 @@ const SpendingLimitsPage = (props) => {
                                     else setMaxLimit(val);
                                 }}
                                 underlineColorAndroid="transparent"
-                                selectionColor={COLORS.gray2}
+                                selectionColor={COLORS.green0}
                                 placeholderTextColor={COLORS.gray2}
                                 leftIconContainerStyle={{ paddingLeft: 10 }}
                                 leftIcon={

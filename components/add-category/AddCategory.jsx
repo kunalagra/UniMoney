@@ -131,7 +131,7 @@ const AddCategory = (props) => {
                             value={categoryName}
                             onChangeText={(val) => setCategoryName(val)}
                             underlineColorAndroid="transparent"
-                            selectionColor={COLORS.gray3}
+                            selectionColor={COLORS.green0}
                             placeholderTextColor={COLORS.gray3}
                             numberOfLines={1}
                         />

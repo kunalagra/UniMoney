@@ -210,7 +210,7 @@ const UpdateBill = (props) => {
                                 value={name}
                                 onChangeText={(val) => setName(val)}
                                 underlineColorAndroid="transparent"
-                                selectionColor={COLORS.gray3}
+                                selectionColor={COLORS.green0}
                                 placeholderTextColor={COLORS.gray3}
                                 numberOfLines={1}
                             />
@@ -228,7 +228,7 @@ const UpdateBill = (props) => {
                                 value={desc}
                                 onChangeText={(val) => setDesc(val)}
                                 underlineColorAndroid="transparent"
-                                selectionColor={COLORS.gray3}
+                                selectionColor={COLORS.green0}
                                 placeholderTextColor={COLORS.gray3}
                                 numberOfLines={1}
                             />
@@ -252,7 +252,7 @@ const UpdateBill = (props) => {
                                         setAmount(val);
                                 }}
                                 underlineColorAndroid="transparent"
-                                selectionColor={COLORS.gray3}
+                                selectionColor={COLORS.green0}
                                 placeholderTextColor={COLORS.gray3}
                                 numberOfLines={1}
                                 leftIconContainerStyle={{ paddingLeft: 10 }}

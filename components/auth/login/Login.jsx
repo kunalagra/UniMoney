@@ -106,7 +106,7 @@ const Login = (props) => {
                             value={email}
                             onChangeText={(e) => setEmail(e)}
                             underlineColorAndroid="transparent"
-                            selectionColor={COLORS.gray2}
+                            selectionColor={COLORS.green0}
                             placeholderTextColor={COLORS.gray2}
                         />
                         <Input
@@ -117,7 +117,7 @@ const Login = (props) => {
                             value={password}
                             onChangeText={(e) => setPassword(e)}
                             underlineColorAndroid="transparent"
-                            selectionColor={COLORS.gray2}
+                            selectionColor={COLORS.green0}
                             placeholderTextColor={COLORS.gray2}
                             secureTextEntry={!passwordVisible}
                             rightIconContainerStyle={{ paddingRight: 15 }}

@@ -71,7 +71,7 @@ const SignUp = (props) => {
                             value={username}
                             onChangeText={(e) => dispatch(setUsername(e))}
                             underlineColorAndroid="transparent"
-                            selectionColor={COLORS.gray2}
+                            selectionColor={COLORS.green0}
                             placeholderTextColor={COLORS.gray2}
                         />
                         <Input
@@ -82,7 +82,7 @@ const SignUp = (props) => {
                             value={email}
                             onChangeText={(e) => dispatch(setEmail(e))}
                             underlineColorAndroid="transparent"
-                            selectionColor={COLORS.gray2}
+                            selectionColor={COLORS.green0}
                             placeholderTextColor={COLORS.gray2}
                         />
                         <Input
@@ -93,7 +93,7 @@ const SignUp = (props) => {
                             value={password}
                             onChangeText={(e) => dispatch(setPassword(e))}
                             underlineColorAndroid="transparent"
-                            selectionColor={COLORS.gray2}
+                            selectionColor={COLORS.green0}
                             placeholderTextColor={COLORS.gray2}
                             secureTextEntry={!passwordVisible}
                             rightIconContainerStyle={{ paddingRight: 15 }}
@@ -103,10 +103,12 @@ const SignUp = (props) => {
                             style={styles.signupBtn}
                             onPress={() => { 
                                 // apply validation here password.length > 6 && email.includes('@')
-                                if (password.length > 6 && email.includes('@')) {
-                                    props.navigation.navigate('GenderPage');
+                                if (!email.includes('@')) {
+                                    alert('Invalid email address');
+                                } else if (password.length < 6) {
+                                    alert('Password must be at least 6 characters');
                                 } else {
-                                    alert('Invalid email or password');
+                                    props.navigation.navigate('GenderPage');
                                 }
                             }}
                             activeOpacity={0.7}
