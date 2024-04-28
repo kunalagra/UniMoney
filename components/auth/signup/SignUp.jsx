@@ -71,7 +71,7 @@ const SignUp = (props) => {
                             value={username}
                             onChangeText={(e) => dispatch(setUsername(e))}
                             underlineColorAndroid="transparent"
-                            selectionColor={COLORS.green0}
+                            selectionColor={COLORS.green1}
                             placeholderTextColor={COLORS.gray2}
                         />
                         <Input
@@ -82,7 +82,7 @@ const SignUp = (props) => {
                             value={email}
                             onChangeText={(e) => dispatch(setEmail(e))}
                             underlineColorAndroid="transparent"
-                            selectionColor={COLORS.green0}
+                            selectionColor={COLORS.green1}
                             placeholderTextColor={COLORS.gray2}
                         />
                         <Input
@@ -93,7 +93,7 @@ const SignUp = (props) => {
                             value={password}
                             onChangeText={(e) => dispatch(setPassword(e))}
                             underlineColorAndroid="transparent"
-                            selectionColor={COLORS.green0}
+                            selectionColor={COLORS.green1}
                             placeholderTextColor={COLORS.gray2}
                             secureTextEntry={!passwordVisible}
                             rightIconContainerStyle={{ paddingRight: 15 }}

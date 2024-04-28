@@ -84,7 +84,7 @@ const TransactionDetailsPage = (props) => {
 
                     <View style={styles.transactionDetailsContainer}>
                         <Text style={styles.paymentText}>
-                            Payment successful
+                            Payment Details
                         </Text>
                         <View style={styles.transactionContainer}>
                             <View style={styles.transactionDetails}>

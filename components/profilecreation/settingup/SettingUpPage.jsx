@@ -86,10 +86,7 @@ const SettingUpPage = () => {
                     ))
                 );
 
-                // const oldMessages = bankMessages.filter((sms) => {
-                //     return new Date(sms.date) > date;
-                // });
-                console.log(messages);
+                // console.log(messages);
                 userRegistration(messages);
             }
         );
@@ -97,19 +94,19 @@ const SettingUpPage = () => {
 
 
     const userRegistration = async (transactiondata) => {
-        console.log({
-            username: username,
-            email: email,
-            password: password,
-            userInfo : {
-                age: ageGroup,
-                gender: gender,
-                goals: goals,
-                goalsProgress: goalsProgress,
-                categoriesLimits: categoriesLimits
-            },
-            transaction: transactiondata,
-        });
+        // console.log({
+        //     username: username,
+        //     email: email,
+        //     password: password,
+        //     userInfo : {
+        //         age: ageGroup,
+        //         gender: gender,
+        //         goals: goals,
+        //         goalsProgress: goalsProgress,
+        //         categoriesLimits: categoriesLimits
+        //     },
+        //     transaction: transactiondata,
+        // });
 
         const options = {
             method: 'POST',
@@ -145,12 +142,10 @@ const SettingUpPage = () => {
                     const response = await axios.request(options);
                     if (response.status === 200) {
                         setProgress(100);
+                        // console.log(response.data.token);
                         AsyncStorage.setItem('token', response.data.token);
                         setTimeout(() => {
-                            navigation.reset({
-                                index: 0,
-                                routes: [{ name: 'Main' }],
-                            });
+                            navigation.navigate('Main');
                         }, 1000);
                     }
                 } catch (error) {

@@ -122,7 +122,7 @@ const Banks = ({ navigation }) => {
                         inputStyle={{ color: "black", height: 20 }}
                         containerStyle={{ borderBottomColor: COLORS.main3, borderBottomWidth: 2.5, width: "100%", height: 55, marginTop: 20 }}
                         cursorColor={COLORS.main3}
-                        selectionColor={COLORS.green0}
+                        selectionColor={COLORS.green1}
                         autoFocus={true}
                         onChangeText={(value) => setBankName(value)}
                         value={bankName}

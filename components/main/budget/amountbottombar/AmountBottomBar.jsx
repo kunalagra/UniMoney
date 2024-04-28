@@ -34,7 +34,7 @@ const AmountBottomBar = ({ visible, setVisibility, title, setRefreshing }) => {
                         onChangeText={(e) => setAmount(e)}
                         placeholder="(At least ₹ 1,000)"
                         underlineColorAndroid="transparent"
-                        selectionColor={COLORS.green0}
+                        selectionColor={COLORS.green1}
                         placeholderTextColor={COLORS.gray2}
                         leftIconContainerStyle={{ paddingLeft: 10 }}
                         leftIcon={

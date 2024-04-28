@@ -77,7 +77,7 @@ const ChatModal = ({ visible, setVisibility }) => {
                     style={styles.inputStyle}
                     placeholder="Wanna say something..."
                     underlineColorAndroid="transparent"
-                    selectionColor={COLORS.green0}
+                    selectionColor={COLORS.green1}
                     placeholderTextColor={COLORS.gray3}
                     numberOfLines={1}
                 />
@@ -372,6 +372,7 @@ const HomePage = ({ navigateTo }) => {
             });
         } catch (error) {
             // console.log("Error in fetching profile data");
+            console.log(await AsyncStorage.getItem('token'))
             console.log(error);
         }
         
@@ -451,7 +452,13 @@ const HomePage = ({ navigateTo }) => {
                 <ChatModal visible={isChatModalOpen} setVisibility={setIsChatModalOpen} />
 
                 {loading? (
-                    <View style={{ width: '100%', height: '100%'}}>
+                    <ScrollView
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[COLORS.main3]} />
+                    }
+                    style={{ width: '100%', height: '100%'}}
+                >
+
                         <SkeletonPlaceholder borderRadius={4} direction='right'>
                             <SkeletonPlaceholder.Item padding={10} gap={15} height={'100%'}>
                                 <View style={{ flexDirection: 'row', gap: 10, justifyContent: 'flex-end' }}>
@@ -469,7 +476,7 @@ const HomePage = ({ navigateTo }) => {
                                 <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
                             </SkeletonPlaceholder.Item>
                         </SkeletonPlaceholder>
-                    </View>
+                </ScrollView>
                 ) : (
                 <ScrollView
                     refreshControl={

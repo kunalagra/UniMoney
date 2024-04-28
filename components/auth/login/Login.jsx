@@ -1,6 +1,6 @@
 "use strict";
 import React, { useState } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, Keyboard } from "react-native";
 import { images, icons, COLORS } from "../../../constants";
 import { Input, Icon } from '@rneui/themed';
 import styles from "./login.style";
@@ -19,6 +19,7 @@ const Login = (props) => {
     const [loading, setLoading] = useState(false);
 
     const handleLogin = async ({gemail, gpassword}) => {
+        Keyboard.dismiss();
         setLoading(true);
         const options = {
             method: 'POST',
@@ -106,7 +107,7 @@ const Login = (props) => {
                             value={email}
                             onChangeText={(e) => setEmail(e)}
                             underlineColorAndroid="transparent"
-                            selectionColor={COLORS.green0}
+                            selectionColor={COLORS.green1}
                             placeholderTextColor={COLORS.gray2}
                         />
                         <Input
@@ -117,7 +118,7 @@ const Login = (props) => {
                             value={password}
                             onChangeText={(e) => setPassword(e)}
                             underlineColorAndroid="transparent"
-                            selectionColor={COLORS.green0}
+                            selectionColor={COLORS.green1}
                             placeholderTextColor={COLORS.gray2}
                             secureTextEntry={!passwordVisible}
                             rightIconContainerStyle={{ paddingRight: 15 }}
