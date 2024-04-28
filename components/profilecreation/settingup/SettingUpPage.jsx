@@ -62,7 +62,7 @@ const SettingUpPage = () => {
                     const amountValue = transactionInfo.transaction.amount;
                     const accNumber = transactionInfo.account.number;
                     const txid = transactionInfo.transaction.referenceNo;
-                    if (amountValue && amountValue > 0 && !transaction.address.includes('+91')) {
+                    if (amountValue && amountValue > 0 && !transaction.address.includes('+91') && transactionInfo.account.type){
                         smsdata.push(
                                 {
                                     amount: amountValue ? parseFloat(amountValue) : 0,

@@ -101,7 +101,14 @@ const SignUp = (props) => {
                         />
                         <TouchableOpacity
                             style={styles.signupBtn}
-                            onPress={() => { props.navigation.navigate('GenderPage') }}
+                            onPress={() => { 
+                                // apply validation here password.length > 6 && email.includes('@')
+                                if (password.length > 6 && email.includes('@')) {
+                                    props.navigation.navigate('GenderPage');
+                                } else {
+                                    alert('Invalid email or password');
+                                }
+                            }}
                             activeOpacity={0.7}
                         >
                             <Text style={styles.signupText}>

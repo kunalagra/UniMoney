@@ -210,7 +210,7 @@ const HomePage = ({ navigateTo }) => {
                         newtransactions.push(sms);
                     }
                 });
-                console.log(newtransactions);
+                // console.log(newtransactions);
 
 
                 // dispatch(setAllTransactions(alllocaltransactions));
@@ -392,7 +392,7 @@ const HomePage = ({ navigateTo }) => {
             };
             try {
                 const response = await axios.request(options);
-                console.log(response.data);
+                // console.log(response.data);
             } catch (error) {
                 // console.log("Error in first time visit");
                 console.log(error);

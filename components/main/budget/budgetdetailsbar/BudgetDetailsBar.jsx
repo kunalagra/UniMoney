@@ -242,7 +242,7 @@ const BudgetDetailsBar = ({ visible, setVisibility, selectedCategory, setSelecte
                             <TouchableOpacity
                                 style={styles.optionContainer}
                                 onPress={() => {
-                                    navigation.navigate('AddTransactionPage', { categoryName: details.name === "Monthly Budget" ? "Payments" : details.name }),
+                                    navigateTo('AddTransactionPage', { categoryName: details.name === "Monthly Budget" ? "Payments" : details.name }),
                                         setVisibility(false);
                                 }
 

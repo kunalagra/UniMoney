@@ -103,7 +103,12 @@ const UpdateBill = (props) => {
     const [reminder, setReminder] = useState(reminderData.repeat);
 
     const setReminderValue = async () => {
-        console.log('Reminder set');
+        // apply validations on all fields
+        if (name === '' || amount === '' || category === '' || reminder === '') {
+            alert('Please fill all the fields');
+            return;
+        }
+
         const options = {
             method: 'PUT',
             url: `${REACT_APP_BACKEND_URL}/reminder/update`,

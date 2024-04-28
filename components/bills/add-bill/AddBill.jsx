@@ -101,7 +101,12 @@ const AddTransactionPage = (props) => {
     const [reminder, setReminder] = useState("");
 
     const setReminderValue = async () => {
-        console.log('Reminder set');
+        // console.log('Reminder set');
+        if (name === '' || amount === '' || category === '' || reminder === '') {
+            alert('Please fill all the fields');
+            return;
+        }
+
         const options = {
             method: 'POST',
             url: `${REACT_APP_BACKEND_URL}/reminder/create`,

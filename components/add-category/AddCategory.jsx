@@ -49,10 +49,12 @@ const AddCategory = (props) => {
 
     const postData = async () => {
         // send image in formdata format
-        if (categoryName == '') {
-            alert('Please enter a name for category');
+        // apply validations on category name and image
+        if (categoryName === '' || imageData === '') {
+            alert('Please fill all the fields');
             return;
         }
+
         const formData = new FormData();
         formData.append('name', categoryName);
         formData.append('key', REACT_APP_IMAGE_KEY)
