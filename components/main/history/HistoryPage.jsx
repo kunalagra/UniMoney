@@ -59,6 +59,10 @@ const HistoryPage = ({ navigateTo }) => {
     }
 
     useEffect(() => {
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
         if (alltransactions) {
             let tmp = alltransactions.filter((item) => {
                 let itemDate = new Date(item.date);
@@ -95,7 +99,10 @@ const HistoryPage = ({ navigateTo }) => {
     }, []);
 
     const filterByDate = () => {
-        console.log(bankNumber);
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 1500);
         if (bankNumber) {
             let tmp = alltransactions.filter((item) => {
                 let itemDate = new Date(item.date);

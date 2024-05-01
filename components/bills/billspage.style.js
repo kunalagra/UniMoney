@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
         marginTop: 10, 
         marginBottom: 100,
         gap: 30, 
+        height: '100%'
     },
 
     navbar: {

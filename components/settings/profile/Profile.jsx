@@ -142,9 +142,9 @@ const Profile = (props) => {
                   source={imageUri? {uri: imageUri} : images.profileicon}
                   style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 100 }}
                 />
-                <View style={{ position: 'absolute', right: 20, bottom: 5, backgroundColor: COLORS.white3, borderWidth: 4, borderColor: COLORS.white4, padding: 4, borderRadius: 100 }}>
-                  <Icon name={"photo-camera"} color={COLORS.gray1} size={24} onPress={() => {}} />
-                </View>
+                <TouchableOpacity style={{ position: 'absolute', right: 20, bottom: 5, backgroundColor: COLORS.white3, borderWidth: 4, borderColor: COLORS.white4, padding: 4, borderRadius: 100 }} onPress={chooseImage}>
+                  <Icon name={"photo-camera"} color={COLORS.gray1} size={24} onPress={chooseImage} />
+                </TouchableOpacity>
             </TouchableOpacity>
             <Input
                 containerStyle={styles.inputOuterContainerStyle}

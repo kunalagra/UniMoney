@@ -1,11 +1,12 @@
 "use strict";
 import { SafeAreaView, View, Text, ScrollView, StatusBar, TouchableOpacity, Image, Switch } from "react-native";
-import { COLORS, icons, images } from "../../constants";
+import { COLORS, SHADOWS, icons, images } from "../../constants";
 import { useState, useEffect } from "react";
 import styles from "./settingspage.style";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector } from "react-redux";
+import LinearGradient from "react-native-linear-gradient";
 
 
 const SettingsPage = (props) => {
@@ -164,26 +165,33 @@ const SettingsPage = (props) => {
 
                     <View style={styles.mainContainer}>
                         <TouchableOpacity 
-                            style={styles.profileContainer}
                             onPress={() => {props.navigation.navigate('ProfilePage')}}
                         >
-                            <View style={styles.profileDetails}>
-                                <Image
-                                    source={ image ? {uri: image} : images.profileicon}
-                                    style={[styles.profileImage, !image ? {tintColor: COLORS.gray1} : {}]}
-                                />
-                                <View style={styles.profileTitleContainer}>
-                                    <Text style={styles.profileName}>
-                                        {username}
-                                    </Text>
-                                    <Text style={styles.profileEmail}>
-                                        {email}
-                                    </Text>
+                            <LinearGradient
+                                colors={[ COLORS.main3, COLORS.main2, COLORS.main1, COLORS.main2, COLORS.main3 ]}
+                                style={styles.profileContainer}
+                                useAngle={true} 
+                                angle={135} 
+                                angleCenter={{x:0.5,y:0.5}}
+                            >
+                                <View style={styles.profileDetails}>
+                                    <Image
+                                        source={ image ? {uri: image} : images.profileicon}
+                                        style={[styles.profileImage, !image ? {tintColor: COLORS.gray2, borderWidth: 1, borderRadius: 100} : {}]}
+                                    />
+                                    <View style={styles.profileTitleContainer}>
+                                        <Text style={styles.profileName}>
+                                            {username}
+                                        </Text>
+                                        <Text style={styles.profileEmail}>
+                                            {email}
+                                        </Text>
+                                    </View>
                                 </View>
-                            </View>
-                            <Text style={styles.profileContainerArrow}>
-                                {'>'}
-                            </Text>
+                                <Text style={styles.profileContainerArrow}>
+                                    {'>'}
+                                </Text>
+                            </LinearGradient>
                         </TouchableOpacity>
 
                         {settingData.map((item, index) => (

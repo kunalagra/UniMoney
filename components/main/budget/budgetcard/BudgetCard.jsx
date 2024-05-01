@@ -3,7 +3,7 @@ import { moneyTextHelper } from "../../../../utils";
 import styles from "./budgetcard.style";
 
 
-const BudgetCard = ({title="Monthly Budget", image=null, budgetSet, currentSpends, handlePress}) => {
+const BudgetCard = ({title="Monthly Budget", image=null, budgetSet, currentSpends, handlePress, isFocused=false }) => {
 
     const progress = Math.min(100, Math.round((currentSpends/budgetSet) * 100));
     
@@ -35,9 +35,11 @@ const BudgetCard = ({title="Monthly Budget", image=null, budgetSet, currentSpend
                 </View>
 
                 <View style={styles.cardTextContainer}>
-                    <Text style={styles.cardText}>
-                        Tap to view
-                    </Text>
+                    {!isFocused && (
+                        <Text style={styles.cardText}>
+                            Tap to view
+                        </Text>
+                    )}
                     <Text style={styles.cardText}>
                         Safe to spend: ₹ {(budgetSet/30).toFixed(2)} per day
                     </Text>

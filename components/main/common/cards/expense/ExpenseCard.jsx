@@ -7,7 +7,7 @@ import { moneyTextHelper } from "../../../../../utils";
 
 
 
-const ExpenseCard = ({ item }) => {
+const ExpenseCard = ({ item, navigateTo }) => {
 
     const [isExpenseSelected, setExpenseSelected] = useState(true);
 
@@ -58,6 +58,9 @@ const ExpenseCard = ({ item }) => {
                 >
                     <TouchableOpacity 
                         activeOpacity={0.5}
+                        onPress={() => navigateTo('Main', {
+                            screen: 'Insights'
+                        })}
                     >
                         <Text style={styles.insightsLink}>
                             <Text style={styles.insightsLinkText}>

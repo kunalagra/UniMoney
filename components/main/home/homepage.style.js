@@ -8,101 +8,6 @@ const styles = StyleSheet.create({
         minHeight: '100%'
     },
 
-    chatButtonContainer: {
-        position: 'absolute', 
-        bottom: 10, 
-        right: 10, 
-        zIndex: 1
-    },
-
-    chatButton: {
-        backgroundColor: COLORS.main3, 
-        borderRadius: 20, 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        padding: 8
-    },
-
-    chatIcon: {
-        width: 40, 
-        height: 40, 
-        tintColor: COLORS.white1
-    },
-
-    chatModal: {
-        backgroundColor: COLORS.white2, 
-        width: '90%', 
-        height: '90%', 
-        alignSelf: 'center', 
-        borderRadius: 12, 
-        justifyContent: 'space-between', 
-        alignItems: 'center', 
-        padding: 10, 
-        gap: 10
-    },
-
-    chatModalHeader: {
-        width: '100%', 
-        flexDirection: 'row', 
-        justifyContent: 'space-between', 
-        alignItems: 'center', 
-        paddingHorizontal: 10
-    },
-
-    chatModalHeadingContainer: {
-        width: '50%', 
-        flexGrow: 1
-    },
-
-    chatModalHeading: {
-        color: COLORS.gray3, 
-        fontFamily: FONT.medium, 
-        fontSize: SIZES.medium, 
-        textAlign: 'center'
-    },
-
-    chatModalCloseIcon: {
-        width: 20, 
-        height: 20, 
-        tintColor: COLORS.gray1
-    },
-
-    chatContainer: {
-        width: '100%', 
-        backgroundColor: COLORS.white3, 
-        borderWidth: 1, 
-        borderColor: COLORS.white5, 
-        flexGrow: 1, 
-        borderRadius: 8, 
-        height: '10%'
-    },
-
-    userMessage: {
-        backgroundColor: COLORS.main3, 
-        alignSelf: 'flex-end', 
-        padding: 8, 
-        marginHorizontal: 5, 
-        marginVertical: 2, 
-        borderRadius: 10, 
-        borderBottomRightRadius: 0
-    },
-
-    chatbotMessage: {
-        backgroundColor: COLORS.gray1, 
-        alignSelf: 'flex-start', 
-        padding: 8, 
-        marginHorizontal: 5, 
-        marginVertical: 2, 
-        borderRadius: 10, 
-        borderBottomLeftRadius: 0
-    },
-
-    chatMessageText: {
-        color: COLORS.white1, 
-        fontFamily: FONT.regular, 
-        fontSize: SIZES.regular
-    },
-
     mainContainer: {
         width: '100%', 
         marginTop: 10, 
@@ -171,8 +76,7 @@ const styles = StyleSheet.create({
     navIcon: {
         width: 32, 
         height: 32, 
-        resizeMode: 'contain',
-        // tintColor: COLORS.gray1
+        resizeMode: 'contain'
     },
 
     nameContainer: {

@@ -55,7 +55,8 @@ const styles = StyleSheet.create({
         borderColor: COLORS.white5, 
         borderRadius: 8, 
         borderWidth: 1, 
-        backgroundColor: COLORS.white3
+        backgroundColor: COLORS.white3,
+        height: '100%'
     },
 
     inputStyle: {
@@ -63,7 +64,8 @@ const styles = StyleSheet.create({
         fontSize: SIZES.medium-2, 
         color: COLORS.gray2, 
         fontFamily: FONT.regular, 
-        paddingHorizontal: 15
+        paddingHorizontal: 15,
+        height: '100%'
     },
 
     dateButtonStyle: {

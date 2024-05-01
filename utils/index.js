@@ -71,6 +71,26 @@ export const spendingCategories = [
     },
 ];
 
+export const categoryImage = {
+    'atm': images.cash_withdrawal,
+    'bills': images.bill,
+    'education': images.education,
+    'entertainment': images.entertainment,
+    'food-&-drinks': images.food,
+    'fuel': images.fuel,
+    'gadgets': images.gadget,
+    'groceries': images.cart_shopping,
+    'shopping': images.shopping,
+    'health': images.medicines,
+    'household': images.shampoo,
+    'house-rent': images.house,
+    'insurance': images.insurance,
+    'investment': images.investment,
+    'payments': images.payments,
+    'transfers': images.bank,
+    'travel': images.travel,
+}
+
 
 export const userGoals = ['Win at work', 'Have more money', 'Be productive', 'Build strong family', 'Have a healthy body', 'Love & be loved', 'Be happy', 'Improve social life'];
 

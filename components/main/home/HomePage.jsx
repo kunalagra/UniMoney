@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, SafeAreaView, StatusBar, Image, ScrollView, TouchableOpacity,RefreshControl } from 'react-native';
-import { COLORS, images,icons } from '../../../constants'
+import { COLORS, images } from '../../../constants'
 import ExpenseCard from '../common/cards/expense/ExpenseCard';
 import StreakBanner from './streakbanner/StreakBanner';
-// import { transactionsData } from '../../../constants/fakeData';
 import TransactionCard from '../common/cards/transaction/TransactionCard';
 import styles from './homepage.style';
 import { Dialog, Input } from '@rneui/themed';
@@ -18,88 +17,11 @@ import { formatDateTime } from '../../../utils';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { REACT_APP_BACKEND_URL } from '@env';
 
-const ChatModal = ({ visible, setVisibility }) => {
-
-    const messagesA = ['Hello', 'Iam Jonhhy!!', 'I want some help!', 'Hello', 'Iam Jonhhy!!', 'I want some help!', 'Hello', 'Iam Jonhhy!!', 'I want some help!', 'Hello', 'Iam Jonhhy!!', 'I want some help!', 'Hello', 'Iam Jonhhy!!', 'I want some help!'];
-    const messagesB = ['Hey, Jonhhy!', 'How can I help you?'];
-
-    return (
-        <Dialog
-            isVisible={visible}
-            onDismiss={() => setVisibility(false)}
-            onBackdropPress={() => setVisibility(false)}
-            overlayStyle={styles.chatModal}
-        >
-            <View style={styles.chatModalHeader}>
-                <View style={styles.chatModalHeadingContainer}>
-                    <Text style={styles.chatModalHeading}>
-                        Wanna chat?
-                    </Text>
-                </View>
-                <TouchableOpacity
-                    onPress={() => setVisibility(false)}
-                >
-                    <Image
-                        source={images.closeicon}
-                        style={styles.chatModalCloseIcon}
-                    />
-                </TouchableOpacity>
-            </View>
-            <View style={styles.chatContainer}>
-                <ScrollView
-                >
-                    {messagesA.map((item, index) => (
-                        <View
-                            style={styles.userMessage}
-                            key={index}
-                        >
-                            <Text style={styles.chatMessageText}>
-                                {item}
-                            </Text>
-                        </View>
-                    ))}
-                    {messagesB.map((item, index) => (
-                        <View
-                            style={styles.chatbotMessage}
-                            key={index}
-                        >
-                            <Text style={styles.chatMessageText}>
-                                {item}
-                            </Text>
-                        </View>
-                    ))}
-                </ScrollView>
-            </View>
-            <View style={styles.userInputContainer}>
-                <Input
-                    containerStyle={styles.inputOuterContainer}
-                    inputContainerStyle={styles.inputInnerContainer}
-                    style={styles.inputStyle}
-                    placeholder="Wanna say something..."
-                    underlineColorAndroid="transparent"
-                    selectionColor={COLORS.green1}
-                    placeholderTextColor={COLORS.gray3}
-                    numberOfLines={1}
-                />
-                <TouchableOpacity
-                    style={styles.inputSendButton}
-                >
-                    <Image
-                        source={images.sendicon}
-                        style={styles.inputSendIcon}
-                    />
-                </TouchableOpacity>
-            </View>
-        </Dialog>
-    )
-}
 
 const HomePage = ({ navigateTo }) => {
 
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
-
-    const { Loader } = icons;
 
     const [refreshing, setRefreshing] = useState(false);
 
@@ -431,26 +353,6 @@ const HomePage = ({ navigateTo }) => {
 
             <View style={styles.container}>
 
-                {
-                    !isChatModalOpen &&
-                    <View
-                        style={styles.chatButtonContainer}
-                    >
-                        <TouchableOpacity
-                            style={styles.chatButton}
-                            activeOpacity={0.85}
-                            onPress={() => setIsChatModalOpen(true)}
-                        >
-                            <Image
-                                source={images.chaticon}
-                                style={styles.chatIcon}
-                            />
-                        </TouchableOpacity>
-                    </View>
-                }
-
-                <ChatModal visible={isChatModalOpen} setVisibility={setIsChatModalOpen} />
-
                 {loading? (
                     <ScrollView
                     refreshControl={
@@ -505,7 +407,7 @@ const HomePage = ({ navigateTo }) => {
                         </View>
                         <View style={styles.nameContainer}>
                             <Text style={styles.nameText}>
-                                Hey, {name===''? 'John' : name[0].toUpperCase() + name.slice(1).toLowerCase()}!
+                                Hey, {name===''? 'John' : name[0].toUpperCase() + name.split(' ')[0].slice(1).toLowerCase()}!
                             </Text>
                         </View>
 
@@ -518,7 +420,7 @@ const HomePage = ({ navigateTo }) => {
                                 horizontal
                             >
                                 {data.map((item, index) => (
-                                    <ExpenseCard item={item} key={index} />
+                                    <ExpenseCard item={item} key={index} navigateTo={navigateTo} />
                                 ))}
                             </ScrollView>
                         </View>
@@ -528,7 +430,11 @@ const HomePage = ({ navigateTo }) => {
                                 <Text style={styles.transactionsHeading}>
                                     Recent Transactions
                                 </Text>
-                                <TouchableOpacity>
+                                <TouchableOpacity 
+                                    onPress={() => navigateTo('Main', {
+                                        screen: 'History'
+                                    })}
+                                >
                                     <Text style={styles.showAllText}>
                                         Show all
                                     </Text>

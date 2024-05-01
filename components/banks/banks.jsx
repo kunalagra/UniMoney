@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector } from "react-redux";
 import { Dialog } from "@rneui/base";
 import { REACT_APP_BACKEND_URL } from "@env";
+import LinearGradient from "react-native-linear-gradient";
 
 
 const Banks = ({ navigation }) => {
@@ -234,21 +235,29 @@ const Banks = ({ navigation }) => {
                         {linkedBanks.length!==0? 
                             linkedBanks.map((item, index) => {
                                 return (
-                                    <TouchableOpacity key={index} style={styles.bankCard}
+                                    <TouchableOpacity key={index}
                                         onPress={() => navigation.navigate('TransactionByBank', { details: item })}
                                     >
-                                        <View style={styles.imageView}>
-                                            <Image
-                                                source={
-                                                    { uri: item.id.img }
-                                                }
-                                                style={{ width: 40, height: 40, borderRadius: 10 }}
-                                            />
-                                        </View>
-                                        <View style={{ flexDirection: "column", gap: 10, marginLeft:15, width: '50%' }}>
-                                            <Text style={styles.bankName} numberOfLines={1}>{item.id.name}</Text>
-                                            <Text style={styles.bankAcc}>A/c No: XX {item.number}</Text>
-                                        </View>
+                                        <LinearGradient
+                                            colors={[ COLORS.main2, COLORS.main2, COLORS.main1, COLORS.main2, COLORS.main2 ]}
+                                            style={styles.bankCard}
+                                            useAngle={true} 
+                                            angle={135} 
+                                            angleCenter={{x:0.5,y:0.5}}
+                                        >
+                                            {/* <View style={styles.imageView}> */}
+                                                <Image
+                                                    source={
+                                                        { uri: item.id.img }
+                                                    }
+                                                    style={{ width: 50, height: 50, borderRadius: 10 }}
+                                                />
+                                            {/* </View> */}
+                                            <View style={{ flexDirection: "column", gap: 10, marginLeft:15, width: '50%' }}>
+                                                <Text style={styles.bankName} numberOfLines={1}>{item.id.name}</Text>
+                                                <Text style={styles.bankAcc}>A/c No: XX {item.number}</Text>
+                                            </View>
+                                        </LinearGradient>
                                     </TouchableOpacity>
                                 )
                             }) : (

@@ -128,14 +128,14 @@ const styles = StyleSheet.create({
         width: "100%",
         backgroundColor: COLORS.green0,
         gap: 10,
-        borderRadius: 10,
+        borderRadius: 12,
         marginBottom: 10,
         ...SHADOWS.medium,
         paddingHorizontal: 14,
-        paddingVertical: 10
+        paddingVertical: 20
     },
     imageView: {
-        backgroundColor: COLORS.main4,
+        backgroundColor: COLORS.main3,
         width: "35%",
         borderTopLeftRadius: 10,
         borderBottomLeftRadius: 10,

@@ -1,7 +1,11 @@
-import { TouchableOpacity, Text } from "react-native";
+import { TouchableOpacity, Text, Image, View } from "react-native";
 import styles from "./custombutton.style";
+import { icons } from "../../../../constants";
 
-const CustomButton = ({ title, handlePress, inlineStyles=[], textStyles=[], activeOpacity=0.6, disable=false}) => {
+const CustomButton = ({ title, handlePress, inlineStyles=[], textStyles=[], activeOpacity=0.6, disable=false, loading}) => {
+
+    const { Loader } = icons;
+
     return (
         <TouchableOpacity
             style={[styles.buttonContainer, ...inlineStyles]}
@@ -9,7 +13,17 @@ const CustomButton = ({ title, handlePress, inlineStyles=[], textStyles=[], acti
             onPress={handlePress}
             disabled={disable}
         >
-            <Text style={[styles.buttonTitle, ...textStyles]}>{title}</Text>
+            {loading? (
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <Loader
+                        width={22}
+                        height={22}
+                        style={{ marginHorizontal: 'auto' }}
+                    />
+                </View>
+            ) : (
+                <Text style={[styles.buttonTitle, ...textStyles]}>{title}</Text>
+            )}
         </TouchableOpacity>
     )
 }

@@ -4,17 +4,20 @@ import { COLORS, FONT, SIZES } from "../../../constants";
 
 const styles = StyleSheet.create({
 
-    upperContainer: {
-        backgroundColor: COLORS.green1, 
+    upperContainer: (isCredited) => ({
+        backgroundColor: isCredited? COLORS.green1 : COLORS.red1, 
         padding: 20, 
         paddingBottom: 50, 
         justifyContent: 'center', 
         alignItems: 'center', 
         gap: 50
-    },
+    }),
 
     navbar: {
-        width: '100%'
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
 
     arrowleftIcon: {
@@ -41,7 +44,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30, 
         paddingVertical: 20, 
         borderRadius: 18, 
-        gap: 12
+        gap: 12,
     },
 
     transactionDetails: {
@@ -135,7 +138,49 @@ const styles = StyleSheet.create({
         fontFamily: FONT.medium, 
         fontSize: SIZES.small, 
         color: COLORS.gray3
-    }
+    },
+
+    modalHeading: {
+        fontFamily: FONT.medium, 
+        fontSize: SIZES.medium, 
+        color: COLORS.gray3
+    },
+
+    rowField: {
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        alignItems: 'center'
+    },
+
+    rowHeader: {
+        fontFamily: FONT.regular, 
+        fontSize: SIZES.medium, 
+        color: COLORS.gray3
+    },
+
+    inputOuterContainer: {
+        width: '60%', 
+        paddingHorizontal: 0, 
+        height: 50
+    },
+
+    inputInnerContainer: {
+        width: '100%', 
+        borderColor: COLORS.white5, 
+        borderRadius: 8, 
+        borderWidth: 1, 
+        backgroundColor: COLORS.white3,
+        height: '100%'
+    },
+
+    inputStyle: {
+        width: '100%', 
+        fontSize: SIZES.medium-2, 
+        color: COLORS.gray2, 
+        fontFamily: FONT.regular, 
+        paddingHorizontal: 15,
+        height: '100%',
+    },
 
 });
 

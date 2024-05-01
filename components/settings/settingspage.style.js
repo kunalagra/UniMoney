@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { SIZES, COLORS, FONT } from "../../constants";
+import { SIZES, COLORS, FONT, SHADOWS } from "../../constants";
 
 const styles = StyleSheet.create({
 
@@ -35,13 +35,11 @@ const styles = StyleSheet.create({
     profileContainer: {
         flexDirection: 'row', 
         justifyContent: 'space-between', 
-        alignItems: 'center', 
-        backgroundColor: COLORS.white3, 
-        borderRadius: 12, 
-        borderWidth: 2, 
-        borderColor: COLORS.white5, 
+        alignItems: 'center',  
+        borderRadius: 12,
         paddingHorizontal: 10, 
-        paddingVertical: 16
+        paddingVertical: 16,
+        ...SHADOWS.medium, paddingBottom: 20
     },
 
     profileDetails: {
@@ -53,8 +51,8 @@ const styles = StyleSheet.create({
     profileImage: {
         width: 50, 
         height: 50, 
-        // tintColor: COLORS.gray1, 
         resizeMode: 'contain',
+        borderColor: COLORS.gray2,
     },
 
     profileTitleContainer: {
@@ -69,14 +67,14 @@ const styles = StyleSheet.create({
 
     profileEmail: {
         fontFamily: FONT.medium, 
-        fontSize: SIZES.regular, 
-        color: COLORS.gray1
+        fontSize: SIZES.small, 
+        color: COLORS.gray2
     },
 
     profileContainerArrow: {
         fontFamily: FONT.medium, 
         fontSize: SIZES.large, 
-        color: COLORS.gray1
+        color: COLORS.gray2
     },
 
     optionContainer: {

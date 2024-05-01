@@ -8,6 +8,7 @@ import styles from "./addtransaction.style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from 'axios';
 import { REACT_APP_BACKEND_URL } from "@env";
+import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
 const CustomDropdown = ({data, value, setValue}) => {
     return (
@@ -105,7 +106,6 @@ const AddTransactionPage = (props) => {
     }, []);
 
     const postTransaction = async () => {
-        // console.log(typeOfPayment, amount, category, date.getTime(), debitAcc, desc);
         if (amount === "" || category === "" || desc === "") {
             alert("Please fill all the fields");
             return;
@@ -123,7 +123,7 @@ const AddTransactionPage = (props) => {
                     amount: amount,
                     category: category,
                     date: date.getTime(),
-                    acc: debitAcc,
+                    acc: account,
                     name: desc,
                     txid: 0
                 }]
@@ -140,7 +140,8 @@ const AddTransactionPage = (props) => {
 
 
     const [typeOfPayment, setTypeOfPayment] = useState(typeOfPaymentList[0].value);
-    const [debitAcc, setDebitAcc] = useState(0);
+    const [account, setAccount] = useState(0);
+    const [receiverID, setReceiverID] = useState("");
     const [desc, setDesc] = useState("");
     const [category, setCategory] = useState(categoryName ? categoryName : '');
     const [date, setDate] = useState(new Date());
@@ -153,7 +154,53 @@ const AddTransactionPage = (props) => {
                 barStyle={'dark-content'}
                 backgroundColor={COLORS.white2}
             />
-            { loading ? <Text style={{color: COLORS.black, fontSize:25, fontWeight: 'bold', alignContent:'center', justifyContent:"center", alignSelf: "center", marginTop:20}}>Loading...</Text> : 
+            { loading ? 
+                <View style={styles.container}>
+                    <View style={styles.navbar}>
+                        <TouchableOpacity 
+                            onPress={() => props.navigation.pop()}
+                        >
+                            <ArrowleftIcon
+                                style={styles.arrowleftIcon}
+                                fill={COLORS.gray3}
+                            />
+                        </TouchableOpacity>
+                        <View>
+                            <Text style={styles.navHeading}>
+                                Add Transaction
+                            </Text>
+                        </View>
+                    </View>
+                    <View style={{ width: '100%', height: '100%'}}>
+                        <SkeletonPlaceholder borderRadius={4} direction='right'>
+                            <SkeletonPlaceholder.Item gap={15} height={'100%'}>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                                    <SkeletonPlaceholder.Item width={'40%'} height={40} borderRadius={10} />
+                                    <SkeletonPlaceholder.Item width={'40%'} height={40} borderRadius={10} />
+                                </View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                                    <SkeletonPlaceholder.Item width={'50%'} height={40} borderRadius={10} />
+                                    <SkeletonPlaceholder.Item width={'40%'} height={40} borderRadius={10} />
+                                </View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                                    <SkeletonPlaceholder.Item width={'50%'} height={40} borderRadius={10} />
+                                    <SkeletonPlaceholder.Item width={'40%'} height={40} borderRadius={10} />
+                                </View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                                    <SkeletonPlaceholder.Item width={'30%'} height={40} borderRadius={10} />
+                                    <SkeletonPlaceholder.Item width={'40%'} height={40} borderRadius={10} />
+                                </View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                                    <SkeletonPlaceholder.Item width={'50%'} height={40} borderRadius={10} />
+                                    <SkeletonPlaceholder.Item width={'40%'} height={40} borderRadius={10} />
+                                </View>
+                                <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
+                                <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
+                            </SkeletonPlaceholder.Item>
+                        </SkeletonPlaceholder>
+                    </View>    
+                </View>
+            : 
             <ScrollView>
                 <View style={styles.container}>
                     <View style={styles.navbar}>
@@ -184,24 +231,47 @@ const AddTransactionPage = (props) => {
                             <Text style={styles.rowHeader}>
                                 { typeOfPayment === "debit" ? "Debit" : "Credit" } Account
                             </Text>
-                            <CustomDropdown data={accountList} value={debitAcc} setValue={setDebitAcc} />
+                            <CustomDropdown data={accountList} value={account} setValue={setAccount} />
                         </View>
 
                         <View style={styles.rowField}>
                             <Text style={styles.rowHeader}>
-                                Description
+                                { typeOfPayment === "debit" ? "Receiver" : "Sender" }
                             </Text>
                             <Input
                                 containerStyle={styles.inputOuterContainer}
                                 inputContainerStyle={styles.inputInnerContainer}
                                 style={styles.inputStyle}
+                                placeholder="Name of person, place, etc."
+                                value={receiverID}
+                                onChangeText={(val) => setReceiverID(val)}
+                                underlineColorAndroid="transparent"
+                                selectionColor={COLORS.green1}
+                                placeholderTextColor={COLORS.gray3}
+                                numberOfLines={1}
+                            />
+                        </View>
+
+                        <View style={styles.rowField}>
+                            <View>
+                                <Text style={styles.rowHeader}>
+                                    Description
+                                </Text>
+                                <Text style={[styles.rowHeader, { fontSize: SIZES.small }]}>
+                                    (optional)
+                                </Text>
+                            </View>
+                            <Input
+                                containerStyle={[styles.inputOuterContainer, { height: 100 }]}
+                                inputContainerStyle={styles.inputInnerContainer}
+                                style={[styles.inputStyle, { textAlignVertical: 'top' }]}
                                 placeholder="Name of shop, product, etc."
                                 value={desc}
                                 onChangeText={(val) => setDesc(val)}
                                 underlineColorAndroid="transparent"
                                 selectionColor={COLORS.green1}
                                 placeholderTextColor={COLORS.gray3}
-                                numberOfLines={1}
+                                multiline
                             />
                         </View>
 

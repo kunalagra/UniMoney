@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { REACT_APP_BACKEND_URL } from "@env";
+import CustomButton from "../../../profilecreation/common/button/CustomButton";
 
 const BudgetDetailsBar = ({ visible, setVisibility, selectedCategory, setSelectedCategory, handleBudgetPress, isAddCategory, setIsAddCategory, budgetModeCategories, setRefreshing, navigateTo}) => {
 
@@ -117,11 +118,19 @@ const BudgetDetailsBar = ({ visible, setVisibility, selectedCategory, setSelecte
                                         currentSpends={currentSpend}
                                         budgetSet={limit}
                                         handlePress={() => { }}
+                                        isFocused={true}
                                     />
                                 </View>
                             )
                     }
 
+                </View>
+
+                <View style={{ paddingHorizontal: 10, alignItems: 'flex-end', paddingBottom: 20 }}>
+                    <CustomButton 
+                        title={'Remove'}
+                        inlineStyles={[{ backgroundColor: COLORS.red0, paddingVertical: 8, paddingHorizontal: 12 }]}
+                    />
                 </View>
 
                 <View style={styles.optionsContainer}>

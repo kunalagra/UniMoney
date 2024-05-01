@@ -7,6 +7,7 @@ import { Dialog } from "@rneui/themed";
 import { REACT_APP_BACKEND_URL } from "@env";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
 const GamePage = (props) => {
 
@@ -188,7 +189,33 @@ const GamePage = (props) => {
           </TouchableOpacity>
 
           <View style={styles.container}>
-            { loading ? <Text>Loading...</Text> : 
+            { loading ? 
+              <SkeletonPlaceholder borderRadius={4} direction='right'>
+                <SkeletonPlaceholder.Item gap={15} height={'100%'}>
+                    <View style={{ flexDirection: 'row', gap: 10, justifyContent: 'flex-end' }}>
+                        <SkeletonPlaceholder.Item width={80} height={40} borderRadius={12} />
+                        <SkeletonPlaceholder.Item width={100} height={40} borderRadius={12} />
+                    </View>
+                    <View style={{ flexDirection: 'row', gap: 10, justifyContent: 'space-between' }}>
+                        <SkeletonPlaceholder.Item width={120} height={40} borderRadius={12} />
+                      <View style={{ flexDirection: 'row', gap: 10 }}>
+                        <SkeletonPlaceholder.Item width={40} height={40} borderRadius={100} />
+                        <SkeletonPlaceholder.Item width={40} height={40} borderRadius={100} />
+                        <SkeletonPlaceholder.Item width={40} height={40} borderRadius={100} />
+                      </View>
+                    </View>
+                    <View style={{ alignItems: 'center' }}>
+                      <SkeletonPlaceholder.Item width={'100%'} height={80} borderRadius={12} />
+                    </View>
+                    <SkeletonPlaceholder.Item width={'100%'} height={300} borderRadius={12} />
+                    <View style={{ marginTop: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                        <SkeletonPlaceholder.Item width={'60%'} height={40} borderRadius={12} />
+                        <SkeletonPlaceholder.Item width={70} height={40} borderRadius={8} />
+                    </View>
+                    <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
+                </SkeletonPlaceholder.Item>
+              </SkeletonPlaceholder>
+            : 
             <ScrollView
               ref={scrollViewRef}
               showsVerticalScrollIndicator={false}
@@ -346,12 +373,12 @@ const GamePage = (props) => {
 
               </View>
             </ScrollView>
-}
+             }
           </View>
         </View>
 
 
-        { !diceModalVisible && 
+        { !diceModalVisible && !loading && 
           <View style={{ position: 'absolute', bottom: 120, alignItems: 'center', width: '100%' }}>
             <TouchableOpacity style={{ width: 80, height: 80, borderRadius: 100, backgroundColor: COLORS.main2, justifyContent: 'center', alignItems: 'center' }}
               onPress={() => {

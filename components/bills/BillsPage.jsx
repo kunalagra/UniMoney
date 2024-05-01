@@ -48,7 +48,7 @@ const BillsPage = (props) => {
         
         fetchReminders();
     }
-        , []);
+    , []);
 
     const dateFormater = (date) => {
         const dateObj = new Date(date);
@@ -97,8 +97,9 @@ const BillsPage = (props) => {
                             refreshControl={
                                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[COLORS.main3]} />
                             }
+                            style={{ height: '100%' }}
                         >
-                            <View style={{ gap: 20 }}>
+                            <View style={{ gap: 20, height: '100%' }}>
                                 {reminders.map((reminder, index) => (
                                     <TouchableOpacity
                                         style={styles.cardContainer}

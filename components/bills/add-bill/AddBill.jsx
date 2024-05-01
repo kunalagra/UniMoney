@@ -98,7 +98,7 @@ const AddTransactionPage = (props) => {
     const [isDateModalOpen, setIsDateModalOpen] = useState(false);
     const [amount, setAmount] = useState("");
     const [name, setName] = useState("");
-    const [reminder, setReminder] = useState("");
+    const [reminder, setReminder] = useState(reminderList[0].label);
 
     const setReminderValue = async () => {
         // console.log('Reminder set');
@@ -286,6 +286,7 @@ const AddTransactionPage = (props) => {
                             style={styles.upperButton}
                             activeOpacity={0.85}
                             onPress={() => { setReminderValue() }}
+                            disabled={name==='' || amount===''}
                         >
                             <Text style={styles.buttonText}>
                                 Save & Add more
@@ -295,6 +296,7 @@ const AddTransactionPage = (props) => {
                             style={styles.lowerButton}
                             activeOpacity={0.85}
                             onPress={() => { props.navigation.pop(), setReminderValue() }}
+                            disabled={name==='' || amount===''}
                         >
                             <Text style={styles.buttonText}>
                                 Save & Close
