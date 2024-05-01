@@ -33,9 +33,6 @@ const styles = StyleSheet.create({
     },
 
     profileContainer: {
-        flexDirection: 'row', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',  
         borderRadius: 12,
         paddingHorizontal: 10, 
         paddingVertical: 16,

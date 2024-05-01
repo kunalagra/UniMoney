@@ -1,6 +1,6 @@
 import { View, Text, SafeAreaView, StatusBar, ScrollView, TouchableOpacity, RefreshControl, Switch } from 'react-native'
 import styles from './budgetpage.style';
-import { icons, COLORS } from '../../../constants';
+import { icons, COLORS, FONT, SIZES } from '../../../constants';
 import React, { useState, useCallback, useEffect } from 'react';
 // import { budgetModeCategories } from '../../../constants/fakeData';
 import BudgetCard from './budgetcard/BudgetCard';
@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { REACT_APP_BACKEND_URL } from "@env";
+import { Button, ListItem } from '@rneui/themed';
 
 
 const BudgetPage = ({ navigateTo }) => {
@@ -197,19 +198,46 @@ const BudgetPage = ({ navigateTo }) => {
                                         No categories found
                                     </Text>
                                 ) : (
-                                    budgetModeCategories.map((item, index) => (
-                                        <BudgetCard
-                                            key={index}
-                                            title={item.details.name}
-                                            image={item.details.img}
-                                            currentSpends={item.currentSpend}
-                                            budgetSet={item.limit}
-                                            handlePress={() => {
-                                                setSelectedCategory(item);
-                                                setIsBottomBarOpen(true);
-                                            }}
-                                        />
-                                    ))
+                                    <View style={{ gap: 10 }}>
+                                        {budgetModeCategories.map((item, index) => (
+                                            <ListItem.Swipeable key={index} 
+                                                containerStyle={{ paddingVertical: 8, paddingHorizontal: 8, borderRadius: 12 }}
+                                                leftContent={(reset) => (
+                                                    <Button
+                                                        title="Info"
+                                                        onPress={() => {
+                                                            reset();
+                                                            setSelectedCategory(item);
+                                                            setIsBottomBarOpen(true);
+                                                        }}
+                                                        icon={{ name: 'info', color: 'white' }}
+                                                        buttonStyle={{ minHeight: '100%', borderRadius: 12 }}
+                                                        titleStyle={{ fontFamily: FONT.medium, fontSize: SIZES.regular, color: COLORS.white1 }}
+                                                    />
+                                                )}
+                                                rightContent={(reset) => (
+                                                    <Button
+                                                        title="Delete"
+                                                        onPress={() => reset()}
+                                                        icon={{ name: 'delete', color: 'white' }}
+                                                        buttonStyle={{ minHeight: '100%', backgroundColor: 'red', borderRadius: 12 }}
+                                                        titleStyle={{ fontFamily: FONT.medium, fontSize: SIZES.regular, color: COLORS.white1 }}
+                                                    />
+                                                )}
+                                            >
+                                                <BudgetCard
+                                                    title={item.details.name}
+                                                    image={item.details.img}
+                                                    currentSpends={item.currentSpend}
+                                                    budgetSet={item.limit}
+                                                    handlePress={() => {
+                                                        setSelectedCategory(item);
+                                                        setIsBottomBarOpen(true);
+                                                    }}
+                                                />
+                                            </ListItem.Swipeable>
+                                        ))}
+                                    </View>
                                 )}
 
                             </View>

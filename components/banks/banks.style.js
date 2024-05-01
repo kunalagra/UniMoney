@@ -123,8 +123,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 6
     },
     bankCard: {
-        flexDirection: "row",
-        alignItems: "center",
         width: "100%",
         backgroundColor: COLORS.green0,
         gap: 10,

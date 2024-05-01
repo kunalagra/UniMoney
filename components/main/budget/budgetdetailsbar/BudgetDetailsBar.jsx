@@ -5,8 +5,6 @@ import BudgetCard from "../budgetcard/BudgetCard";
 import styles from "./budgetdetailsbar.style";
 import { Dropdown } from "react-native-element-dropdown";
 import { useEffect, useState } from "react";
-// import { spendingCategories } from "../../../../utils";
-// import { budgetModeCategories } from "../../../../constants/fakeData";
 import { useSelector } from "react-redux";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -127,10 +125,12 @@ const BudgetDetailsBar = ({ visible, setVisibility, selectedCategory, setSelecte
                 </View>
 
                 <View style={{ paddingHorizontal: 10, alignItems: 'flex-end', paddingBottom: 20 }}>
-                    <CustomButton 
-                        title={'Remove'}
-                        inlineStyles={[{ backgroundColor: COLORS.red0, paddingVertical: 8, paddingHorizontal: 12 }]}
-                    />
+                    {!isAddCategory && (
+                        <CustomButton 
+                            title={'Remove'}
+                            inlineStyles={[{ backgroundColor: COLORS.red0, paddingVertical: 8, paddingHorizontal: 12 }]}
+                        />
+                    )}
                 </View>
 
                 <View style={styles.optionsContainer}>

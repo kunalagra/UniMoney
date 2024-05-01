@@ -164,16 +164,18 @@ const SettingsPage = (props) => {
                     </View>
 
                     <View style={styles.mainContainer}>
-                        <TouchableOpacity 
-                            onPress={() => {props.navigation.navigate('ProfilePage')}}
-                        >
-                            <LinearGradient
-                                colors={[ COLORS.main3, COLORS.main2, COLORS.main1, COLORS.main2, COLORS.main3 ]}
+                        <LinearGradient
+                            colors={[ COLORS.main3, COLORS.main2, COLORS.main1, COLORS.main2, COLORS.main3 ]}
+                            useAngle={true} 
+                            angle={135} 
+                            angleCenter={{x:0.5,y:0.5}}
                                 style={styles.profileContainer}
-                                useAngle={true} 
-                                angle={135} 
-                                angleCenter={{x:0.5,y:0.5}}
                             >
+                            <TouchableOpacity 
+                                style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',  }}
+                                onPress={() => {props.navigation.navigate('ProfilePage')}}
+                            >
+
                                 <View style={styles.profileDetails}>
                                     <Image
                                         source={ image ? {uri: image} : images.profileicon}
@@ -191,8 +193,8 @@ const SettingsPage = (props) => {
                                 <Text style={styles.profileContainerArrow}>
                                     {'>'}
                                 </Text>
-                            </LinearGradient>
-                        </TouchableOpacity>
+                            </TouchableOpacity>
+                        </LinearGradient>
 
                         {settingData.map((item, index) => (
                             <TouchableOpacity 

@@ -235,15 +235,17 @@ const Banks = ({ navigation }) => {
                         {linkedBanks.length!==0? 
                             linkedBanks.map((item, index) => {
                                 return (
-                                    <TouchableOpacity key={index}
-                                        onPress={() => navigation.navigate('TransactionByBank', { details: item })}
+                                    <LinearGradient
+                                        key={index}
+                                        colors={[ COLORS.main2, COLORS.main2, COLORS.main1, COLORS.main2, COLORS.main2 ]}
+                                        style={styles.bankCard}
+                                        useAngle={true} 
+                                        angle={135} 
+                                        angleCenter={{x:0.5,y:0.5}}
                                     >
-                                        <LinearGradient
-                                            colors={[ COLORS.main2, COLORS.main2, COLORS.main1, COLORS.main2, COLORS.main2 ]}
-                                            style={styles.bankCard}
-                                            useAngle={true} 
-                                            angle={135} 
-                                            angleCenter={{x:0.5,y:0.5}}
+                                        <TouchableOpacity
+                                            onPress={() => navigation.navigate('TransactionByBank', { details: item })}
+                                            style={{ flexDirection: "row", alignItems: "center" }}
                                         >
                                             {/* <View style={styles.imageView}> */}
                                                 <Image
@@ -257,8 +259,8 @@ const Banks = ({ navigation }) => {
                                                 <Text style={styles.bankName} numberOfLines={1}>{item.id.name}</Text>
                                                 <Text style={styles.bankAcc}>A/c No: XX {item.number}</Text>
                                             </View>
-                                        </LinearGradient>
-                                    </TouchableOpacity>
+                                        </TouchableOpacity>
+                                    </LinearGradient>
                                 )
                             }) : (
                                 <Text style={{ fontFamily: FONT.medium, color: COLORS.gray1, fontSize: SIZES.medium }}>

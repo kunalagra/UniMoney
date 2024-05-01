@@ -8,7 +8,7 @@ const BudgetCard = ({title="Monthly Budget", image=null, budgetSet, currentSpend
     const progress = Math.min(100, Math.round((currentSpends/budgetSet) * 100));
     
     return (
-        <TouchableOpacity 
+        <TouchableOpacity
             style={styles.container}
             onPress={handlePress}
         >
