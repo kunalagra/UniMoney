@@ -435,6 +435,7 @@ const InsightsPage = (props) => {
                                                 description={`${Math.round((item.amount/totalSpends).toFixed(2) * 100)}% of total spends`}
                                                 amount={item.amount}
                                                 isExpense={true}
+                                                acc={item.acc}
                                                 navigateTo={() => { props.navigation.navigate('TransactionByInsights', { alltransactions: spendTransactions, name: item.name }) }} 
                                             />
                                         )) : 
@@ -447,6 +448,7 @@ const InsightsPage = (props) => {
                                                 description={`${Math.round((item.amount/totalIncome).toFixed(2) * 100)}% of total income`}
                                                 amount={item.amount}
                                                 isExpense={false}
+                                                acc={item.acc}
                                                 navigateTo={() => { props.navigation.navigate('TransactionByInsights', { alltransactions: incomeTransactions, name: item.name }) }}
                                             />
                                         ))

@@ -11,7 +11,7 @@ import axios from 'axios';
 import { REACT_APP_BACKEND_URL } from "@env";
 import CustomButton from "../../../profilecreation/common/button/CustomButton";
 
-const BudgetDetailsBar = ({ visible, setVisibility, selectedCategory, setSelectedCategory, handleBudgetPress, isAddCategory, setIsAddCategory, budgetModeCategories, setRefreshing, navigateTo}) => {
+const BudgetDetailsBar = ({ visible, setVisibility, selectedCategory, setSelectedCategory, handleBudgetPress, isAddCategory, setIsAddCategory, budgetModeCategories, setRefreshing, navigateTo, handleDelete}) => {
 
     const { details, currentSpend, limit } = selectedCategory;
     const { Categories } = useSelector(state => state.transactiondata);
@@ -128,6 +128,7 @@ const BudgetDetailsBar = ({ visible, setVisibility, selectedCategory, setSelecte
                     {!isAddCategory && (
                         <CustomButton 
                             title={'Remove'}
+                            handlePress={() => handleDelete()}
                             inlineStyles={[{ backgroundColor: COLORS.red0, paddingVertical: 8, paddingHorizontal: 12 }]}
                         />
                     )}

@@ -82,7 +82,7 @@ const SettingUpPage = () => {
 
                 const messages = smsdata.filter((sms, index, self) =>
                     index === self.findIndex((t) => (
-                        t.txid === sms.txid && t.amount === sms.amount && t.type === sms.type
+                        (t.txid!==0 && sms.txid!==0 && t.txid === sms.txid) && t.amount === sms.amount && t.type === sms.type
                     ))
                 );
 

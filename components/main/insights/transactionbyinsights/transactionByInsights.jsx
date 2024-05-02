@@ -286,6 +286,7 @@ const TransactionByInsights = (props) => {
                                     navigateTo={props.navigation.navigate}
                                     category={item.category.name}
                                     id={item._id}
+                                    acc={item.acc}
                                 />
                                 ))}
                             </View>

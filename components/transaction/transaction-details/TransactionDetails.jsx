@@ -72,7 +72,7 @@ const CustomDropdown = ({data, value, setValue}) => {
     )
 }
 
-const EditModal = ({ editModalOpen, setEditModalOpen, selTypeOfPayment, selAccount, selReceiverID, selCategory, selAmount, selDesc }) => {
+const EditModal = ({ editModalOpen, setEditModalOpen, selTypeOfPayment, selAccount, selReceiverID, selCategory, selAmount, selDesc, tranID, updatedTransaction }) => {
 
     const [accountList, setAccountList] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
@@ -126,12 +126,35 @@ const EditModal = ({ editModalOpen, setEditModalOpen, selTypeOfPayment, selAccou
         getInitialData();
     }, []);
 
-    const handleUpdate = () => {
+    const handleUpdate = async () => {
       setUpdating(true);
-      setTimeout(() => {
+      console.log(tranID);
+      const options = {
+        method: 'PUT',
+        url: `${REACT_APP_BACKEND_URL}/transaction/${tranID}`,
+        headers: {
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + await AsyncStorage.getItem('token')
+        },
+        data: {
+            category: category,
+            amount: amount,
+            name: receiverID,
+            acc: account,
+            type: typeOfPayment,
+            desc: desc
+        }
+    };
+    try {
+        const response = await axios(options);
         setUpdating(false);
-        setEditModalOpen(false);
-      }, 1000);
+        updatedTransaction();
+    }
+    catch (error) {
+        setUpdating(false);
+        alert("Error updating transaction");
+        console.log(error);
+    }
     }
 
     return (
@@ -240,13 +263,6 @@ const EditModal = ({ editModalOpen, setEditModalOpen, selTypeOfPayment, selAccou
 
                 <View style={styles.rowField}>
                     <Text style={styles.rowHeader}>
-                        Category
-                    </Text>
-                    <CustomDropdown data={categoryList} value={category} setValue={setCategory} />
-                </View>
-
-                <View style={styles.rowField}>
-                    <Text style={styles.rowHeader}>
                         Amount
                     </Text>
                     <Input
@@ -283,7 +299,27 @@ const EditModal = ({ editModalOpen, setEditModalOpen, selTypeOfPayment, selAccou
     )
 }
 
-const DeleteModal = ({ deleteModalOpen, setDeleteModalOpen }) => {
+const DeleteModal = ({ deleteModalOpen, setDeleteModalOpen, tranID, navigation }) => {
+
+    const handleDelete = async () => {
+        const options = {
+            method: 'DELETE',
+            url: `${REACT_APP_BACKEND_URL}/transaction/${tranID}`,
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " + await AsyncStorage.getItem('token')
+            }
+        };
+        try {
+            const response = await axios(options);
+            console.log(response.data);
+            navigation.pop();
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <Dialog
             animationType="slide"
@@ -309,7 +345,7 @@ const DeleteModal = ({ deleteModalOpen, setDeleteModalOpen }) => {
                     />
                     <CustomButton
                         title="Confirm"
-                        handlePress={() => setDeleteModalOpen(false)}
+                        handlePress={() => handleDelete()}
                         inlineStyles={[{ paddingVertical: 8, paddingHorizontal: 12, backgroundColor: COLORS.white3 }]}
                         textStyles={[{ color: COLORS.red0 }]}
                     />
@@ -321,14 +357,14 @@ const DeleteModal = ({ deleteModalOpen, setDeleteModalOpen }) => {
 
 const TransactionDetailsPage = (props) => {
     
-    const transaction = props.route.params;
+    const [transaction, setTransaction] = useState(props.route.params);
     const [selectedCategory, setSelectedCategory] = useState(transaction.category);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
     const { ArrowleftIcon } = icons;
     const { Categories } = useSelector(state => state.transactiondata);
-    const isCredited = false;
+    const [isCredited, setIsCredited] = useState(transaction.isExpense ? false : true);
 
     const [refreshing, setRefreshing] = useState(false);
 
@@ -336,6 +372,35 @@ const TransactionDetailsPage = (props) => {
         setRefreshing(true);
         setTimeout(() => setRefreshing(false), 1000);
     }, []);
+
+    const updatedTransaction = async () => {
+        const options = {
+            method: 'GET',
+            url: `${REACT_APP_BACKEND_URL}/transaction/${transaction.id}`,
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " + await AsyncStorage.getItem('token')
+            }
+        };
+        try {
+            const response = await axios(options);
+            // console.log(response.data);
+            // only update the name, amount, category and isExpense and remaining will be same
+            setTransaction({
+                ...transaction,
+                name: response.data.name,
+                amount: response.data.amount,
+                category: response.data.category.name,
+                isExpense: response.data.type === "debit",
+            });
+            setSelectedCategory(response.data.category.name);
+            setIsCredited(response.data.type === "credit");
+            setEditModalOpen(false);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <SafeAreaView style={{backgroundColor: COLORS.white2}}>
@@ -348,15 +413,19 @@ const TransactionDetailsPage = (props) => {
                 editModalOpen={editModalOpen} 
                 setEditModalOpen={setEditModalOpen}
                 selTypeOfPayment={isCredited? 'credit' : 'debit'}
-                selAccount={0}
+                selAccount={transaction.acc}
                 selReceiverID={transaction.name}
                 selDesc={''}
                 selCategory={selectedCategory}
                 selAmount={transaction.amount}
+                tranID={transaction.id}
+                updatedTransaction={updatedTransaction}
             />
             <DeleteModal 
                 deleteModalOpen={deleteModalOpen}
                 setDeleteModalOpen={setDeleteModalOpen}
+                tranID={transaction.id}
+                navigation={props.navigation}
             />
 
             <ScrollView style={{width: '100%'}} 

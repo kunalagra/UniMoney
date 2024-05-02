@@ -48,7 +48,7 @@ const HomePage = ({ navigateTo }) => {
         const isCredited = (str) => {
             return /(?:credited|received|deposited|has sent)/i.test(str);
         };
-        const bankKeywordsRegex = /(credited|debited|payment|withdraw|received|sent)/i;
+        const bankKeywordsRegex = /(credited|debited|payment|withdraw|received|sent|available balance)/i;
         const spamKeywordsRegex = /(Congratulations|won|win|prize|lucky|offer|discount|sale|reward|requested money|RAZORPAY|PAYPAL)/i;
 
         console.log('Permission granted');
@@ -111,10 +111,11 @@ const HomePage = ({ navigateTo }) => {
                 // const oldMessages = bankMessages.filter((sms) => {
                 //     return new Date(sms.date) > date;
                 // });
+                // console.log(smsdata);
 
                 const messages = smsdata.filter((sms, index, self) =>
                     index === self.findIndex((t) => (
-                        t.txid === sms.txid && t.amount === sms.amount && t.type === sms.type
+                        (t.txid!==0 && sms.txid!==0 && t.txid === sms.txid) && t.amount === sms.amount && t.type === sms.type
                     ))
                 );
 
@@ -286,6 +287,7 @@ const HomePage = ({ navigateTo }) => {
                 } catch (error) {
                     console.log(error);
                 }
+                // console.log(Object.values(response.data.userInfo.bank));
                 setName(response.data.user.username);
                 dispatch(setUsername(response.data.user.username));
                 dispatch(setEmail(response.data.user.email));
@@ -453,6 +455,7 @@ const HomePage = ({ navigateTo }) => {
                                         navigateTo={navigateTo}
                                         category={item.category.name}
                                         id={item._id}
+                                        acc={item.acc}
                                     />
                                 ))}
                             </View>

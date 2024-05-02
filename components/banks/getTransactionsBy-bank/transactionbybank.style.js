@@ -130,7 +130,8 @@ const styles = StyleSheet.create({
         position: 'absolute', 
         bottom: 50, 
         left: '50%', 
-        transform: [{ translateX: -75 }]
+        transform: [{ translateX: -75 }],
+        gap: 20
     },
 
     addButton: {
@@ -145,6 +146,14 @@ const styles = StyleSheet.create({
         fontFamily: FONT.medium, 
         color: COLORS.white1,
         fontSize: SIZES.regular
+    },
+    deleteButton :{
+        backgroundColor: COLORS.red1, 
+        paddingVertical: 12, 
+        paddingHorizontal: 20, 
+        borderRadius: 12, 
+        alignSelf: 'center',
+        ...SHADOWS.small
     }
 
 });

@@ -303,6 +303,7 @@ const HistoryPage = ({ navigateTo }) => {
                                         navigateTo={navigateTo}
                                         category={item.category.name}
                                         id={item._id}
+                                        acc={item.acc}
                                     />
                                     ))}
                                 </View>

@@ -38,6 +38,28 @@ const BudgetPage = ({ navigateTo }) => {
         return isMonthlyBudget === 'true';
     }
 
+    const handleDelete = async (title) => {
+        const options = {
+            method: 'PUT',
+            url: `${REACT_APP_BACKEND_URL}/category/limit`,
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + await AsyncStorage.getItem('token')
+            },
+            data: {
+                name: title,
+                limit: 0
+            }
+        }
+        try {
+            const response = await axios(options);
+            // console.log(response.data);
+            setRefreshing(true);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
         const getsettings = async () => {
             const isMonthlyBudget = await AsyncStorage.getItem('BudgetMode');
@@ -122,6 +144,7 @@ const BudgetPage = ({ navigateTo }) => {
                     budgetModeCategories={budgetModeCategories}
                     setRefreshing={setRefreshing}
                     navigateTo={navigateTo}
+                    handleDelete={handleDelete}
                 />
 
                 <AmountBottomBar
@@ -218,7 +241,7 @@ const BudgetPage = ({ navigateTo }) => {
                                                 rightContent={(reset) => (
                                                     <Button
                                                         title="Delete"
-                                                        onPress={() => reset()}
+                                                        onPress={() => { handleDelete(item.details.name); reset(); }}
                                                         icon={{ name: 'delete', color: 'white' }}
                                                         buttonStyle={{ minHeight: '100%', backgroundColor: 'red', borderRadius: 12 }}
                                                         titleStyle={{ fontFamily: FONT.medium, fontSize: SIZES.regular, color: COLORS.white1 }}

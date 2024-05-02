@@ -9,6 +9,9 @@ import MonthPicker from 'react-native-month-year-picker';
 import CustomButton from '../../profilecreation/common/button/CustomButton';
 import DatePicker from 'react-native-date-picker';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { REACT_APP_BACKEND_URL } from '@env';
 
 
 const TransactionByBank = (props) => {
@@ -51,6 +54,25 @@ const TransactionByBank = (props) => {
         console.log(date.getMonth(), date.getFullYear());
         if (date.getMonth()!==11) setDate(new Date(date.getFullYear(), date.getMonth()+1));
         else setDate(new Date(date.getFullYear()+1, 0));
+    }
+
+    const handleDelete = async () => {
+        const options = {
+            method: 'DELETE',
+            url: `${REACT_APP_BACKEND_URL}/bank/${details.id._id}`,
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " + await AsyncStorage.getItem('token')
+            }
+        };
+        try {
+            const response = await axios(options);
+            console.log(response.data);
+            props.navigation.pop();
+        }
+        catch (error) {
+            console.log(error);
+        }
     }
 
     useEffect(() => {
@@ -214,6 +236,7 @@ const TransactionByBank = (props) => {
                                     navigateTo={props.navigation.navigate}
                                     category={item.category.name}
                                     id={item._id}
+                                    acc={item.acc}
                                 />
                                 ))}
                             </View>
@@ -226,7 +249,11 @@ const TransactionByBank = (props) => {
                     <TouchableOpacity activeOpacity={0.85} style={styles.addButton} onPress={() => props.navigation.navigate('AddTransactionPage')}>
                         <Text style={styles.addButtonText}>Add Transaction</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.85} style={styles.deleteButton} onPress={() => handleDelete()}>
+                        <Text style={styles.addButtonText}>Delete</Text>
+                    </TouchableOpacity>
                 </View>
+                
             </View>
 
         </SafeAreaView>
