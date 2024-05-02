@@ -262,6 +262,7 @@ const HomePage = ({ navigateTo }) => {
     }
 
     const fetchData = async () => {
+        // console.log(await AsyncStorage.getItem('token'));
         const options = {
             method: 'GET',
             url: `${REACT_APP_BACKEND_URL}/auth/profile`,
@@ -288,6 +289,7 @@ const HomePage = ({ navigateTo }) => {
                     console.log(error);
                 }
                 // console.log(Object.values(response.data.userInfo.bank));
+                firstTime();
                 setName(response.data.user.username);
                 dispatch(setUsername(response.data.user.username));
                 dispatch(setEmail(response.data.user.email));
@@ -296,36 +298,34 @@ const HomePage = ({ navigateTo }) => {
             });
         } catch (error) {
             // console.log("Error in fetching profile data");
-            console.log(await AsyncStorage.getItem('token'))
+            // console.log(await AsyncStorage.getItem('token'))
             console.log(error);
         }
         
     }
 
+    const firstTime = async () => {
+        const options = {
+            method: 'GET',
+            url: `${REACT_APP_BACKEND_URL}/streak/visit`,
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + await AsyncStorage.getItem('token')
+            }
+        };
+        try {
+            const response = await axios.request(options);
+            // console.log(response.data);
+            fetchTransactions();
+        } catch (error) {
+            // console.log("Error in first time visit");
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
         setLoading(true);
-        
         fetchData();
-        const firstTime = async () => {
-            const options = {
-                method: 'GET',
-                url: `${REACT_APP_BACKEND_URL}/streak/visit`,
-                headers: {
-                    "Content-type": "application/json",
-                    "Authorization": "Bearer " + await AsyncStorage.getItem('token')
-                }
-            };
-            try {
-                const response = await axios.request(options);
-                // console.log(response.data);
-            } catch (error) {
-                // console.log("Error in first time visit");
-                console.log(error);
-            }
-        }
-
-        firstTime();
-        fetchTransactions();
     }, []);
 
     const data = [
