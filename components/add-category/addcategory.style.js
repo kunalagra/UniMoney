@@ -47,13 +47,13 @@ const styles = StyleSheet.create({
     },
 
     inputOuterContainer: {
-        width: '60%',
+        width: 200,
         paddingHorizontal: 0,
         height: 50
     },
 
     inputInnerContainer: {
-        width: '100%',
+        alignSelf: 'stretch',
         borderColor: COLORS.white5,
         borderRadius: 8,
         borderWidth: 1,
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     },
 
     inputStyle: {
-        width: '100%',
+        alignSelf: 'stretch',
         fontSize: SIZES.medium - 2,
         color: COLORS.gray2,
         fontFamily: FONT.regular,
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     },
 
     imageContainer: {
-        width: "60%",
+        width: 200,
         height: "100%",
         borderWidth: 1,
         borderColor: COLORS.white5,
@@ -90,13 +90,13 @@ const styles = StyleSheet.create({
     },
 
     imageStyle: {
-        width: "100%",
+        width: 'auto',
         height: "100%",
         borderRadius: 8
     },
 
     imageButton: {
-        width: "60%",
+        width: 200,
         height: "12%",
         backgroundColor: COLORS.main3,
         borderRadius: 8,

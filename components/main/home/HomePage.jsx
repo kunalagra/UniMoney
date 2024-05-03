@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, SafeAreaView, StatusBar, Image, ScrollView, TouchableOpacity,RefreshControl } from 'react-native';
+import { View, Text, SafeAreaView, StatusBar, Image, ScrollView, TouchableOpacity,RefreshControl, Dimensions } from 'react-native';
 import { COLORS, images } from '../../../constants'
 import ExpenseCard from '../common/cards/expense/ExpenseCard';
 import StreakBanner from './streakbanner/StreakBanner';
@@ -31,8 +31,6 @@ const HomePage = ({ navigateTo }) => {
         fetchTransactions();
         setTimeout(() => setRefreshing(false), 1000);
     }, []);
-
-    const [isChatModalOpen, setIsChatModalOpen] = useState(false);
 
     const [transactionsData, setTransactionsData] = useState([]);
     const [name, setName] = useState('');
@@ -360,7 +358,7 @@ const HomePage = ({ navigateTo }) => {
                     refreshControl={
                         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[COLORS.main3]} />
                     }
-                    style={{ width: '100%', height: '100%'}}
+                    style={{ height: '100%'}}
                 >
 
                         <SkeletonPlaceholder borderRadius={4} direction='right'>
@@ -369,15 +367,15 @@ const HomePage = ({ navigateTo }) => {
                                     <SkeletonPlaceholder.Item width={40} height={40} borderRadius={100} />
                                     <SkeletonPlaceholder.Item width={40} height={40} borderRadius={100} />
                                 </View>
-                                <SkeletonPlaceholder.Item width={'70%'} height={50} borderRadius={12} />
-                                <SkeletonPlaceholder.Item width={'100%'} height={150} borderRadius={12} />
-                                <SkeletonPlaceholder.Item width={'100%'} height={150} borderRadius={12} />
+                                <SkeletonPlaceholder.Item width={240} height={50} borderRadius={12} />
+                                <SkeletonPlaceholder.Item height={150} borderRadius={12} alignSelf='stretch' />
+                                <SkeletonPlaceholder.Item height={150} borderRadius={12} alignSelf='stretch' />
                                 <View style={{ marginTop: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                                    <SkeletonPlaceholder.Item width={'60%'} height={40} borderRadius={12} />
+                                    <SkeletonPlaceholder.Item width={200} height={40} borderRadius={12} />
                                     <SkeletonPlaceholder.Item width={70} height={25} borderRadius={8} />
                                 </View>
-                                <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
-                                <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
+                                <SkeletonPlaceholder.Item height={60} borderRadius={12} alignSelf='stretch' />
+                                <SkeletonPlaceholder.Item height={60} borderRadius={12} alignSelf='stretch' />
                             </SkeletonPlaceholder.Item>
                         </SkeletonPlaceholder>
                 </ScrollView>

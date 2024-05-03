@@ -4,21 +4,22 @@ import { SIZES, COLORS, FONT } from "../../../../../constants";
 const styles = StyleSheet.create({
 
     cardContainer: {
-        width: '100%', 
+        alignSelf: 'stretch',
         paddingVertical: 10, 
         paddingHorizontal: 15, 
         backgroundColor: COLORS.white1, 
         flexDirection: 'row', 
         justifyContent: 'space-between', 
         alignItems: 'center', 
-        borderRadius: 10
+        borderRadius: 10,
+        gap: 5
     },
 
     transactionDetailsContainer: {
         flexDirection: 'row', 
         alignItems: 'center', 
         gap: 20, 
-        width: '50%'
+        flex: 1.3
     },
 
     transactionImage: {
@@ -45,14 +46,15 @@ const styles = StyleSheet.create({
     },
 
     amountDetailsContainer: {
-        width: '30%', 
+        flex: 1,
+        justifyContent: 'flex-end',
         flexDirection: 'row', 
         alignItems: 'flex-end', 
         gap: 10
     },
 
     amountContainer: {
-        width: '70%', 
+        flex: 0.7, 
         flexDirection: 'row', 
         alignItems: 'center', 
         justifyContent: 'flex-end'

@@ -39,6 +39,7 @@ const BudgetPage = ({ navigateTo }) => {
     }
 
     const handleDelete = async (title) => {
+        setIsBottomBarOpen(false);
         const options = {
             method: 'PUT',
             url: `${REACT_APP_BACKEND_URL}/category/limit`,
@@ -163,7 +164,7 @@ const BudgetPage = ({ navigateTo }) => {
                     <View style={styles.mainContainer}>
                         <View style={styles.navbar}>
                             <TouchableOpacity
-                                onPress={() => { }}
+                                onPress={() => navigateTo('Home')}
                             >
                                 <ArrowleftIcon
                                     style={styles.arrowLeftIcon}

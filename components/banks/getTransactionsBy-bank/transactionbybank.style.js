@@ -9,14 +9,14 @@ const styles = StyleSheet.create({
     },
 
     mainContainer: {
-        width: '100%', 
+        alignSelf: 'stretch',
         marginTop: 10, 
         gap: 20, 
         marginBottom: 20 
     },
 
     navbar: {
-        width: '100%', 
+        alignSelf: 'stretch',
         flexDirection: 'row', 
         justifyContent: 'flex-start', 
         alignItems: 'center', 
@@ -36,13 +36,13 @@ const styles = StyleSheet.create({
     },
 
     container: {
-        width: '100%', 
+        alignSelf: 'stretch',
         paddingHorizontal: 20, 
         gap: 20
     },
 
     transactionsHeadingContainer: {
-        width: '100%',
+        alignSelf: 'stretch',
         flexDirection: 'row', 
         justifyContent: 'space-between', 
         alignItems: 'center'

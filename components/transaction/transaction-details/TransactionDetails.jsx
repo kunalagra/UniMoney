@@ -213,12 +213,14 @@ const EditModal = ({ editModalOpen, setEditModalOpen, selTypeOfPayment, selAccou
                     <CustomDropdown data={typeOfPaymentList} value={typeOfPayment} setValue={setTypeOfPayment} />
                 </View>
 
-                <View style={styles.rowField}>
-                    <Text style={styles.rowHeader}>
-                        { typeOfPayment === "debit" ? "Debit\n" : "Credit\n" }Account
-                    </Text>
-                    <CustomDropdown data={accountList} value={account} setValue={setAccount} />
-                </View>
+                {accountList.length > 0 && (
+                    <View style={styles.rowField}>
+                        <Text style={styles.rowHeader}>
+                            { typeOfPayment === "debit" ? "Debit\n" : "Credit\n" }Account
+                        </Text>
+                        <CustomDropdown data={accountList} value={account} setValue={setAccount} />
+                    </View>
+                )}
 
                 <View style={styles.rowField}>
                     <Text style={styles.rowHeader}>

@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 10,
-        width: '100%', 
+        alignSelf: 'stretch', 
         paddingVertical: 10, 
         paddingHorizontal: 15, 
         backgroundColor: COLORS.white1,  
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: 'flex-start',
-        width: "100%",
+        alignSelf: 'stretch',
         height: 45,
         backgroundColor: COLORS.white2,
         borderRadius: 8,
@@ -117,13 +117,13 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     bankContainer: {
-        width: "100%",
+        alignSelf: 'stretch',
         marginTop: 20,
         gap: 20,
         paddingHorizontal: 6
     },
     bankCard: {
-        width: "100%",
+        alignSelf: 'stretch',
         backgroundColor: COLORS.green0,
         gap: 10,
         borderRadius: 12,

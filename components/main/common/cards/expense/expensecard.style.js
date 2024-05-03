@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     },
 
     cardDetailsContainer: {
-        width: '100%', 
+        alignSelf: 'stretch',
         padding: 15, 
         gap: 15
     },
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     },
 
     tabsContainer: {
-        width: '100%', 
+        alignSelf: 'stretch',
         flexDirection: 'row', 
         justifyContent: 'center', 
         alignItems: 'center', 
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     }),
 
     amountContainer: {
-        width: '100%', 
+        alignSelf: 'stretch',
         justifyContent: 'center', 
         alignItems: 'center'
     },
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     }),
 
     insightsLinkContainer: {
-        width: '100%', 
+        alignSelf: 'stretch',
         justifyContent: 'center', 
         alignItems: 'center'
     },

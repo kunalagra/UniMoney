@@ -8,58 +8,14 @@ const styles = StyleSheet.create({
         minHeight: '100%'
     },
 
-    mainContainer: {
-        width: '100%', 
+    mainContainer: { 
         marginTop: 10, 
         gap: 20, 
         marginBottom: 20 
     },
 
-    userInputContainer: {
-        width: '100%', 
-        height: 52, 
-        flexDirection: 'row', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        gap: 5
-    },
-
-    inputOuterContainer: {
-        width: '80%', 
-        paddingHorizontal: 0, 
-        height: 50, 
-        flexGrow: 1
-    },
-
-    inputInnerContainer: {
-        borderColor: COLORS.white5, 
-        borderRadius: 8, 
-        borderWidth: 1, 
-        backgroundColor: COLORS.white3
-    },
-
-    inputStyle: {
-        fontSize: SIZES.regular, 
-        color: COLORS.gray2, 
-        fontFamily: FONT.regular, 
-        paddingHorizontal: 15
-    },
-
-    inputSendButton: {
-        backgroundColor: COLORS.main3, 
-        paddingVertical: 12, 
-        paddingHorizontal: 12, 
-        borderRadius: 8
-    },
-
-    inputSendIcon: {
-        width: 24, 
-        height: 24, 
-        tintColor: COLORS.white1
-    },
-
     navbar: {
-        width: '100%', 
+        alignSelf: 'stretch',
         flexDirection: 'row', 
         justifyContent: 'flex-end', 
         alignItems: 'center', 
@@ -80,7 +36,7 @@ const styles = StyleSheet.create({
     },
 
     nameContainer: {
-        width: '100%', 
+        alignSelf: 'stretch',
         paddingHorizontal: 20
     },
 
@@ -91,7 +47,7 @@ const styles = StyleSheet.create({
     },
 
     expenseCardsContainer: {
-        width: '100%'
+        alignSelf: 'stretch',
     },
 
     expenseCardsList: {
@@ -101,12 +57,12 @@ const styles = StyleSheet.create({
     },
 
     recentTransactionsContainer: {
-        width: '100%', 
+        alignSelf: 'stretch',
         paddingHorizontal: 20, gap: 20
     },
 
     transactionsHeadingContainer: {
-        width: '100%', 
+        alignSelf: 'stretch',
         flexDirection: 'row', 
         alignItems: 'flex-end', 
         justifyContent: 'space-between'

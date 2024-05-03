@@ -4,7 +4,7 @@ import { SIZES, COLORS, FONT, SHADOWS } from "../../../../constants";
 const styles = StyleSheet.create({
 
     container: {
-        width: '100%', 
+        alignSelf: 'stretch',
         paddingHorizontal: 20
     },
 
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     },
 
     gradientBackground: {
-        width: '100%', 
+        alignSelf: 'stretch',
         height: 150, 
         paddingHorizontal: 8, 
         paddingVertical: 5, 
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     },
 
     textContainer: {
-        width: '50%', 
+        flex: 1, 
         justifyContent: 'center', 
         alignItems: 'center'
     },
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     },
 
     image: {
-        width: '100%', 
+        width: 135, 
         height: '100%', 
         resizeMode: 'contain'
     }

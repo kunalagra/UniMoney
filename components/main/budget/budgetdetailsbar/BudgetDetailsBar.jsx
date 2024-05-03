@@ -128,7 +128,7 @@ const BudgetDetailsBar = ({ visible, setVisibility, selectedCategory, setSelecte
                     {!isAddCategory && (
                         <CustomButton 
                             title={'Remove'}
-                            handlePress={() => handleDelete()}
+                            handlePress={() => handleDelete(details.name)}
                             inlineStyles={[{ backgroundColor: COLORS.red0, paddingVertical: 8, paddingHorizontal: 12 }]}
                         />
                     )}

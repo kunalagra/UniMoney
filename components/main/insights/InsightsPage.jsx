@@ -295,7 +295,7 @@ const InsightsPage = (props) => {
                 <View style={styles.mainContainer}>
                     <View style={styles.navbar}>
                         <TouchableOpacity
-                            onPress={() => {}}
+                            onPress={() => props.navigation.navigate('Home')}
                         >
                             <ArrowleftIcon 
                                 style={styles.arrowLeftIcon}
