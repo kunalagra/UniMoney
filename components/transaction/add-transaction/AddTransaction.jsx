@@ -66,7 +66,10 @@ const AddTransactionPage = (props) => {
     //     { label: "Travel", value: "travel" },
     // ];
 
-    const [accountList, setAccountList] = useState([]);
+    const [accountList, setAccountList] = useState([{
+        label: "No Account Selected",
+        value: 0
+    }]);
     const [categoryList, setCategoryList] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -83,12 +86,14 @@ const AddTransactionPage = (props) => {
             };
             try {
                 const response = await axios(options);
+                if (response.data.bank.length !== 0) {
                 setAccountList(response.data.bank.map((item) => {
                     return {
-                        label: item.id.name,
-                        value: item.number
+                        label: item.details.name,
+                        value: item.details.id
                     }
                 }));
+            }
                 setCategoryList(response.data.category.map((item) => {
                     // console.log(item);
                     if (item.details)
@@ -106,7 +111,7 @@ const AddTransactionPage = (props) => {
     }, []);
 
     const postTransaction = async () => {
-        if (amount === "" || category === "" || desc === "") {
+        if (amount === "" || category === "") {
             alert("Please fill all the fields");
             return;
         }
@@ -121,10 +126,12 @@ const AddTransactionPage = (props) => {
                 List : [{
                     type: typeOfPayment,
                     amount: amount,
-                    category: category,
+                    category: {
+                        name: category
+                    },
                     date: date.getTime(),
                     acc: account,
-                    name: desc,
+                    name: receiverID,
                     txid: 0
                 }]
             }

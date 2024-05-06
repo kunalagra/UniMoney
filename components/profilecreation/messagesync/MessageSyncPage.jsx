@@ -1,4 +1,4 @@
-import { View, SafeAreaView, StatusBar, Image, PermissionsAndroid, Linking } from 'react-native';
+import { View, SafeAreaView, StatusBar, Image, PermissionsAndroid, Linking, ToastAndroid } from 'react-native';
 import styles from './messagesyncpage.style';
 import CustomProgress from '../common/progress/CustomProgress';
 import { COLORS, images } from '../../../constants';
@@ -13,10 +13,7 @@ const MessageSyncPage = (props) => {
 
     const requestReadSmsPermission = async () => {
         try {
-            const permCheck = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_SMS);
-            if (permCheck === PermissionsAndroid.RESULTS.GRANTED) {
-                setIsGranted(true);
-            } else {
+            
                 const permReq = await PermissionsAndroid.request(
                     PermissionsAndroid.PERMISSIONS.READ_SMS,
                     {
@@ -27,10 +24,13 @@ const MessageSyncPage = (props) => {
                 if (permReq === PermissionsAndroid.RESULTS.GRANTED) {
                     setIsGranted(true);
                 } else {
-                    Linking.openSettings();
+                    ToastAndroid.show('Permission denied', ToastAndroid.SHORT);
+                    setTimeout(() => {
+                        Linking.openSettings();
+                      }, 2000);
                 }
             }
-        } catch (err) {
+        catch (err) {
             // console.log(err.message);
         }
     }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, SafeAreaView, StatusBar, Image, ScrollView, TouchableOpacity,RefreshControl, Dimensions } from 'react-native';
+import { View, Text, SafeAreaView, StatusBar, Image, ScrollView, TouchableOpacity,RefreshControl, PermissionsAndroid, ToastAndroid } from 'react-native';
 import { COLORS, images } from '../../../constants'
 import ExpenseCard from '../common/cards/expense/ExpenseCard';
 import StreakBanner from './streakbanner/StreakBanner';
@@ -321,9 +321,36 @@ const HomePage = ({ navigateTo }) => {
         }
     }
 
+    const requestReadSmsPermission = async () => {
+        try {
+            const permCheck = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_SMS);
+            if (permCheck === PermissionsAndroid.RESULTS.GRANTED) {
+                fetchData();
+            } else {
+                const permReq = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.READ_SMS,
+                    {
+                        title: "Unimoney",
+                        message: "Allow us to read SMS messages"
+                    }
+                );
+                if (permReq === PermissionsAndroid.RESULTS.GRANTED) {
+                    fetchData();
+                } else {
+                    ToastAndroid.show('Permission denied', ToastAndroid.SHORT);
+                    setTimeout(() => {
+                        Linking.openSettings();
+                    }, 2000);
+                }
+            }
+        } catch (err) {
+            // console.log(err.message);
+        }
+    }
+
     useEffect(() => {
         setLoading(true);
-        fetchData();
+        requestReadSmsPermission();
     }, []);
 
     const data = [
