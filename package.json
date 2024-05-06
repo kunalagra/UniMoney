@@ -47,7 +47,7 @@
     "react-native-svg-transformer": "^1.1.0",
     "react-native-vector-icons": "^10.0.2",
     "react-redux": "^9.0.4",
-    "redux": "^5.0.0",
+    "redux": "^5.0.1",
     "sync-storage": "^0.4.2",
     "transaction-sms-parser": "github:kunalagra/transaction-sms-parser"
   },
