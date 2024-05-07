@@ -140,13 +140,13 @@ const AddCategory = (props) => {
                         <Text style={styles.imageRowHeader}>
                             Image
                         </Text>
-                        <View style={styles.imageContainer}>
+                        <TouchableOpacity style={styles.imageContainer} onPress={chooseImage}>
                             <Image
                                 source={imageUri ? { uri: imageUri } : images.category}
                                 resizeMode="contain"
                                 style={styles.imageStyle}
                             />
-                        </View>
+                        </TouchableOpacity>
                     </View>
                     <TouchableOpacity
                         style={styles.imageButton}

@@ -12,16 +12,11 @@ import LinearGradient from "react-native-linear-gradient";
 
 
 const Banks = ({ navigation }) => {
-    // display the bank list contains the following details:
-    // - bank name
-    // - bank logo
-    // - bank code
-    // - bank website
 
     const [banks, setBanks] = useState([])
     const [modalVisible, setModalVisible] = useState(false);
     const [bankName, setBankName] = useState('');
-    const [bankDetails, setBankDetails] = useState({});
+    const [bankDetails, setBankDetails] = useState(null);
     const [bankAcc, setBankAcc] = useState('');
 
     const { alltransactions } = useSelector(state => state.transactiondata);
@@ -87,6 +82,33 @@ const Banks = ({ navigation }) => {
         }
     }
 
+    const selectBank = async () => {
+    
+        const options = {
+            method: 'POST',
+            url: `${REACT_APP_BACKEND_URL}/bank/add`,
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + await AsyncStorage.getItem('token')
+            },
+            data: {
+                bankId: bankDetails._id,
+                number: bankAcc
+            }
+        };
+        try {
+            const response = await axios.request(options);
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            getMyBanks();
+            setModalVisible(!modalVisible);
+            setBankDetails(null);
+            setBankName('');
+        }
+    }
+
     useEffect(() => {
         getMyBanks();
     }, [refreshing]);
@@ -112,23 +134,24 @@ const Banks = ({ navigation }) => {
                 overlayStyle={styles.centeredView}
             >
                     <Input
-                        leftIcon={<Icon name="search" color={"#ced4da"} size={16} />}
+                        leftIcon={<Icon name="search" color={COLORS.gray2} size={16} />}
                         label="Enter Bank Name"
                         style={{
-                            fontSize: 16,
-                            color: "black",
+                            fontSize: 15,
+                            color: COLORS.gray3,
+                            fontFamily: FONT.medium
                         }}
-                        labelStyle={{ fontSize: 14, fontWeight: "400", color: COLORS.gray2, left: 20 }}
+                        labelStyle={{ fontSize: 12, fontWeight: "400", color: COLORS.gray2, left: 15, fontFamily: FONT.medium }}
                         inputContainerStyle={{ borderBottomWidth: 0, top: -10, left: -10 }}
                         inputStyle={{ color: "black", height: 20 }}
-                        containerStyle={{ borderBottomColor: COLORS.main3, borderBottomWidth: 2.5, width: "100%", height: 55, marginTop: 20 }}
+                        containerStyle={{ borderBottomColor: COLORS.main3, borderBottomWidth: 2.5, alignSelf: 'stretch', height: 55, marginTop: 20 }}
                         cursorColor={COLORS.main3}
                         selectionColor={COLORS.green1}
                         autoFocus={true}
                         onChangeText={(value) => setBankName(value)}
                         value={bankName}
                     />
-                    <ScrollView style={{ marginVertical: 30, width: "100%", paddingHorizontal: 2 }}>
+                    <ScrollView style={{ marginVertical: 30, alignSelf: 'stretch', paddingHorizontal: 2 }}>
                         {
                             banks.filter((item) => {
                                 if (bankName == "") {
@@ -138,7 +161,7 @@ const Banks = ({ navigation }) => {
                                 }
                             }).map((item, index) => {
                                 return (
-                                    <TouchableOpacity key={index} style={styles.bankDetails}
+                                    <TouchableOpacity key={index} style={[styles.bankDetails, bankDetails && bankDetails.name===item.name && { backgroundColor: COLORS.white5 }]}
                                         activeOpacity={1}
                                         onPress={() => { setBankDetails(item), setBankName(item.name) }}
                                     >
@@ -148,7 +171,7 @@ const Banks = ({ navigation }) => {
                                                 style={{ width: 20, height: 20, left: 10 }}
                                             /> : null}
                                         </View>
-                                        <Text style={{ fontSize: 14, color: "black", width: '80%' }} numberOfLines={2}>{item.name}</Text>
+                                        <Text style={{ fontSize: 13, color: "black", flex: 0.9, fontFamily: FONT.medium }} numberOfLines={2}>{item.name}</Text>
                                     </TouchableOpacity>
                                 )
                             })
@@ -158,40 +181,22 @@ const Banks = ({ navigation }) => {
                     </ScrollView>
                     <TouchableOpacity
                         style={styles.closeButton}
-                        onPress={() => setModalVisible(!modalVisible)}
-                    >
-                        <Text style={{ color: "white", fontSize: 16 }}>Close</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.selectButton}
-                        onPress={async () => {
-                            const options = {
-                                method: 'POST',
-                                url: `${REACT_APP_BACKEND_URL}/bank/add`,
-                                headers: {
-                                    "Content-type": "application/json",
-                                    "Authorization": "Bearer " + await AsyncStorage.getItem('token')
-                                },
-                                data: {
-                                    bankId: bankDetails._id,
-                                    number: bankAcc
-                                }
-                            };
-                            try {
-                                const response = await axios.request(options);
-                                console.log(response.data);
-                            } catch (error) {
-                                console.error(error);
-                            } finally {
-                                // setUniqueBanksNumber(uniqueBanksNumber.filter(acc => acc!==bankAcc));
-                                // setLinkedBanks();
-                                getMyBanks();
-                                setModalVisible(!modalVisible);
-                            }
+                        onPress={() => {
+                            setModalVisible(!modalVisible);
+                            setBankDetails(null);
+                            setBankName("");
                         }}
                     >
-                        <Text style={{ color: "white", fontSize: 16 }}>Select</Text>
+                        <Text style={{ color: "white", fontSize: 16, fontFamily: FONT.medium }}>Close</Text>
                     </TouchableOpacity>
+                    {bankDetails && (
+                        <TouchableOpacity
+                            style={styles.selectButton}
+                            onPress={selectBank}
+                        >
+                            <Text style={{ color: "white", fontSize: 16, fontFamily: FONT.medium }}>Select</Text>
+                        </TouchableOpacity>
+                    )}
             </Dialog>
 
 
@@ -208,12 +213,12 @@ const Banks = ({ navigation }) => {
                                 return (
                                     <TouchableOpacity key={index} style={styles.accContainer}
                                         onPress={() => { setModalVisible(true); setBankAcc(acc); fetchBanks(); }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, flex: 0.9 }}>
                                             <Image
                                                 source={images.bank}
                                                 style={styles.BankImage}
                                             />
-                                            <Text style={styles.bankAcc}>A/c No: XX {acc}</Text>
+                                            <Text style={styles.bankAcc} numberOfLines={1}>A/c No: XX {acc}</Text>
                                         </View>
                                         <Text style={styles.linkText}>
                                             Link
@@ -247,15 +252,13 @@ const Banks = ({ navigation }) => {
                                             onPress={() => navigation.navigate('TransactionByBank', { details: item })}
                                             style={{ flexDirection: "row", alignItems: "center" }}
                                         >
-                                            {/* <View style={styles.imageView}> */}
-                                                <Image
-                                                    source={
-                                                        { uri: item.id.img }
-                                                    }
-                                                    style={{ width: 50, height: 50, borderRadius: 10 }}
-                                                />
-                                            {/* </View> */}
-                                            <View style={{ flexDirection: "column", gap: 10, marginLeft:15, width: '50%' }}>
+                                            <Image
+                                                source={
+                                                    { uri: item.id.img }
+                                                }
+                                                style={{ width: 50, height: 50, borderRadius: 10 }}
+                                            />
+                                            <View style={{ flexDirection: "column", gap: 10, marginLeft:15, flex: 0.9 }}>
                                                 <Text style={styles.bankName} numberOfLines={1}>{item.id.name}</Text>
                                                 <Text style={styles.bankAcc}>A/c No: XX {item.number}</Text>
                                             </View>

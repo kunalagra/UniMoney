@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     imageRowField: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        height: "55%",
+        height: 170,
     },
 
     imageRowHeader: {
@@ -86,23 +86,25 @@ const styles = StyleSheet.create({
         height: "100%",
         borderWidth: 1,
         borderColor: COLORS.white5,
-        borderRadius: 8
+        borderRadius: 8,
+        alignItems: 'center',
+        padding: 10
     },
 
     imageStyle: {
-        width: 'auto',
-        height: "100%",
-        borderRadius: 8
+        width: 150,
+        height: 150,
+        borderRadius: 8,
     },
 
     imageButton: {
         width: 200,
-        height: "12%",
         backgroundColor: COLORS.main3,
         borderRadius: 8,
         justifyContent: "center",
         alignItems: "center",
-        alignSelf: "flex-end"
+        alignSelf: "flex-end",
+        paddingVertical: 8
     },
 
     buttonsContainer: {

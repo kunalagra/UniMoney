@@ -1,10 +1,8 @@
 import { View, Text, SafeAreaView, StatusBar, ScrollView, TouchableOpacity, RefreshControl, Image } from 'react-native'
 import styles from './transactionbybank.style';
-// import { transactionsData } from '../../../constants/fakeData';
 import TransactionCard from '../../main/common/cards/transaction/TransactionCard';
 import { icons, COLORS, images, SIZES, FONT } from '../../../constants';
 import React, { useState, useCallback, useEffect } from 'react';
-import { Dialog } from '@rneui/themed';
 import MonthPicker from 'react-native-month-year-picker';
 import CustomButton from '../../profilecreation/common/button/CustomButton';
 import DatePicker from 'react-native-date-picker';
@@ -12,6 +10,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { REACT_APP_BACKEND_URL } from '@env';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 
 const TransactionByBank = (props) => {
@@ -21,7 +20,9 @@ const TransactionByBank = (props) => {
 
     const [refreshing, setRefreshing] = useState(false);
 
-    const [transactionsData, setTransactionsData] = useState();
+    const [transactionsData, setTransactionsData] = useState([]);
+
+    const [loading, setLoading] = useState(true);
 
     const { alltransactions } = useSelector(state => state.transactiondata);
 
@@ -45,13 +46,11 @@ const TransactionByBank = (props) => {
     };
 
     const prevMonth = () => {
-        console.log(date.getMonth(), date.getFullYear());
         if (date.getMonth()!==0) setDate(new Date(date.getFullYear(), date.getMonth()-1));
         else setDate(new Date(date.getFullYear()-1, 11));
     }
     
     const nextMonth = () => {
-        console.log(date.getMonth(), date.getFullYear());
         if (date.getMonth()!==11) setDate(new Date(date.getFullYear(), date.getMonth()+1));
         else setDate(new Date(date.getFullYear()+1, 0));
     }
@@ -77,14 +76,18 @@ const TransactionByBank = (props) => {
 
     useEffect(() => {
         // filter transactions by bank acc and then by date
+        setLoading(true);
         if (alltransactions) {
             let tmp = alltransactions.filter((item) => item.acc === details.number);
             tmp = tmp.filter((item) => {
                 let itemDate = new Date(item.date);
                 return itemDate >= new Date(date.getFullYear(), date.getMonth()) && itemDate < new Date(date.getFullYear(), date.getMonth()+1);
             });
-            setTransactionsData(tmp);
+            setTransactionsData(tmp);    
         }
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
     }, [date, alltransactions]);
 
     const FilterDatePicker = ({isStart}) => {
@@ -164,8 +167,8 @@ const TransactionByBank = (props) => {
                                 fill={COLORS.gray3}
                             />
                         </TouchableOpacity>
-                        <View style={{ width: '60%'}}>
-                            <Text style={styles.navHeading}>{details.id.name}</Text>
+                        <View style={{ flex: 1 }}>
+                            <Text style={styles.navHeading} numberOfLines={1}>{details.id.name}</Text>
                         </View>
                     </View>
 
@@ -208,51 +211,73 @@ const TransactionByBank = (props) => {
                             </View>
                         </View>
 
-                        <ScrollView
-                            showsVerticalScrollIndicator={false}
-                            refreshControl={
-                                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[COLORS.main3]} />
-                            }
-                        >
-                            {isFilterModalOpen && (
-                                <View style={styles.filterModal}>
-                                    <View style={styles.filterDatePickersContainer}>
-                                        <FilterDatePicker isStart={true} />
-                                        <FilterDatePicker isStart={false} />
-                                    </View>
-                                    <CustomButton title="Filter" />
-                                </View>
-                            )}
-                            {transactionsData && 
-                            <View style={styles.transactionsContainer}>
-                                {transactionsData.map((item, index) => (
-                                    <TransactionCard
-                                    key={index}
-                                    name={item.name}
-                                    image={item.image}
-                                    description={item.timestamp}
-                                    amount={item.amount}
-                                    isExpense={item.isExpense}
-                                    navigateTo={props.navigation.navigate}
-                                    category={item.category.name}
-                                    id={item._id}
-                                    acc={item.acc}
-                                />
-                                ))}
+                        {loading? (
+                            <View style={{ alignSelf: 'stretch' }}>
+                                <SkeletonPlaceholder borderRadius={4} direction='right'>
+                                    <SkeletonPlaceholder.Item gap={15}>
+                                        <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                                        <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                                        <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                                        <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                                        <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                                    </SkeletonPlaceholder.Item>
+                                </SkeletonPlaceholder>
                             </View>
-                        }
-                        </ScrollView>
+                        ) : (
+                            <ScrollView
+                                showsVerticalScrollIndicator={false}
+                                refreshControl={
+                                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[COLORS.main3]} />
+                                }
+                            >
+                                {isFilterModalOpen && (
+                                    <View style={styles.filterModal}>
+                                        <View style={styles.filterDatePickersContainer}>
+                                            <FilterDatePicker isStart={true} />
+                                            <FilterDatePicker isStart={false} />
+                                        </View>
+                                        <CustomButton title="Filter" />
+                                    </View>
+                                )}
+                                {transactionsData.length > 0? (
+                                    <View style={styles.transactionsContainer}>
+                                        {transactionsData.map((item, index) => (
+                                            <TransactionCard
+                                            key={index}
+                                            name={item.name}
+                                            image={item.image}
+                                            description={item.timestamp}
+                                            amount={item.amount}
+                                            isExpense={item.isExpense}
+                                            navigateTo={props.navigation.navigate}
+                                            category={item.category.name}
+                                            id={item._id}
+                                            acc={item.acc}
+                                        />
+                                        ))}
+                                    </View>
+                                ) : (
+                                    <View style={{ marginTop: 200 }}>
+                                        <Text style={{ fontFamily: FONT.medium, color: COLORS.gray1, fontSize: SIZES.regular, textAlign: 'center'}}>
+                                            No transactions found
+                                        </Text>
+                                    </View>
+                                )}
+                            </ScrollView>
+                        )}
                     </View>
                 </View>
 
-                <View style={styles.addButtonContainer}>
-                    <TouchableOpacity activeOpacity={0.85} style={styles.addButton} onPress={() => props.navigation.navigate('AddTransactionPage')}>
-                        <Text style={styles.addButtonText}>Add Transaction</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.85} style={styles.deleteButton} onPress={() => handleDelete()}>
-                        <Text style={styles.addButtonText}>Delete</Text>
-                    </TouchableOpacity>
-                </View>
+                {!loading && (
+                    <View style={styles.addButtonContainer}>
+                        <TouchableOpacity activeOpacity={0.85} style={styles.addButton} onPress={() => props.navigation.navigate('AddTransactionPage')}>
+                            <Text style={styles.addButtonText}>Add Transaction</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacity={0.85} style={styles.deleteButton} onPress={() => handleDelete()}>
+                            <Text style={styles.addButtonText}>Remove Bank</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
                 
             </View>
 

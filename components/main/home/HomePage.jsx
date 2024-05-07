@@ -403,6 +403,9 @@ const HomePage = ({ navigateTo }) => {
                                 </View>
                                 <SkeletonPlaceholder.Item height={60} borderRadius={12} alignSelf='stretch' />
                                 <SkeletonPlaceholder.Item height={60} borderRadius={12} alignSelf='stretch' />
+                                <SkeletonPlaceholder.Item height={60} borderRadius={12} alignSelf='stretch' />
+                                <SkeletonPlaceholder.Item height={60} borderRadius={12} alignSelf='stretch' />
+                                <SkeletonPlaceholder.Item height={60} borderRadius={12} alignSelf='stretch' />
                             </SkeletonPlaceholder.Item>
                         </SkeletonPlaceholder>
                 </ScrollView>

@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
 
     linkText: {
         color: COLORS.main3,
+        fontFamily: FONT.medium
     },
 
     BankImage: {
@@ -63,19 +64,20 @@ const styles = StyleSheet.create({
     },
 
     bankAcc: {
-        color: COLORS.black,
+        color: COLORS.gray3,
+        fontFamily: FONT.medium
     },
 
     centeredView: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        width: '90%',
+        width: 320,
         borderRadius: 10,
         backgroundColor: COLORS.white1,
         marginVertical: 20,
-        paddingVertical: 20,
-        paddingHorizontal: 20
+        paddingVertical: 12,
+        paddingHorizontal: 12
     },
 
     bankDetails: {
@@ -93,22 +95,20 @@ const styles = StyleSheet.create({
 
     closeButton: {
         backgroundColor: COLORS.gray1,
-        width: "94%",
+        alignSelf: 'stretch',
         height: 40,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 5,
-        marginHorizontal: 15,
     },
     selectButton: {
         backgroundColor: COLORS.main3,
-        width: "94%",
+        alignSelf: 'stretch',
         height: 40,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 5,
-        marginHorizontal: 15,
-        marginVertical: 10
+        marginTop: 10
     },
     bankHeader: {
         color: COLORS.gray3,
@@ -131,15 +131,6 @@ const styles = StyleSheet.create({
         ...SHADOWS.medium,
         paddingHorizontal: 14,
         paddingVertical: 20
-    },
-    imageView: {
-        backgroundColor: COLORS.main3,
-        width: "35%",
-        borderTopLeftRadius: 10,
-        borderBottomLeftRadius: 10,
-        justifyContent: "center",
-        alignItems: "center",
-        padding: 16
     },
     bankName: {
         color: COLORS.black,

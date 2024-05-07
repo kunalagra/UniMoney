@@ -128,10 +128,10 @@ const styles = StyleSheet.create({
 
     addButtonContainer: { 
         position: 'absolute', 
-        bottom: 50, 
+        bottom: 20, 
         left: '50%', 
         transform: [{ translateX: -75 }],
-        gap: 20
+        gap: 10
     },
 
     addButton: {
@@ -147,6 +147,7 @@ const styles = StyleSheet.create({
         color: COLORS.white1,
         fontSize: SIZES.regular
     },
+    
     deleteButton :{
         backgroundColor: COLORS.red1, 
         paddingVertical: 12, 
