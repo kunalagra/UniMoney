@@ -8,14 +8,14 @@ const styles = StyleSheet.create({
     },
 
     mainContainer: {
-        width: '100%', 
+        alignSelf: 'stretch', 
         marginTop: 10, 
         gap: 20, 
         marginBottom: 20 
     },
 
     navbar: {
-        width: '100%', 
+        alignSelf: 'stretch', 
         flexDirection: 'row', 
         justifyContent: 'flex-start', 
         alignItems: 'center', 
@@ -34,14 +34,12 @@ const styles = StyleSheet.create({
         fontSize: SIZES.large - 2
     },
 
-    container: {
-        width: '100%', 
+    container: { 
         paddingHorizontal: 20, 
         gap: 20
     },
 
     scrollViewInnerContainer: {
-        width: '100%', 
         gap: 20, 
         paddingBottom: 380
     },
@@ -135,7 +133,7 @@ const styles = StyleSheet.create({
     },
 
     starProgressGradientContainer: {
-        width: '100%', 
+        alignSelf: 'stretch', 
         paddingHorizontal: 8, 
         paddingVertical: 10, 
         borderRadius: 10
@@ -145,7 +143,7 @@ const styles = StyleSheet.create({
         height: 0, 
         borderWidth: 0.6, 
         borderColor: COLORS.lightblue1, 
-        width: '20%'
+        flex: 1,
     },
 
     starsContainer: {
@@ -165,13 +163,11 @@ const styles = StyleSheet.create({
         position: 'absolute', 
         top: 0, 
         left: 0, 
-        width: '100%', 
-        height: '100%'
+        width: '100%',
     },
 
     frontStarProgressContainer: (progress) => ({
         width: 0, 
-        height: '100%', 
         overflow: 'hidden', 
         paddingRight: `${progress * 100}%`
     }),
@@ -186,7 +182,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row', 
         justifyContent: 'center', 
         alignItems: 'center', 
-        width: '100%', 
         paddingHorizontal: 8, 
         paddingVertical: 10, 
         borderRadius: 10

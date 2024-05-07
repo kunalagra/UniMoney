@@ -154,18 +154,17 @@ const styles = StyleSheet.create({
 
     rowHeader: {
         fontFamily: FONT.regular, 
-        fontSize: SIZES.medium, 
+        fontSize: SIZES.medium - 1, 
         color: COLORS.gray3
     },
 
     inputOuterContainer: {
-        width: '60%', 
+        width: 190, 
         paddingHorizontal: 0, 
         height: 50
     },
 
-    inputInnerContainer: {
-        width: '100%', 
+    inputInnerContainer: { 
         borderColor: COLORS.white5, 
         borderRadius: 8, 
         borderWidth: 1, 
@@ -174,12 +173,10 @@ const styles = StyleSheet.create({
     },
 
     inputStyle: {
-        width: '100%', 
         fontSize: SIZES.medium-2, 
         color: COLORS.gray2, 
         fontFamily: FONT.regular, 
         paddingHorizontal: 15,
-        height: '100%',
     },
 
 });

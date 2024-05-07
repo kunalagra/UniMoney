@@ -8,7 +8,6 @@ const styles = StyleSheet.create({
         marginTop: 10, 
         marginBottom: 100,
         gap: 30, 
-        height: '100%'
     },
 
     navbar: {
@@ -30,7 +29,7 @@ const styles = StyleSheet.create({
     },
 
     cardContainer: {
-        width: '100%', 
+        alignSelf: 'stretch',
         paddingVertical: 10, 
         paddingHorizontal: 15, 
         backgroundColor: COLORS.white1, 
@@ -44,7 +43,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row', 
         alignItems: 'center', 
         gap: 20, 
-        width: '50%'
+        flex: 1
     },
 
     transactionImage: {
@@ -71,14 +70,14 @@ const styles = StyleSheet.create({
     },
 
     amountDetailsContainer: {
-        width: '30%', 
+        flex: 0.4, 
         flexDirection: 'row', 
         alignItems: 'flex-end', 
         gap: 10
     },
 
     amountContainer: {
-        width: '70%', 
+        flex: 1, 
         flexDirection: 'row', 
         alignItems: 'center', 
         justifyContent: 'flex-end'

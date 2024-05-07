@@ -4,18 +4,18 @@ import { SIZES, COLORS, FONT, SHADOWS } from "../../../constants";
 const styles = StyleSheet.create({
 
     sectionContainer: {
-        position: 'relative'
+        position: 'relative',
+        height: '100%'
     },
 
     mainContainer: {
-        width: '100%', 
+        alignSelf: 'stretch',
         marginTop: 10, 
         gap: 20, 
-        marginBottom: 20 
+        marginBottom: 20,
     },
 
     navbar: {
-        width: '100%', 
         flexDirection: 'row', 
         justifyContent: 'flex-start', 
         alignItems: 'center', 
@@ -35,13 +35,11 @@ const styles = StyleSheet.create({
     },
 
     container: {
-        width: '100%', 
         paddingHorizontal: 20, 
         gap: 20
     },
 
     transactionsHeadingContainer: {
-        width: '100%',
         flexDirection: 'row', 
         justifyContent: 'space-between', 
         alignItems: 'center'
@@ -122,15 +120,13 @@ const styles = StyleSheet.create({
 
     transactionsContainer: {
         gap : 10,
-        marginBottom: 400
+        marginBottom: 300
     },
 
     addButtonContainer: { 
         position: 'absolute', 
-        bottom: 195, 
-        left: 0,
-        alignItems: 'center',
-        width: '100%'
+        bottom: 20,
+        alignSelf: 'center'
     },
 
     addButton: {
@@ -147,7 +143,6 @@ const styles = StyleSheet.create({
         fontSize: SIZES.regular
     },
     bankCardsContainer:{
-        width: '100%',
         gap: 8,
         flexDirection: 'row',
     },
@@ -163,7 +158,9 @@ const styles = StyleSheet.create({
     bankName:{
         fontFamily: FONT.bold,
         fontSize: SIZES.regular,
-        color: COLORS.black
+        color: COLORS.black,
+        width: 150,
+        textAlign: 'center'
     },
     
 

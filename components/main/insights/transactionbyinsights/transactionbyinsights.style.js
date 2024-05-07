@@ -9,14 +9,12 @@ const styles = StyleSheet.create({
     },
 
     mainContainer: {
-        width: '100%', 
         marginTop: 10, 
         gap: 20, 
         marginBottom: 20 
     },
 
     navbar: {
-        width: '100%', 
         flexDirection: 'row', 
         justifyContent: 'flex-start', 
         alignItems: 'center', 
@@ -35,14 +33,12 @@ const styles = StyleSheet.create({
         fontSize: SIZES.large - 2
     },
 
-    container: {
-        width: '100%', 
+    container: { 
         paddingHorizontal: 20, 
         gap: 20
     },
 
     transactionsHeadingContainer: {
-        width: '100%',
         flexDirection: 'row', 
         justifyContent: 'space-between', 
         alignItems: 'center'
@@ -123,14 +119,13 @@ const styles = StyleSheet.create({
 
     transactionsContainer: {
         gap : 10,
-        marginBottom: 400
+        marginBottom: 200
     },
 
     addButtonContainer: { 
         position: 'absolute', 
         bottom: 50, 
-        left: '50%', 
-        transform: [{ translateX: -75 }]
+        alignSelf: 'center'
     },
 
     addButton: {

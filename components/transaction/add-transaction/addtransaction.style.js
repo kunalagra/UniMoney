@@ -45,27 +45,23 @@ const styles = StyleSheet.create({
     },
 
     inputOuterContainer: {
-        width: '60%', 
+        width: 200, 
         paddingHorizontal: 0, 
         height: 50
     },
 
-    inputInnerContainer: {
-        width: '100%', 
+    inputInnerContainer: { 
         borderColor: COLORS.white5, 
         borderRadius: 8, 
         borderWidth: 1, 
         backgroundColor: COLORS.white3,
-        height: '100%'
     },
 
     inputStyle: {
-        width: '100%', 
         fontSize: SIZES.medium-2, 
         color: COLORS.gray2, 
         fontFamily: FONT.regular, 
         paddingHorizontal: 15,
-        height: '100%'
     },
 
     dateButtonStyle: {

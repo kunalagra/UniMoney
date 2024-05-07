@@ -1,5 +1,5 @@
 import { BottomSheet,Icon, Input } from "@rneui/themed";
-import { COLORS, icons } from "../../../../constants";
+import { COLORS, FONT, icons } from "../../../../constants";
 import { Text, TouchableOpacity, View } from "react-native";
 import BudgetCard from "../budgetcard/BudgetCard";
 import styles from "./budgetdetailsbar.style";
@@ -136,15 +136,12 @@ const BudgetDetailsBar = ({ visible, setVisibility, selectedCategory, setSelecte
 
                 <View style={styles.optionsContainer}>
                     {isAddCategory ?
-                        <View style={{paddingHorizontal: 20, 
-                            marginBottom: 10, 
-                            gap: 20,
-                            width: '100%'}}>
+                        <View style={{ paddingHorizontal: 20, marginBottom: 10, gap: 20, alignSelf: 'stretch', flex: 1 }}>
                             <View style={{flexDirection: 'column', gap:2}}>
                                 <Text style={styles.sheetHeading}>
                                 {title}
                             </Text>
-                            <Text style={{fontSize: 12, color: COLORS.gray3}}>
+                            <Text style={{fontSize: 12, color: COLORS.gray3, fontFamily: FONT.medium}}>
                                     set budget limit
                                 </Text>
                             </View>
@@ -210,7 +207,11 @@ const BudgetDetailsBar = ({ visible, setVisibility, selectedCategory, setSelecte
                                     Save Category
                                 </Text>
                             </TouchableOpacity>
-                        </View> : <>
+                        </View> 
+                        
+                        : 
+                        
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', flex: 1 }}>
                             <TouchableOpacity
                                 style={styles.optionContainer}
                                 onPress={handleBudgetPress}
@@ -266,7 +267,8 @@ const BudgetDetailsBar = ({ visible, setVisibility, selectedCategory, setSelecte
                                     Add expense
                                 </Text>
                             </TouchableOpacity>
-                        </>}
+                        </View>
+                    }
                 </View>
             </View>
         </BottomSheet>

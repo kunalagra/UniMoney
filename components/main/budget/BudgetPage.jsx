@@ -2,7 +2,6 @@ import { View, Text, SafeAreaView, StatusBar, ScrollView, TouchableOpacity, Refr
 import styles from './budgetpage.style';
 import { icons, COLORS, FONT, SIZES } from '../../../constants';
 import React, { useState, useCallback, useEffect } from 'react';
-// import { budgetModeCategories } from '../../../constants/fakeData';
 import BudgetCard from './budgetcard/BudgetCard';
 import BudgetDetailsBar from './budgetdetailsbar/BudgetDetailsBar';
 import AmountBottomBar from './amountbottombar/AmountBottomBar';
@@ -208,12 +207,14 @@ const BudgetPage = ({ navigateTo }) => {
                                     Categories
                                 </Text>
                                 {loading ? (
-                                    <View style={{ width: '100%', height: '100%'}}>
+                                    <View style={{ alignSelf: 'stretch' }}>
                                         <SkeletonPlaceholder direction='right'>
-                                            <SkeletonPlaceholder.Item gap={15} height={'100%'}>
-                                                <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
-                                                <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
-                                                <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
+                                            <SkeletonPlaceholder.Item gap={15}>
+                                                <SkeletonPlaceholder.Item alignSelf={'stretch'} height={60} borderRadius={12} />
+                                                <SkeletonPlaceholder.Item alignSelf={'stretch'} height={60} borderRadius={12} />
+                                                <SkeletonPlaceholder.Item alignSelf={'stretch'} height={60} borderRadius={12} />
+                                                <SkeletonPlaceholder.Item alignSelf={'stretch'} height={60} borderRadius={12} />
+                                                <SkeletonPlaceholder.Item alignSelf={'stretch'} height={60} borderRadius={12} />
                                             </SkeletonPlaceholder.Item>
                                         </SkeletonPlaceholder>
                                     </View>
@@ -270,7 +271,7 @@ const BudgetPage = ({ navigateTo }) => {
                     </View>
                 </ScrollView>
 
-                {isBudgetMode &&
+                {isBudgetMode && !loading &&
                     <View style={styles.addButtonContainer}>
                         <TouchableOpacity
                             activeOpacity={0.85}

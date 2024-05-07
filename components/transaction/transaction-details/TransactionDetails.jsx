@@ -56,11 +56,11 @@ const CategoryCard = ({id, category, selectedCategory, setSelectedCategory, tran
 const CustomDropdown = ({data, value, setValue}) => {
     return (
         <Dropdown
-            style={{backgroundColor: COLORS.white3, borderColor: COLORS.white5, borderWidth: 1, borderRadius: 8, paddingHorizontal: 8, width: 180}}
+            style={{backgroundColor: COLORS.white3, borderColor: COLORS.white5, borderWidth: 1, borderRadius: 8, paddingHorizontal: 8, width: 190, paddingVertical: 5 }}
             placeholderStyle={{fontFamily: FONT.regular, fontSize: SIZES.medium-2, color: COLORS.gray3}}
             selectedTextStyle={{fontFamily: FONT.regular, fontSize: SIZES.medium-2, color: COLORS.gray3}}
             data={data}
-            itemTextStyle={{fontFamily: FONT.regular, fontSize: SIZES.medium-2, color: COLORS.gray3}}
+            itemTextStyle={{fontFamily: FONT.regular, fontSize: SIZES.medium-2, color: COLORS.gray3,  }}
             placeholder={data[0].label}
             labelField="label"
             valueField="value"
@@ -168,38 +168,38 @@ const EditModal = ({ editModalOpen, setEditModalOpen, selTypeOfPayment, selAccou
             onBackdropPress={() => {
                 setEditModalOpen(false);
             }}
-            overlayStyle={{ borderRadius: 8, width: '94%', gap: 20 }}
+            overlayStyle={{ borderRadius: 8, width: 330, gap: 20, margin: 0 }}
         >
             <Text style={styles.modalHeading}>
                 Modify Transaction
             </Text>
             
             {loading? (
-                <View style={{ width: '100%', height: 430 }}>
+                <View style={{ alignSelf: 'stretch', height: 430 }}>
                 <SkeletonPlaceholder borderRadius={4} direction='right'>
-                    <SkeletonPlaceholder.Item gap={15} height={'100%'}>
+                    <SkeletonPlaceholder.Item gap={15}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                            <SkeletonPlaceholder.Item width={'40%'} height={40} borderRadius={10} />
-                            <SkeletonPlaceholder.Item width={'40%'} height={40} borderRadius={10} />
+                            <SkeletonPlaceholder.Item width={100} height={40} borderRadius={10} />
+                            <SkeletonPlaceholder.Item width={100} height={40} borderRadius={10} />
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                            <SkeletonPlaceholder.Item width={'50%'} height={40} borderRadius={10} />
-                            <SkeletonPlaceholder.Item width={'40%'} height={40} borderRadius={10} />
+                            <SkeletonPlaceholder.Item width={120} height={40} borderRadius={10} />
+                            <SkeletonPlaceholder.Item width={100} height={40} borderRadius={10} />
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                            <SkeletonPlaceholder.Item width={'50%'} height={40} borderRadius={10} />
-                            <SkeletonPlaceholder.Item width={'40%'} height={40} borderRadius={10} />
+                            <SkeletonPlaceholder.Item width={120} height={40} borderRadius={10} />
+                            <SkeletonPlaceholder.Item width={100} height={40} borderRadius={10} />
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                            <SkeletonPlaceholder.Item width={'30%'} height={40} borderRadius={10} />
-                            <SkeletonPlaceholder.Item width={'40%'} height={40} borderRadius={10} />
+                            <SkeletonPlaceholder.Item width={90} height={40} borderRadius={10} />
+                            <SkeletonPlaceholder.Item width={100} height={40} borderRadius={10} />
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                            <SkeletonPlaceholder.Item width={'50%'} height={40} borderRadius={10} />
-                            <SkeletonPlaceholder.Item width={'40%'} height={40} borderRadius={10} />
+                            <SkeletonPlaceholder.Item width={120} height={40} borderRadius={10} />
+                            <SkeletonPlaceholder.Item width={100} height={40} borderRadius={10} />
                         </View>
-                        <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
-                        <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
+                        <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                        <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
                     </SkeletonPlaceholder.Item>
                 </SkeletonPlaceholder>
             </View> 
@@ -260,6 +260,7 @@ const EditModal = ({ editModalOpen, setEditModalOpen, selTypeOfPayment, selAccou
                         selectionColor={COLORS.green1}
                         placeholderTextColor={COLORS.gray3}
                         multiline
+                        numberOfLines={5}
                     />
                 </View>
 
@@ -333,7 +334,7 @@ const DeleteModal = ({ deleteModalOpen, setDeleteModalOpen, tranID, navigation }
             onBackdropPress={() => {
                 setDeleteModalOpen(false);
             }}
-            overlayStyle={{ borderRadius: 8, width: '94%' }}
+            overlayStyle={{ borderRadius: 8, width: 330 }}
         >
             <View style={{ gap: 20 }}>
                 <Text style={{color: COLORS.gray2, fontFamily: FONT.medium, fontSize: SIZES.medium + 2}}>
@@ -430,7 +431,7 @@ const TransactionDetailsPage = (props) => {
                 navigation={props.navigation}
             />
 
-            <ScrollView style={{width: '100%'}} 
+            <ScrollView style={{ alignSelf: 'stretch' }} 
               refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[COLORS.main3]} />
               }

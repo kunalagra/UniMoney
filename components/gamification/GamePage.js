@@ -191,7 +191,7 @@ const GamePage = (props) => {
           <View style={styles.container}>
             { loading ? 
               <SkeletonPlaceholder borderRadius={4} direction='right'>
-                <SkeletonPlaceholder.Item gap={15} height={'100%'}>
+                <SkeletonPlaceholder.Item gap={15}>
                     <View style={{ flexDirection: 'row', gap: 10, justifyContent: 'flex-end' }}>
                         <SkeletonPlaceholder.Item width={80} height={40} borderRadius={12} />
                         <SkeletonPlaceholder.Item width={100} height={40} borderRadius={12} />
@@ -205,14 +205,18 @@ const GamePage = (props) => {
                       </View>
                     </View>
                     <View style={{ alignItems: 'center' }}>
-                      <SkeletonPlaceholder.Item width={'100%'} height={80} borderRadius={12} />
+                      <SkeletonPlaceholder.Item alignSelf='stretch' height={80} borderRadius={12} />
                     </View>
-                    <SkeletonPlaceholder.Item width={'100%'} height={300} borderRadius={12} />
+                    <SkeletonPlaceholder.Item alignSelf='stretch' height={300} borderRadius={12} />
                     <View style={{ marginTop: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                        <SkeletonPlaceholder.Item width={'60%'} height={40} borderRadius={12} />
+                        <SkeletonPlaceholder.Item width={200} height={40} borderRadius={12} />
                         <SkeletonPlaceholder.Item width={70} height={40} borderRadius={8} />
                     </View>
-                    <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
+                    <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                    <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                    <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                    <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                    <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
                 </SkeletonPlaceholder.Item>
               </SkeletonPlaceholder>
             : 
@@ -379,7 +383,7 @@ const GamePage = (props) => {
 
 
         { !diceModalVisible && !loading && 
-          <View style={{ position: 'absolute', bottom: 120, alignItems: 'center', width: '100%' }}>
+          <View style={{ position: 'absolute', bottom: 120, alignSelf: 'center' }}>
             <TouchableOpacity style={{ width: 80, height: 80, borderRadius: 100, backgroundColor: COLORS.main2, justifyContent: 'center', alignItems: 'center' }}
               onPress={() => {
                 if (!done) {

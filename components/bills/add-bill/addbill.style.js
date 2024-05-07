@@ -51,13 +51,12 @@ const styles = StyleSheet.create({
     },
 
     inputOuterContainer: {
-        width: '60%',
+        width: 200,
         paddingHorizontal: 0,
         height: 50
     },
 
     inputInnerContainer: {
-        width: '100%',
         borderColor: COLORS.white5,
         borderRadius: 8,
         borderWidth: 1,
@@ -65,7 +64,6 @@ const styles = StyleSheet.create({
     },
 
     inputStyle: {
-        width: '100%',
         fontSize: SIZES.medium - 2,
         color: COLORS.gray2,
         fontFamily: FONT.regular,

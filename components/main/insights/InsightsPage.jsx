@@ -57,8 +57,8 @@ const InsightsPage = (props) => {
     const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
     const [isFilterStartOpen, setIsFilterStartOpen] = useState(false);
     const [isFilterEndOpen, setIsFilterEndOpen] = useState(false);
-    const [bankData, setBankData] = useState([{id: {name: 'All Banks'}}]);
-    const [bankNumber, setBankNumber] = useState(0);
+    const [bankData, setBankData] = useState([]);
+    const [bankNumber, setBankNumber] = useState(null);
     
 
     const [maxExpense, setMaxExpense] = useState({category: '', value: 0});
@@ -83,7 +83,7 @@ const InsightsPage = (props) => {
             };
             try {
                 const response = await axios(options);
-                setBankData([...bankData, ...response.data]);
+                setBankData([...response.data]);
             }
             catch (error) {
                 console.log(error);
@@ -308,56 +308,60 @@ const InsightsPage = (props) => {
                     </View>
 
                     <View style={styles.container}>
-                        <View style={styles.insightsHeadingContainer}>
-                            <TouchableOpacity onPress={prevMonth}>
-                                <Text style={styles.arrowText}>
-                                    {'<'}
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => setIsMonthModalOpen(true)}
-                            >
-                                <Text style={styles.dateHeading}>
-                                    {months[date.getMonth()]} {date.getFullYear()}
-                                </Text>
-                            </TouchableOpacity>
-                            <View style={styles.headingIconsContainer}>
-                                <TouchableOpacity onPress={nextMonth} disabled={date.getMonth()===new Date().getMonth() && date.getFullYear()===new Date().getFullYear()}>
+                        {!isFilter && (
+                            <View style={styles.insightsHeadingContainer}>
+                                <TouchableOpacity onPress={prevMonth}>
                                     <Text style={styles.arrowText}>
-                                        {'>'}
+                                        {'<'}
                                     </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => setIsMonthModalOpen(true)}
                                 >
-                                    <Image
-                                        source={images.calendar} 
-                                        style={styles.calendarIcon}
-                                    />
+                                    <Text style={styles.dateHeading}>
+                                        {months[date.getMonth()]} {date.getFullYear()}
+                                    </Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => setIsFilterModalOpen(prev => !prev)} style={{position: 'relative'}}>
-                                    {isFilterModalOpen && (
-                                        <View style={styles.filterDot} />
-                                    )}
-                                    <Image 
-                                        source={images.filter}
-                                        style={styles.filterIcon}
-                                    />
-                                </TouchableOpacity>
+                                <View style={styles.headingIconsContainer}>
+                                    <TouchableOpacity onPress={nextMonth} disabled={date.getMonth()===new Date().getMonth() && date.getFullYear()===new Date().getFullYear()}>
+                                        <Text style={styles.arrowText}>
+                                            {'>'}
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => setIsMonthModalOpen(true)}
+                                    >
+                                        <Image
+                                            source={images.calendar} 
+                                            style={styles.calendarIcon}
+                                        />
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => setIsFilterModalOpen(prev => !prev)} style={{position: 'relative'}}>
+                                        {isFilter && (
+                                            <View style={styles.filterDot} />
+                                        )}
+                                        <Image 
+                                            source={images.filter}
+                                            style={styles.filterIcon}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                        </View>
+                        )}
 
                         {loading? (
-                            <View style={{ width: '100%', height: '100%'}}>
+                            <View style={{ alignSelf: 'stretch' }}>
                                 <SkeletonPlaceholder direction='right'>
-                                    <SkeletonPlaceholder.Item gap={15} height={'100%'}>
-                                        <SkeletonPlaceholder.Item width={'100%'} height={80} borderRadius={12} />
-                                        <SkeletonPlaceholder.Item width={'70%'} height={20} borderRadius={6} marginTop={10} />
-                                        <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
-                                        <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
-                                        <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
-                                        <SkeletonPlaceholder.Item width={'80%'} height={30} borderRadius={6} marginTop={10} />
-                                        <SkeletonPlaceholder.Item width={'100%'} height={200} borderRadius={12} />
+                                    <SkeletonPlaceholder.Item gap={15}>
+                                        <SkeletonPlaceholder.Item alignSelf='stretch' height={80} borderRadius={12} />
+                                        <SkeletonPlaceholder.Item width={200} height={20} borderRadius={6} marginTop={10} />
+                                        <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                                        <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                                        <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                                        <SkeletonPlaceholder.Item width={230} height={30} borderRadius={6} marginTop={10} />
+                                        <SkeletonPlaceholder.Item alignSelf='stretch' height={200} borderRadius={12} />
+                                        <SkeletonPlaceholder.Item width={230} height={30} borderRadius={6} marginTop={10} />
+                                        <SkeletonPlaceholder.Item alignSelf='stretch' height={200} borderRadius={12} />
                                     </SkeletonPlaceholder.Item>
                                 </SkeletonPlaceholder>
                             </View>
@@ -368,7 +372,7 @@ const InsightsPage = (props) => {
                                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[COLORS.main3]} />
                             }
                         >
-                            {isFilterModalOpen && (
+                            {(isFilterModalOpen || isFilter) && (
                                 <View style={styles.filterModal}>
                                     <ScrollView 
                                     showsHorizontalScrollIndicator={false}
@@ -378,10 +382,10 @@ const InsightsPage = (props) => {
                                         {bankData && bankData.map((item, index) => (
                                             <TouchableOpacity
                                                 key={index}
-                                                style={styles.bankCard}
+                                                style={[styles.bankCard, item.number===bankNumber && { backgroundColor: COLORS.main3 }]}
                                                 onPress={() => {setBankNumber(item.number)}}
                                             >
-                                                <Text style={styles.bankName}>
+                                                <Text numberOfLines={1} style={[styles.bankName, item.number===bankNumber && { color: COLORS.white1 }]}>
                                                     {item.id.name}
                                                 </Text>
                                             </TouchableOpacity>
@@ -392,7 +396,22 @@ const InsightsPage = (props) => {
                                         <FilterDatePicker isStart={true} />
                                         <FilterDatePicker isStart={false} />
                                     </View>
-                                    <CustomButton title="Filter" handlePress={() => { setIsFilter(true), setIsFilterModalOpen(false), setRefreshing(true) }} />
+                                    <CustomButton 
+                                        title={isFilter? 'Clear Filter' : 'Filter'} 
+                                        inlineStyles={[isFilter && { backgroundColor: COLORS.gray1 }]} 
+                                        handlePress={() => { 
+                                            if (isFilter) {
+                                                setIsFilter(false);
+                                                setRefreshing(true);
+                                                setBankNumber(null);
+                                                setFilterDate({start: new Date(date.getFullYear(), date.getMonth()), end: new Date()});
+                                            } else {
+                                                setIsFilter(true);
+                                                setIsFilterModalOpen(false);
+                                                setRefreshing(true);
+                                            }
+                                        }} 
+                                    />
                                 </View>
                             )}
                             <View style={styles.analysisContainer}>
@@ -504,7 +523,7 @@ const InsightsPage = (props) => {
                                                 <View key={index} style={styles.pieLegend} >
                                                     <View style={styles.pieLegendDot(item.color)} />
                                                     <Text style={styles.pieLegendText}>
-                                                        {item.name}: {Math.round((item.value/totalSpends).toFixed(2) * 100)}%
+                                                        {item.name}: {Math.round((item.value/totalIncome).toFixed(2) * 100)}%
                                                     </Text>
                                                 </View>
                                             ))

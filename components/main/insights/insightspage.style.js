@@ -8,14 +8,12 @@ const styles = StyleSheet.create({
     },
 
     mainContainer: {
-        width: '100%', 
         marginTop: 10, 
         gap: 20, 
         marginBottom: 20 
     },
 
     navbar: {
-        width: '100%', 
         flexDirection: 'row', 
         justifyContent: 'flex-start', 
         alignItems: 'center', 
@@ -35,13 +33,11 @@ const styles = StyleSheet.create({
     },
 
     container: {
-        width: '100%', 
         paddingHorizontal: 20, 
         gap: 20
     },
 
     insightsHeadingContainer: {
-        width: '100%',
         flexDirection: 'row', 
         justifyContent: 'space-between', 
         alignItems: 'center'
@@ -278,7 +274,6 @@ const styles = StyleSheet.create({
     },
 
     bankCardsContainer:{
-        width: '100%',
         gap: 8,
         flexDirection: 'row',
     },

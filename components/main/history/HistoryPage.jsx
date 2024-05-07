@@ -1,10 +1,8 @@
 import { View, Text, SafeAreaView, StatusBar, ScrollView, TouchableOpacity, RefreshControl, Image } from 'react-native'
 import styles from './historypage.style';
-// import { transactionsData } from '../../../constants/fakeData';
 import TransactionCard from '../common/cards/transaction/TransactionCard';
 import { icons, COLORS, images, SIZES, FONT } from '../../../constants';
 import React, { useState, useCallback, useEffect } from 'react';
-import { Dialog } from '@rneui/themed';
 import MonthPicker from 'react-native-month-year-picker';
 import CustomButton from '../../profilecreation/common/button/CustomButton';
 import DatePicker from 'react-native-date-picker';
@@ -39,8 +37,9 @@ const HistoryPage = ({ navigateTo }) => {
     const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
     const [isFilterStartOpen, setIsFilterStartOpen] = useState(false);
     const [isFilterEndOpen, setIsFilterEndOpen] = useState(false);
-    const [bankData, setBankData] = useState([{id: {name: 'All Banks'}}]);
-    const [bankNumber, setBankNumber] = useState(0);
+    const [bankData, setBankData] = useState([]);
+    const [bankNumber, setBankNumber] = useState(null);
+    const [isFiltered, setIsFiltered] = useState(false);
 
     const onValueChange = (event, newDate) => {
         setIsMonthModalOpen(false);
@@ -75,6 +74,7 @@ const HistoryPage = ({ navigateTo }) => {
 
     useEffect(() => {
         setLoading(true);
+        setBankData([]);
         const fetchData = async () => {
             const options = {
                 method: 'GET',
@@ -86,7 +86,7 @@ const HistoryPage = ({ navigateTo }) => {
             };
             try {
                 const response = await axios(options);
-                setBankData([...bankData, ...response.data]);
+                setBankData([...response.data]);
             }
             catch (error) {
                 console.log(error);
@@ -98,11 +98,11 @@ const HistoryPage = ({ navigateTo }) => {
         fetchData();
     }, []);
 
-    const filterByDate = () => {
+    const filterByDate = (bankNumber) => {
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
-        }, 1500);
+        }, 1000);
         if (bankNumber) {
             let tmp = alltransactions.filter((item) => {
                 let itemDate = new Date(item.date);
@@ -110,9 +110,9 @@ const HistoryPage = ({ navigateTo }) => {
             });
 
             setTransactionsData(tmp);
+            setIsFiltered(true);
         }
         else {
-            console.log(filterDate);
             let tmp = alltransactions.filter((item) => {
                 let itemDate = new Date(item.date);
                 return itemDate >= filterDate.start && itemDate <= filterDate.end;
@@ -206,7 +206,9 @@ const HistoryPage = ({ navigateTo }) => {
                     </View>
 
                     <View style={styles.container}>
+                        {!isFiltered && (
                         <View style={styles.transactionsHeadingContainer}>
+
                             <TouchableOpacity onPress={prevMonth}>
                                 <Text style={styles.arrowText}>
                                     {'<'}
@@ -233,7 +235,7 @@ const HistoryPage = ({ navigateTo }) => {
                                     />
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => setIsFilterModalOpen(prev => !prev)} style={{position: 'relative'}}>
-                                    {isFilterModalOpen && (
+                                    {isFiltered && (
                                         <View style={styles.filterDot} />
                                     )}
                                     <Image 
@@ -243,16 +245,17 @@ const HistoryPage = ({ navigateTo }) => {
                                 </TouchableOpacity>
                             </View>
                         </View>
+                        )}
 
                         {loading? (
-                            <View style={{ width: '100%', height: '100%'}}>
+                            <View style={{ alignSelf: 'stretch' }}>
                                 <SkeletonPlaceholder borderRadius={4} direction='right'>
-                                    <SkeletonPlaceholder.Item gap={15} height={'100%'}>
-                                        <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
-                                        <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
-                                        <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
-                                        <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
-                                        <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
+                                    <SkeletonPlaceholder.Item gap={15}>
+                                        <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                                        <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                                        <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                                        <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                                        <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
                                     </SkeletonPlaceholder.Item>
                                 </SkeletonPlaceholder>
                             </View>
@@ -263,20 +266,20 @@ const HistoryPage = ({ navigateTo }) => {
                                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[COLORS.main3]} />
                                 }
                             >
-                                {isFilterModalOpen && (
+                                {(isFilterModalOpen || isFiltered) && (
                                     <View style={styles.filterModal}>
                                         <ScrollView 
-                                        showsHorizontalScrollIndicator={false}
-                                        horizontal
+                                            showsHorizontalScrollIndicator={false}
+                                            horizontal
                                         >
                                             <View style={styles.bankCardsContainer}>
                                             {bankData && bankData.map((item, index) => (
                                                 <TouchableOpacity
                                                     key={index}
-                                                    style={styles.bankCard}
+                                                    style={[styles.bankCard, item.number===bankNumber && { backgroundColor: COLORS.main3 }]}
                                                     onPress={() => {setBankNumber(item.number)}}
                                                 >
-                                                    <Text style={styles.bankName}>
+                                                    <Text numberOfLines={1} style={[styles.bankName, item.number===bankNumber && { color: COLORS.white1 }]}>
                                                         {item.id.name}
                                                     </Text>
                                                 </TouchableOpacity>
@@ -287,38 +290,59 @@ const HistoryPage = ({ navigateTo }) => {
                                             <FilterDatePicker isStart={true} />
                                             <FilterDatePicker isStart={false} />
                                         </View>
-                                        <CustomButton title="Filter" handlePress={() => { filterByDate() }}  />
+                                        <CustomButton 
+                                            title={isFiltered? "Clear Filter" : "Filter"}
+                                            inlineStyles={[isFiltered && { backgroundColor: COLORS.gray1 }]} 
+                                            handlePress={() => { 
+                                                if (isFiltered) {
+                                                    setBankNumber(null);
+                                                    setIsFiltered(false);
+                                                    setFilterDate({start: new Date(date.getFullYear(), date.getMonth()), end: new Date()});
+                                                    filterByDate(null);
+                                                } else {
+                                                    filterByDate(bankNumber);
+                                                }
+                                            }}  
+                                        />
                                     </View>
                                 )}
-                                {transactionsData && 
-                                <View style={styles.transactionsContainer}>
-                                    {transactionsData.map((item, index) => (
-                                        <TransactionCard
-                                        key={index}
-                                        name={item.name}
-                                        image={item.image}
-                                        description={item.timestamp}
-                                        amount={item.amount}
-                                        isExpense={item.isExpense}
-                                        navigateTo={navigateTo}
-                                        category={item.category.name}
-                                        id={item._id}
-                                        acc={item.acc}
-                                    />
-                                    ))}
-                                </View>
-                            }
+                                {transactionsData.length > 0? (
+                                    <View style={styles.transactionsContainer}>
+                                        {transactionsData.map((item, index) => (
+                                            <TransactionCard
+                                                key={index}
+                                                name={item.name}
+                                                image={item.image}
+                                                description={item.timestamp}
+                                                amount={item.amount}
+                                                isExpense={item.isExpense}
+                                                navigateTo={navigateTo}
+                                                category={item.category.name}
+                                                id={item._id}
+                                                acc={item.acc}
+                                            />
+                                        ))}
+                                    </View>
+                                ) : (
+                                    <View style={{ marginTop: 150 }}>
+                                        <Text style={{ fontFamily: FONT.medium, color: COLORS.gray1, fontSize: SIZES.regular, textAlign: 'center'}}>
+                                            No transactions found
+                                        </Text>
+                                    </View>
+                                )}
                             </ScrollView>
                         )}
 
                     </View>
                 </View>
 
-                <View style={styles.addButtonContainer}>
-                    <TouchableOpacity activeOpacity={0.85} style={styles.addButton} onPress={() => navigateTo('AddTransactionPage')}>
-                        <Text style={styles.addButtonText}>Add Transaction</Text>
-                    </TouchableOpacity>
-                </View>
+                {!loading && (
+                    <View style={styles.addButtonContainer}>
+                        <TouchableOpacity activeOpacity={0.85} style={styles.addButton} onPress={() => navigateTo('AddTransactionPage')}>
+                            <Text style={styles.addButtonText}>Add Transaction</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
             </View>
 
         </SafeAreaView>

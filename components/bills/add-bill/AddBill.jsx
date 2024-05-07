@@ -14,7 +14,7 @@ import { REACT_APP_BACKEND_URL } from "@env";
 const CustomDropdown = ({ data, value, setValue }) => {
     return (
         <Dropdown
-            style={{ backgroundColor: COLORS.white3, borderColor: COLORS.white5, borderWidth: 1, borderRadius: 8, paddingHorizontal: 8, width: 180 }}
+            style={{ backgroundColor: COLORS.white3, borderColor: COLORS.white5, borderWidth: 1, borderRadius: 8, paddingHorizontal: 8, width: 200 }}
             placeholderStyle={{ fontFamily: FONT.regular, fontSize: SIZES.medium - 2, color: COLORS.gray3 }}
             selectedTextStyle={{ fontFamily: FONT.regular, fontSize: SIZES.medium - 2, color: COLORS.gray3 }}
             data={data}
@@ -200,16 +200,17 @@ const AddTransactionPage = (props) => {
                                 Description{'\n'}(optional)
                             </Text>
                             <Input
-                                containerStyle={styles.inputOuterContainer}
+                                containerStyle={[styles.inputOuterContainer, { height: 100 }]}
                                 inputContainerStyle={styles.inputInnerContainer}
-                                style={styles.inputStyle}
+                                style={[styles.inputStyle, { textAlignVertical: 'top' }]}
                                 placeholder="Reference, Account number, etc."
                                 value={desc}
                                 onChangeText={(val) => setDesc(val)}
                                 underlineColorAndroid="transparent"
                                 selectionColor={COLORS.green1}
                                 placeholderTextColor={COLORS.gray3}
-                                numberOfLines={1}
+                                multiline
+                                numberOfLines={5}
                             />
                         </View>
 

@@ -9,15 +9,14 @@ const styles = StyleSheet.create({
     },
 
     mainContainer: {
-        width: '100%', 
+        alignSelf: 'stretch', 
         marginTop: 10, 
         gap: 20, 
         marginBottom: 80,
         paddingHorizontal: 10
     },
 
-    navbar: {
-        width: '100%', 
+    navbar: { 
         flexDirection: 'row', 
         justifyContent: 'flex-start', 
         alignItems: 'center', 
@@ -61,10 +60,8 @@ const styles = StyleSheet.create({
 
     addButtonContainer: {
         position: 'absolute', 
-        bottom: 10, 
-        left: 0,
-        alignItems: 'center',
-        width: '100%'
+        bottom: 20, 
+        alignSelf: 'center',
     },
 
     addButton: {

@@ -5,7 +5,6 @@ const styles = StyleSheet.create({
 
     container: {
         position: 'relative', 
-        width: '100%', 
         backgroundColor: COLORS.white2, 
         borderTopLeftRadius: 40, 
         borderTopRightRadius: 40, 
@@ -36,13 +35,11 @@ const styles = StyleSheet.create({
     },
 
     inputOuterContainer: {
-        width: '100%', 
         paddingHorizontal: 0, 
         height: 49
     },
 
     inputInnerContainer: {
-        width: '100%', 
         borderColor: COLORS.gray1, 
         borderRadius: 8, 
         borderWidth: 1, 
@@ -51,7 +48,6 @@ const styles = StyleSheet.create({
 
     inputStyle: {
         alignSelf: 'center',
-        width: '100%', 
         height: 45, 
         fontSize: SIZES.regular, 
         color: COLORS.gray2, 

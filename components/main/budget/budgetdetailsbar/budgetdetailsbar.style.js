@@ -5,7 +5,6 @@ const styles = StyleSheet.create({
 
     container: {
         position: 'relative', 
-        width: '100%', 
         backgroundColor: COLORS.main3, 
         borderTopLeftRadius: 40, 
         borderTopRightRadius: 40, 
@@ -66,9 +65,8 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white1, 
         paddingVertical: 30, 
         flexDirection: 'row', 
-        justifyContent: 'center', 
         alignItems: 'center', 
-        gap: 25
+        gap: 25,
     },
 
     optionContainer: {
@@ -99,13 +97,11 @@ const styles = StyleSheet.create({
     },
     
     inputOuterContainer: {
-        width: '100%', 
         paddingHorizontal: 0, 
         height: 49
     },
 
     inputInnerContainer: {
-        width: '100%', 
         borderColor: COLORS.gray1, 
         borderRadius: 8, 
         borderWidth: 1, 
@@ -114,7 +110,6 @@ const styles = StyleSheet.create({
 
     inputStyle: {
         alignSelf: 'center',
-        width: '100%', 
         height: 45, 
         fontSize: SIZES.regular, 
         color: COLORS.gray2, 

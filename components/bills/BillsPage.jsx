@@ -80,14 +80,14 @@ const BillsPage = (props) => {
                     </View>
 
                     {loading ? (
-                        <View style={{ width: '100%', height: '100%' }}>
+                        <View style={{ alignSelf: 'stretch' }}>
                             <SkeletonPlaceholder borderRadius={4} direction='right'>
-                                <SkeletonPlaceholder.Item gap={15} height={'100%'}>
-                                    <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
-                                    <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
-                                    <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
-                                    <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
-                                    <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
+                                <SkeletonPlaceholder.Item gap={15}>
+                                    <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                                    <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                                    <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                                    <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                                    <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
                                 </SkeletonPlaceholder.Item>
                             </SkeletonPlaceholder>
                         </View>

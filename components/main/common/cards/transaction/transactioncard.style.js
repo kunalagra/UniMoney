@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row', 
         alignItems: 'center', 
         gap: 20, 
-        flex: 1.3
+        flex: 1
     },
 
     transactionImage: {
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     },
 
     amountDetailsContainer: {
-        flex: 1,
+        flex: 0.8,
         justifyContent: 'flex-end',
         flexDirection: 'row', 
         alignItems: 'flex-end', 

@@ -13,7 +13,7 @@ import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 const CustomDropdown = ({data, value, setValue}) => {
     return (
         <Dropdown
-            style={{backgroundColor: COLORS.white3, borderColor: COLORS.white5, borderWidth: 1, borderRadius: 8, paddingHorizontal: 8, width: 180}}
+            style={{backgroundColor: COLORS.white3, borderColor: COLORS.white5, borderWidth: 1, borderRadius: 8, paddingHorizontal: 8, width: 200}}
             placeholderStyle={{fontFamily: FONT.regular, fontSize: SIZES.medium-2, color: COLORS.gray3}}
             selectedTextStyle={{fontFamily: FONT.regular, fontSize: SIZES.medium-2, color: COLORS.gray3}}
             data={data}
@@ -89,13 +89,12 @@ const AddTransactionPage = (props) => {
                 if (response.data.bank.length !== 0) {
                 setAccountList(response.data.bank.map((item) => {
                     return {
-                        label: item.details.name,
-                        value: item.details.id
+                        label: item.id.name,
+                        value: item.id._id
                     }
                 }));
             }
                 setCategoryList(response.data.category.map((item) => {
-                    // console.log(item);
                     if (item.details)
                     return {
                         label: item.details.name,
@@ -178,31 +177,35 @@ const AddTransactionPage = (props) => {
                             </Text>
                         </View>
                     </View>
-                    <View style={{ width: '100%', height: '100%'}}>
+                    <View style={{ alignSelf: 'stretch' }}>
                         <SkeletonPlaceholder borderRadius={4} direction='right'>
-                            <SkeletonPlaceholder.Item gap={15} height={'100%'}>
+                            <SkeletonPlaceholder.Item gap={15}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                                    <SkeletonPlaceholder.Item width={'40%'} height={40} borderRadius={10} />
-                                    <SkeletonPlaceholder.Item width={'40%'} height={40} borderRadius={10} />
+                                    <SkeletonPlaceholder.Item width={120} height={40} borderRadius={10} />
+                                    <SkeletonPlaceholder.Item width={120} height={40} borderRadius={10} />
                                 </View>
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                                    <SkeletonPlaceholder.Item width={'50%'} height={40} borderRadius={10} />
-                                    <SkeletonPlaceholder.Item width={'40%'} height={40} borderRadius={10} />
+                                    <SkeletonPlaceholder.Item width={150} height={40} borderRadius={10} />
+                                    <SkeletonPlaceholder.Item width={120} height={40} borderRadius={10} />
                                 </View>
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                                    <SkeletonPlaceholder.Item width={'50%'} height={40} borderRadius={10} />
-                                    <SkeletonPlaceholder.Item width={'40%'} height={40} borderRadius={10} />
+                                    <SkeletonPlaceholder.Item width={150} height={40} borderRadius={10} />
+                                    <SkeletonPlaceholder.Item width={120} height={40} borderRadius={10} />
                                 </View>
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                                    <SkeletonPlaceholder.Item width={'30%'} height={40} borderRadius={10} />
-                                    <SkeletonPlaceholder.Item width={'40%'} height={40} borderRadius={10} />
+                                    <SkeletonPlaceholder.Item width={100} height={40} borderRadius={10} />
+                                    <SkeletonPlaceholder.Item width={150} height={80} borderRadius={10} />
                                 </View>
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                                    <SkeletonPlaceholder.Item width={'50%'} height={40} borderRadius={10} />
-                                    <SkeletonPlaceholder.Item width={'40%'} height={40} borderRadius={10} />
+                                    <SkeletonPlaceholder.Item width={150} height={40} borderRadius={10} />
+                                    <SkeletonPlaceholder.Item width={120} height={40} borderRadius={10} />
                                 </View>
-                                <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
-                                <SkeletonPlaceholder.Item width={'100%'} height={60} borderRadius={12} />
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                                    <SkeletonPlaceholder.Item width={150} height={40} borderRadius={10} />
+                                    <SkeletonPlaceholder.Item width={120} height={40} borderRadius={10} />
+                                </View>
+                                <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
+                                <SkeletonPlaceholder.Item alignSelf='stretch' height={60} borderRadius={12} />
                             </SkeletonPlaceholder.Item>
                         </SkeletonPlaceholder>
                     </View>    
@@ -236,7 +239,7 @@ const AddTransactionPage = (props) => {
 
                         <View style={styles.rowField}>
                             <Text style={styles.rowHeader}>
-                                { typeOfPayment === "debit" ? "Debit" : "Credit" } Account
+                                { typeOfPayment === "debit" ? "Debit\n" : "Credit\n" }Account
                             </Text>
                             <CustomDropdown data={accountList} value={account} setValue={setAccount} />
                         </View>
@@ -279,6 +282,7 @@ const AddTransactionPage = (props) => {
                                 selectionColor={COLORS.green1}
                                 placeholderTextColor={COLORS.gray3}
                                 multiline
+                                numberOfLines={5}
                             />
                         </View>
 
