@@ -1,14 +1,15 @@
 "use strict";
 import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity, Keyboard } from "react-native";
-import { images, icons, COLORS } from "../../../constants";
-import { Input, Icon } from '@rneui/themed';
+import { images, icons, COLORS, SIZES, FONT } from "../../../constants";
+import { Input, Icon, Dialog } from '@rneui/themed';
 import styles from "./login.style";
 import { useNavigation } from "@react-navigation/native";
 import axios from 'axios';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { REACT_APP_GOOGLE_CLIENT_ID, REACT_APP_ANDROID_CLIENT_ID,REACT_APP_BACKEND_URL} from '@env';
+import AnimatedLoader from "../../shared/Loader/Loader";
 
 
 const Login = (props) => {
@@ -49,6 +50,8 @@ const Login = (props) => {
                 alert('Invalid email or password done');
             }
             setLoading(false);
+        } finally {
+            setModalLoading(false);
         }
     }
 
@@ -65,6 +68,7 @@ const Login = (props) => {
             const userInfo = await GoogleSignin.signIn();
             // console.log(userInfo);
             if (userInfo) {
+                setModalLoading(true);
                 handleLogin({gemail: userInfo.user.email, gpassword: 'google'});
             } else {
                 console.log('error');
@@ -81,6 +85,21 @@ const Login = (props) => {
 
     return (
         <View style={styles.container}>
+            <Dialog 
+                animationType="slide"
+                transparent={true}
+                isVisible={modalLoading}
+                overlayStyle={{ borderRadius: 20, width: 120, gap: 20, margin: 0 }}
+            >
+                <AnimatedLoader 
+                    width={48}
+                    height={48}
+                    boxStyles={{ alignSelf: 'center' }}
+                />
+                <Text style={{ fontFamily: FONT.medium, fontSize: SIZES.regular, color: COLORS.gray3, textAlign: 'center'}}>
+                    Loading...
+                </Text>
+            </Dialog>
             <View style={styles.mainContainer}>
                 <View style={styles.logoNloginBlock}>
                     <View style={styles.logoContainer}>
@@ -143,7 +162,6 @@ const Login = (props) => {
                             </Text>
                             )}
                         </TouchableOpacity>
-                        
                     </View>
                 </View>
                 <View style={styles.loginOptionsContainer}>

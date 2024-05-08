@@ -240,7 +240,7 @@ const SettingUpPage = () => {
                                         {title}
                                     </Text>
                                     <Text style={styles.progressPercentage}>
-                                        {progress * 100}%
+                                        {Math.floor(progress * 100)}%
                                     </Text>
                                 </View>
                                 <View style={styles.progressBlock}>

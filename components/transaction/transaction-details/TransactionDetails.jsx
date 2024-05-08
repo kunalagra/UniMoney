@@ -31,7 +31,7 @@ const CategoryCard = ({id, category, selectedCategory, setSelectedCategory, tran
                 };
                 try {
                     const response = await axios(options);
-                    console.log(response.data);
+                    // console.log(response.data);
                 }
                 catch (error) {
                     console.log(error);
@@ -128,7 +128,7 @@ const EditModal = ({ editModalOpen, setEditModalOpen, selTypeOfPayment, selAccou
 
     const handleUpdate = async () => {
       setUpdating(true);
-      console.log(tranID);
+    //   console.log(tranID);
       const options = {
         method: 'PUT',
         url: `${REACT_APP_BACKEND_URL}/transaction/${tranID}`,

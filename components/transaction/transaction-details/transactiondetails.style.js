@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     }),
 
     navbar: {
+        alignSelf: 'stretch',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
