@@ -2,7 +2,7 @@ import { View, Text, SafeAreaView, StatusBar, ScrollView, TouchableOpacity, Refr
 import styles from './insightspage.style';
 import { chartColors } from '../../../constants/fakeData';
 import TransactionCard from '../common/cards/transaction/TransactionCard';
-import { icons, COLORS, images } from '../../../constants';
+import { icons, COLORS, images, SIZES } from '../../../constants';
 import React, { useState, useCallback, useEffect } from 'react';
 import { moneyTextHelper } from '../../../utils';
 import { LineChart, PieChart } from 'react-native-gifted-charts';
@@ -27,6 +27,48 @@ const getMaxPortion = (categories) => {
     return res;
 }
 
+const abbToWord = {'Cr': 'Crores', 'L': 'Lakhs', 'K': 'Thousands', 'Rs': 'Rupees'};
+const abbToVal = {'Cr': 10000000, 'L': 1000000, 'K': 1000, 'Rs': 1};
+
+const convertToLimitLabel = (value) => {
+    if (value >= 10000000) return 'Cr';
+    else if (value >= 100000) return 'L';
+    else if (value >= 1000) return 'K';
+    return 'Rs';
+}
+
+const convertToLimitValue = (value) => {
+    if (value===0) return 0;
+    if (value <= 100) return 100;
+    if (value <= 1000) return getNearestValue(value, 100, 1000);
+    if (value <= 10000) return getNearestValue(value, 1000, 10000);
+    if (value <= 100000) return getNearestValue(value, 10000, 100000);
+    if (value <= 1000000) return getNearestValue(value, 100000, 1000000);
+    if (value <= 10000000) return getNearestValue(value, 1000000, 10000000);
+    if (value <= 100000000) return getNearestValue(value, 10000000, 100000000);
+    return 1000000000;
+}
+
+const getNearestValue = (value, start, end) => {
+    let nearestValue = start;
+    for (let i=start; i<=end; i+=start) {
+        if (value <= i) {
+            nearestValue = i;
+            break;
+        }
+    }
+    return nearestValue;
+}
+
+const maxLimitValue = (value) => {
+    if (value===0) return 0;
+    if (value >= 10000000) return Math.ceil(value/10000000) * 10000000;
+    else if (value >= 100000) return Math.ceil(value/100000) * 100000;
+    else if (value >= 1000) return Math.ceil(value/1000) * 1000;
+    return 1000;
+}
+
+
 const InsightsPage = (props) => {
 
     const { ArrowleftIcon } = icons;
@@ -38,10 +80,12 @@ const InsightsPage = (props) => {
     const [totalIncome, setTotalIncome] = useState(0);
     const [monthlyExpense, setMonthlyExpense] = useState([]);
     const [monthlyIncome, setMonthlyIncome] = useState([]);
+    const [maxYValue, setMaxYValue] = useState(0);
+    const [maxYLabel, setMaxYLabel] = useState('Rs');
     const [loading, setLoading] = useState(true);
 
     const [isExpenseSelected, setIsExpenseSelected] = useState(true);
-    
+    const [lineGraphSelected, setLineGraphSelected] = useState(0);
 
     const [refreshing, setRefreshing] = useState(false);
 
@@ -112,11 +156,11 @@ const InsightsPage = (props) => {
                 });
             }
         } else {
-        monthWiseTransactions = alltransactions.filter((item) => {
-            const itemDate = new Date(item.date);
-            return itemDate.getMonth() === date.getMonth() && itemDate.getFullYear() === date.getFullYear();
-        });
-    }
+            monthWiseTransactions = alltransactions.filter((item) => {
+                const itemDate = new Date(item.date);
+                return itemDate.getMonth() === date.getMonth() && itemDate.getFullYear() === date.getFullYear();
+            });
+        }
 
         const spends = monthWiseTransactions.filter((item) => item.isExpense);
         const income = monthWiseTransactions.filter((item) => !item.isExpense);
@@ -130,19 +174,17 @@ const InsightsPage = (props) => {
                 image: category.details.img,
                 amount: categoryTransactions.reduce((acc, item) => acc + item.amount, 0)
             }
-        }
-    );
+        });
     
     
-    let incomeData = Categories.map((category) => {
-        const categoryTransactions = income.filter((item) => item.category.name === category.details.name);
-        return {
-            name: category.details.name,
-            image: category.details.img,
-            amount: categoryTransactions.reduce((acc, item) => acc + item.amount, 0)
-        }
-    }
-);
+        let incomeData = Categories.map((category) => {
+            const categoryTransactions = income.filter((item) => item.category.name === category.details.name);
+            return {
+                name: category.details.name,
+                image: category.details.img,
+                amount: categoryTransactions.reduce((acc, item) => acc + item.amount, 0)
+            }
+        });
         spendsData = spendsData.filter((item) => item.amount > 0);
         incomeData = incomeData.filter((item) => item.amount > 0);
 
@@ -173,37 +215,46 @@ const InsightsPage = (props) => {
             color: chartColors[index],
             focused: maxIncome.value==item.amount
         }));
-        
+
         setExpenseSplitData(expenseSplitData);
         setIncomeSplitData(incomeSplitData);
 
         let allMonthsWiseExpenses = [];
         let allMonthsWiseIncomes = [];
+        let maxY = 0;
+        let maxYL = 'Rs';
 
-    for (let i=0; i<12; i++) {
-        const monthWiseTransactions = alltransactions.filter((item) => {
-            const itemDate = new Date(item.date);
-            return itemDate.getMonth() === i && itemDate.getFullYear() === date.getFullYear();
+        for (let i=0; i<12; i++) {
+            const monthWiseTransactions = alltransactions.filter((item) => {
+                const itemDate = new Date(item.date);
+                return itemDate.getMonth() === i && itemDate.getFullYear() === date.getFullYear();
+            });
+
+            const spends = monthWiseTransactions.filter((item) => item.isExpense);
+            const income = monthWiseTransactions.filter((item) => !item.isExpense);
+
+            const totalSpends = spends.reduce((acc, item) => acc + item.amount, 0);
+            const totalIncome = income.reduce((acc, item) => acc + item.amount, 0);
+
+            // if (totalSpends === 0 && totalIncome === 0) continue;
+
+            allMonthsWiseExpenses.push({label: `${months[i]}`, value: totalSpends, dataPointText: `${totalSpends}`});
+            allMonthsWiseIncomes.push({label: `${months[i]}`, value: totalIncome, dataPointText: `${totalIncome}`});
+            
+            maxY = convertToLimitValue(Math.max(maxY, maxLimitValue(totalSpends), maxLimitValue(totalIncome)));
+            maxYL = convertToLimitLabel(maxY);
         }
-    );
+        
+        for (let i=0; i<12; i++) {
+            allMonthsWiseExpenses[i] = {...allMonthsWiseExpenses[i], value: (allMonthsWiseExpenses[i].value/abbToVal[maxYL]).toFixed(2), dataPointText: `${(allMonthsWiseExpenses[i].value/abbToVal[maxYL]).toFixed(2)}`};
+            allMonthsWiseIncomes[i] = {...allMonthsWiseIncomes[i], value: (allMonthsWiseIncomes[i].value/abbToVal[maxYL]).toFixed(2), dataPointText: `${(allMonthsWiseIncomes[i].value/abbToVal[maxYL]).toFixed(2)}`};
+        }
 
-    const spends = monthWiseTransactions.filter((item) => item.isExpense);
-    const income = monthWiseTransactions.filter((item) => !item.isExpense);
-
-    const totalSpends = spends.reduce((acc, item) => acc + item.amount, 0);
-    const totalIncome = income.reduce((acc, item) => acc + item.amount, 0);
-
-    // if (totalSpends === 0 && totalIncome === 0) continue;
-
-    allMonthsWiseExpenses.push({label: `${months[i]} ${date.getFullYear()}`, value: Math.round(totalSpends/100000), dataPointText: `${Math.round(totalSpends/100000)}L`});
-    allMonthsWiseIncomes.push({label: `${months[i]} ${date.getFullYear()}`, value: Math.round(totalIncome/100000), dataPointText: `${Math.round(totalIncome/100000)}L`});
-
-    }
-    // console.log(allMonthsWiseExpenses);
-    // console.log(allMonthsWiseIncomes);
-    setMonthlyExpense(allMonthsWiseExpenses);
-    setMonthlyIncome(allMonthsWiseIncomes);
-    setRefreshing(false);
+        setMaxYValue(maxY/abbToVal[maxYL]);
+        setMaxYLabel(maxYL);
+        setMonthlyExpense(allMonthsWiseExpenses);
+        setMonthlyIncome(allMonthsWiseIncomes);
+        setRefreshing(false);
 
         
     }, [alltransactions, Categories, date, refreshing]);
@@ -272,6 +323,23 @@ const InsightsPage = (props) => {
             </View>
         )
     }
+
+    const RadioButton = ({ selected=false }) => {
+        return (
+            <View style={{ height: 18, width: 18, borderRadius: 12, borderWidth: 2, borderColor: selected? COLORS.main3 : COLORS.gray1, alignItems: 'center', justifyContent: 'center' }}>
+              {
+                selected ?
+                  <View style={{
+                    height: 10,
+                    width: 10,
+                    borderRadius: 6,
+                    backgroundColor: COLORS.main3,
+                  }}/>
+                  : null
+              }
+            </View>
+        );
+      }
 
     return (
         <SafeAreaView style={{backgroundColor: COLORS.white2}}>
@@ -533,43 +601,118 @@ const InsightsPage = (props) => {
 
                                 <View style={styles.lineAnalysisContainer}>
                                     <Text style={styles.lineContainerHeading}>
-                                        Income vs Expense
+                                        Yearly Pattern
+                                    </Text>
+                                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 15, alignItems: 'center' }}>
+                                        <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => setLineGraphSelected(0)}>
+                                            <RadioButton selected={lineGraphSelected===0} />
+                                            <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===0? COLORS.gray3 : COLORS.gray1 }]}>
+                                                Both                                                
+                                            </Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => setLineGraphSelected(1)}>
+                                            <RadioButton selected={lineGraphSelected===1} />
+                                            <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===1? COLORS.gray3 : COLORS.gray1 }]}>
+                                                Income                                                
+                                            </Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => setLineGraphSelected(2)}>
+                                            <RadioButton selected={lineGraphSelected===2} />
+                                            <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===2? COLORS.gray3 : COLORS.gray1 }]}>
+                                                Expense                                              
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1 }]}>
+                                        {lineGraphSelected===0? "Income vs Expense" : lineGraphSelected===1? "Income" : "Expense"} (in {abbToWord[maxYLabel]})
+                                    </Text>
+                                    <Text style={[styles.lineContainerHeading, { marginTop: -10, textAlign: 'center', fontSize: SIZES.regular }]}>
+                                        F.Y. {date.getFullYear()}
                                     </Text>
                                     <View style={styles.lineChartContainer}>
-                                        <LineChart
-                                            data={monthlyExpense}
-                                            data2={monthlyIncome}
-                                            color1={COLORS.gray1}
-                                            color2={COLORS.main3}
-                                            dataPointsColor1={COLORS.gray1}
-                                            dataPointsColor2={COLORS.main3}
-                                            yAxisTextStyle={styles.lineChartAxisText}
-                                            xAxisLabelTextStyle={styles.lineChartAxisText}
-                                            maxValue={5}
-                                            noOfSections={5}
-                                            spacing={40}
-                                            thickness={3}
-                                            yAxisLabelSuffix={'L'}
-                                            showVerticalLines
-                                            curved
-                                            textShiftX={-5}
-                                            textShiftY={-5}
-                                            textColor={COLORS.gray2}
-                                        />
+                                        {lineGraphSelected===0? (
+                                            <LineChart
+                                                data={monthlyExpense}
+                                                data2={monthlyIncome}
+                                                color1={COLORS.gray1}
+                                                color2={COLORS.main3}
+                                                dataPointsColor1={COLORS.gray1}
+                                                dataPointsColor2={COLORS.main3}
+                                                yAxisTextStyle={styles.lineChartAxisText}
+                                                xAxisLabelTextStyle={styles.lineChartAxisText}
+                                                maxValue={maxYValue}
+                                                noOfSections={5}
+                                                spacing={50}
+                                                verticalLinesSpacing={50}
+                                                thickness={3}
+                                                yAxisLabelSuffix={maxYLabel}
+                                                showVerticalLines
+                                                curved
+                                                textShiftX={-5}
+                                                textShiftY={-5}
+                                                textColor={COLORS.gray2}
+                                                textFontSize={SIZES.regular-1}
+                                                textFontSize1={SIZES.regular-1}
+                                            />
+                                        ) : lineGraphSelected===1? (
+                                            <LineChart
+                                                data={monthlyIncome}
+                                                color1={COLORS.main3}
+                                                dataPointsColor1={COLORS.main3}
+                                                yAxisTextStyle={styles.lineChartAxisText}
+                                                xAxisLabelTextStyle={styles.lineChartAxisText}
+                                                maxValue={maxYValue}
+                                                noOfSections={5}
+                                                spacing={50}
+                                                verticalLinesSpacing={50}
+                                                thickness={3}
+                                                yAxisLabelSuffix={maxYLabel}
+                                                showVerticalLines
+                                                curved
+                                                textShiftX={-5}
+                                                textShiftY={-5}
+                                                textColor={COLORS.gray2}
+                                                textFontSize={SIZES.regular-1}
+                                            />
+                                        ) : (
+                                            <LineChart
+                                                data={monthlyExpense}
+                                                color1={COLORS.gray1}
+                                                dataPointsColor1={COLORS.gray1}
+                                                yAxisTextStyle={styles.lineChartAxisText}
+                                                xAxisLabelTextStyle={styles.lineChartAxisText}
+                                                maxValue={maxYValue}
+                                                noOfSections={5}
+                                                spacing={50}
+                                                verticalLinesSpacing={50}
+                                                thickness={3}
+                                                yAxisLabelSuffix={maxYLabel}
+                                                showVerticalLines
+                                                curved
+                                                textShiftX={-5}
+                                                textShiftY={-5}
+                                                textColor={COLORS.gray2}
+                                                textFontSize={SIZES.regular-1}
+                                            />
+                                        )}
                                     </View>
                                     <View style={styles.lineLegendsContainer}>
-                                        <View style={styles.lineLegend} >
-                                            <View style={styles.lineLegendDot(COLORS.gray1)} />
-                                            <Text style={styles.lineLegendText}>
-                                                Expense
-                                            </Text>
-                                        </View>
-                                        <View style={styles.lineLegend} >
-                                            <View style={styles.lineLegendDot(COLORS.main3)} />
-                                            <Text style={styles.lineLegendText}>
-                                                Income
-                                            </Text>
-                                        </View>
+                                        {lineGraphSelected!==1 && (
+                                            <View style={styles.lineLegend} >
+                                                <View style={styles.lineLegendDot(COLORS.gray1)} />
+                                                <Text style={styles.lineLegendText}>
+                                                    Expense
+                                                </Text>
+                                            </View>
+                                        )}
+                                        {lineGraphSelected!==2 && (
+                                            <View style={styles.lineLegend} >
+                                                <View style={styles.lineLegendDot(COLORS.main3)} />
+                                                <Text style={styles.lineLegendText}>
+                                                    Income
+                                                </Text>
+                                            </View>
+                                        )}
                                     </View>
                                 </View>
                             </View>
