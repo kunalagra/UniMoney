@@ -154,7 +154,7 @@ const BudgetDetailsBar = ({ visible, setVisibility, selectedCategory, setSelecte
                                 onChangeText={(e) => setAmount(e)}
                                 placeholder="(At least ₹ 1,000)"
                                 underlineColorAndroid="transparent"
-                                selectionColor={COLORS.green1}
+                                selectionColor={COLORS.main4}
                                 placeholderTextColor={COLORS.gray2}
                                 leftIconContainerStyle={{ paddingLeft: 10 }}
                                 leftIcon={

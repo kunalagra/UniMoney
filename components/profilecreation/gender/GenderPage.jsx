@@ -14,8 +14,6 @@ const GenderCard = ({Icon, gender, selectedGender, setSelectedGender, dispatch})
             onPress={() => dispatch(setSelectedGender(gender))}
             activeOpacity={0.6}
         >
-            <View style={styles.cardBackground(selectedGender, gender)}/>
-
             <View style={styles.iconContainer(selectedGender, gender)}>
                 <Icon width={35} height={35} fill={selectedGender===gender? COLORS.white1 : COLORS.gray2} />
             </View>
@@ -42,7 +40,7 @@ const GenderPage = (props) => {
                     <CustomProgress
                         title1={'About you'}
                         title2={'Select your Gender'}
-                        progress={'50%'}
+                        progress={0.5}
                         currentPageNum={1}
                         first={true}
                     />

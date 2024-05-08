@@ -12,16 +12,16 @@ const styles = StyleSheet.create({
     headerWaveContainer: {
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        width: '100%',
+        alignSelf: 'stretch',
     },
-
+    
     headerWaveImage: {
         height: 150, 
-        aspectRatio: 0.79
+        aspectRatio: 0.79,
     },
 
     textContainer: {
-        width: '100%',
+        alignSelf: 'stretch',
         paddingLeft: 20,
         alignItems: 'flex-start',
         justifyContent: 'space-between',
@@ -59,15 +59,16 @@ const styles = StyleSheet.create({
     },
 
     footerWaveContainer: {
-        width: '100%'
+        alignSelf: 'stretch'
     },
 
     footerWaveImage: {
-        aspectRatio: 1.8
+        aspectRatio: 1.8,
+        justifyContent: 'flex-end'
     },
 
     footerRectangle: {
-        width: '100%', 
+        alignSelf: 'stretch',
         height: 100, 
         backgroundColor: COLORS.main3
     }

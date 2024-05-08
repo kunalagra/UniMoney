@@ -10,6 +10,7 @@ import FemaleIcon from "../assets/icons/female.svg";
 import MaleIcon from "../assets/icons/male.svg";
 import TransgenderIcon from "../assets/icons/transgender.svg";
 import GoogleIcon from "../assets/icons/google.svg";
+import GoogleLoader from "../assets/icons/google_loader.svg";
 import HistoryIcon from "../assets/icons/history.svg";
 import HomeIcon from "../assets/icons/home.svg";
 import RupeecoinIcon from "../assets/icons/rupeecoin.svg";
@@ -20,6 +21,7 @@ import TickIcon from "../assets/icons/tick.svg";
 import VisibilityIcon from "../assets/icons/visibility.svg";
 import WalletIcon from "../assets/icons/wallet.svg";
 import Loader from "../assets/icons/loader.svg";
+import Loader2 from "../assets/icons/loader2.svg";
 import StarFilled from "../assets/icons/star_filled.svg";
 import Flame from "../assets/icons/flame.svg";
 
@@ -36,6 +38,7 @@ export default {
     MaleIcon,
     TransgenderIcon,
     GoogleIcon,
+    GoogleLoader,
     HistoryIcon,
     HomeIcon,
     RupeecoinIcon,
@@ -46,6 +49,7 @@ export default {
     VisibilityIcon,
     WalletIcon,
     Loader,
+    Loader2,
     Flame,
     StarFilled
 }

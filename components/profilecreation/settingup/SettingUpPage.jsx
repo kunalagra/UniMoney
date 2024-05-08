@@ -15,7 +15,18 @@ let i = 0;
 const SettingUpPage = () => {
 
     const [progress, setProgress] = useState(0);
-    const progressList = [5, 15, 28, 47, 65, 89, 98, 100];
+    const [title, setTitle] = useState('Preparing data');
+    const progressList = [0.05, 0.15, 0.28, 0.47, 0.65, 0.89, 0.98, 1];
+    const titlesList = [
+        'Storing user info',
+        'Storing user info',
+        'Setting goals',
+        'Setting goals',
+        'Syncing all the messages',
+        'Syncing all the messages',
+        'Creating user profile',
+        'Creating user profile'
+    ];
     const navigation = useNavigation();
     const { username, email, password, ageGroup, gender, goals, goalsProgress, categories, categoriesLimits } = useSelector(state => state.profilecreation);
 
@@ -180,7 +191,7 @@ const SettingUpPage = () => {
     useEffect( () => {
 
         const interval = setInterval( async () => {
-            if (progress===89) {
+            if (progress===0.89) {
                 clearInterval(interval);
                 try { 
                     await getBankMessages();
@@ -189,6 +200,7 @@ const SettingUpPage = () => {
                     console.log(e);
                 }
             }else {
+                setTitle(titlesList[i]);
                 setProgress(progressList[i]);
                 i++;
             }
@@ -207,7 +219,7 @@ const SettingUpPage = () => {
                     <CustomProgress
                         title1={''}
                         title2={''}
-                        progress={'0%'}
+                        progress={0}
                         currentPageNum={'★'}
                         last={true}
                     />
@@ -225,14 +237,19 @@ const SettingUpPage = () => {
                             <View style={styles.progressContainer}>
                                 <View style={styles.progressTextContainer}>
                                     <Text style={styles.progressText}>
-                                        Setting goals
+                                        {title}
                                     </Text>
                                     <Text style={styles.progressPercentage}>
-                                        {progress}%
+                                        {progress * 100}%
                                     </Text>
                                 </View>
                                 <View style={styles.progressBlock}>
                                     <View style={styles.currentProgress(progress)} />
+                                </View>
+                                <View style={styles.progressTextContainer}>
+                                    <Text style={styles.progressText}>
+                                        {progress>=0.89? 'Stay online!! It may take up to two minutes...' : ''}
+                                    </Text>
                                 </View>
                             </View>
                             <View style={styles.imageBlock}>

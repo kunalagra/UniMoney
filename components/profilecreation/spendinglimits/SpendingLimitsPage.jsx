@@ -38,7 +38,7 @@ const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesL
 
             <Text style={styles.cardTitle}>{title}</Text>
 
-            <View style={{width: '100%'}}>
+            <View style={{alignSelf: 'stretch'}}>
                 <Slider
                     value={value}
                     onValueChange={(value) => {
@@ -50,7 +50,7 @@ const CategoryCard = ({category, title, selectedCategoriesLimits, setCategoriesL
                     maximumTrackTintColor={COLORS.white4}
                     minimumTrackTintColor={COLORS.main3}
                     thumbTintColor={COLORS.white1}
-                    trackStyle={{width: '100%', height: 10, borderRadius: 20}}
+                    trackStyle={{alignSelf: 'stretch', height: 10, borderRadius: 20}}
                     thumbStyle={{width: 20, height: 20, borderWidth: 1, borderColor: COLORS.white5}}
                 />
             </View>
@@ -94,7 +94,7 @@ const SpendingLimitsPage = (props) => {
                     <CustomProgress
                         title1={'Conservation'}
                         title2={'Adjust your spending limits'}
-                        progress={'100%'}
+                        progress={1}
                         currentPageNum={3}
                     />
 
@@ -117,7 +117,7 @@ const SpendingLimitsPage = (props) => {
                                     else setMaxLimit(val);
                                 }}
                                 underlineColorAndroid="transparent"
-                                selectionColor={COLORS.green1}
+                                selectionColor={COLORS.main4}
                                 placeholderTextColor={COLORS.gray2}
                                 leftIconContainerStyle={{ paddingLeft: 10 }}
                                 leftIcon={
@@ -132,7 +132,7 @@ const SpendingLimitsPage = (props) => {
 
                         </View>
 
-                        <ScrollView style={{width: '100%', height: 400}}>
+                        <ScrollView style={{height: 400}}>
                             <View style={styles.cardsContainer}>
                                 {currentCategories.map((index) => (
                                     <CategoryCard

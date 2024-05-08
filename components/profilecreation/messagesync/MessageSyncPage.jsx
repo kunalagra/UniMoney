@@ -5,7 +5,6 @@ import { COLORS, images } from '../../../constants';
 import { useState } from 'react';
 import CustomButton from '../common/button/CustomButton';
 import SmsAndroid from 'react-native-get-sms-android';
-import { getTransactionInfo } from 'transaction-sms-parser';
 
 const MessageSyncPage = (props) => {
 
@@ -110,7 +109,7 @@ const MessageSyncPage = (props) => {
                     <CustomProgress
                         title1={'Synchronize'}
                         title2={'Allow us to read SMS messages'}
-                        progress={'33%'}
+                        progress={0.33}
                         currentPageNum={4}
                     />
 

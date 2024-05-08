@@ -9,26 +9,23 @@ const styles = StyleSheet.create({
 
     mainContainer: {
         height: '100%', 
-        width: '100%', 
         justifyContent: 'space-between', 
         paddingTop: 10
     },
 
     midContainer: {
-        width: '100%', 
         justifyContent: 'center', 
         flexDirection: 'row'
     },
 
     imageContainer: {
-        width: '80%', 
         aspectRatio: 1
     },
 
     image: {
         objectFit: 'contain', 
-        width: '100%', 
-        height: '100%',
+        width: 300, 
+        height: 300,
     },
 
     bottomContainer: {

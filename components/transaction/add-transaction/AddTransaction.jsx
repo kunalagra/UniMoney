@@ -256,7 +256,7 @@ const AddTransactionPage = (props) => {
                                 value={receiverID}
                                 onChangeText={(val) => setReceiverID(val)}
                                 underlineColorAndroid="transparent"
-                                selectionColor={COLORS.green1}
+                                selectionColor={COLORS.main4}
                                 placeholderTextColor={COLORS.gray3}
                                 numberOfLines={1}
                             />
@@ -279,7 +279,7 @@ const AddTransactionPage = (props) => {
                                 value={desc}
                                 onChangeText={(val) => setDesc(val)}
                                 underlineColorAndroid="transparent"
-                                selectionColor={COLORS.green1}
+                                selectionColor={COLORS.main4}
                                 placeholderTextColor={COLORS.gray3}
                                 multiline
                                 numberOfLines={5}
@@ -345,7 +345,7 @@ const AddTransactionPage = (props) => {
                                         setAmount(val);
                                 }}
                                 underlineColorAndroid="transparent"
-                                selectionColor={COLORS.green1}
+                                selectionColor={COLORS.main4}
                                 placeholderTextColor={COLORS.gray3}
                                 numberOfLines={1}
                                 leftIconContainerStyle={{ paddingLeft: 10 }}

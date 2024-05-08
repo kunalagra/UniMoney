@@ -27,7 +27,7 @@ const GoalCard = ({goal, title, selectedGoalsProgress, setGoalsProgress, dispatc
 
             <Text style={styles.cardTitle}>{title}</Text>
 
-            <View style={{width: '100%'}}>
+            <View style={{alignSelf: 'stretch'}}>
                 <Slider
                     value={value}
                     onValueChange={(value) => {
@@ -39,7 +39,7 @@ const GoalCard = ({goal, title, selectedGoalsProgress, setGoalsProgress, dispatc
                     maximumTrackTintColor={COLORS.white4}
                     minimumTrackTintColor={COLORS.main3}
                     thumbTintColor={COLORS.white1}
-                    trackStyle={{width: '100%', height: 10, borderRadius: 20}}
+                    trackStyle={{alignSelf: 'stretch', height: 10, borderRadius: 20}}
                     thumbStyle={{width: 20, height: 20, borderWidth: 1, borderColor: COLORS.white5}}
                 />
             </View>
@@ -79,12 +79,12 @@ const GoalsProgressPage = (props) => {
                     <CustomProgress
                         title1={'Aspiration'}
                         title2={'What are your progress in these goals so far?'}
-                        progress={'100%'}
+                        progress={1}
                         currentPageNum={2}
                     />
 
                     <View style={styles.bottomContainer}>
-                        <ScrollView style={{width: '100%', height: 480}}>
+                        <ScrollView style={{ height: 480}}>
                             <View style={styles.cardsContainer}>
                                 {currentGoals.map((index) => (
                                     <GoalCard

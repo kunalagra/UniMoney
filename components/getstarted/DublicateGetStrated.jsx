@@ -1,8 +1,9 @@
-import {Text, Image, View, TouchableOpacity} from 'react-native';
+import {Text, Image, View, TouchableOpacity, Dimensions} from 'react-native';
 import {images} from '../../constants';
 import styles from './getstarted.style';
 
 const DublicateGetStarted = (props) => {
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.headerWaveContainer}>
@@ -11,8 +12,8 @@ const DublicateGetStarted = (props) => {
             source={images.headerwave}
             style={{
               resizeMode: 'cover',
-              height: '100%',
-              width: '100%',
+              height: 150,
+              aspectRatio: 0.79
             }}
           />
         </View>
@@ -49,8 +50,9 @@ const DublicateGetStarted = (props) => {
             source={images.wave_with_coin}
             style={{
               resizeMode: 'cover',
+              aspectRatio: 1.8,
               height: '100%',
-              width: '100%',
+              width: Dimensions.get('window').width,
             }}
           />
         </View>

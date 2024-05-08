@@ -50,7 +50,7 @@ const TransactionSyncPage = (props) => {
                     <CustomProgress
                         title1={'Synchronize'}
                         title2={isImportDone? 'Import successful!' : 'Import Transactions Data'}
-                        progress={'67%'}
+                        progress={0.67}
                         currentPageNum={4}
                     />
 

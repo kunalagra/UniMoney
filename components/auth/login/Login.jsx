@@ -17,6 +17,7 @@ const Login = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [modalLoading, setModalLoading] = useState(false);
 
     const handleLogin = async ({gemail, gpassword}) => {
         Keyboard.dismiss();
@@ -52,7 +53,6 @@ const Login = (props) => {
     }
 
     const googleSignIn = async () => {
-        setLoading(true);
         GoogleSignin.configure({
             webClientId: REACT_APP_GOOGLE_CLIENT_ID,
             offlineAccess: true,
@@ -70,18 +70,14 @@ const Login = (props) => {
                 console.log('error');
                 alert('Google Signin failed');
             }
-            setLoading(false);
 
         } catch (error) {
-            setLoading(false);
             console.log(error);
         }
     }
 
-
-
     const [passwordVisible, setPasswordVisible] = useState(false);
-    const { GoogleIcon, Loader } = icons;
+    const { GoogleIcon, Loader, Loader2 } = icons;
 
     return (
         <View style={styles.container}>
@@ -107,8 +103,10 @@ const Login = (props) => {
                             value={email}
                             onChangeText={(e) => setEmail(e)}
                             underlineColorAndroid="transparent"
-                            selectionColor={COLORS.green1}
+                            selectionColor={COLORS.main4}
                             placeholderTextColor={COLORS.gray2}
+                            leftIconContainerStyle={{ paddingLeft: 10 }}
+                            leftIcon={<Icon name="email" color={COLORS.gray1} size={20} />}
                         />
                         <Input
                             containerStyle={styles.inputOuterContainerStyle}
@@ -118,31 +116,34 @@ const Login = (props) => {
                             value={password}
                             onChangeText={(e) => setPassword(e)}
                             underlineColorAndroid="transparent"
-                            selectionColor={COLORS.green1}
+                            selectionColor={COLORS.main4}
                             placeholderTextColor={COLORS.gray2}
                             secureTextEntry={!passwordVisible}
                             rightIconContainerStyle={{ paddingRight: 15 }}
                             rightIcon={<Icon name={passwordVisible ? "visibility-off" : "visibility"} color={COLORS.gray1} size={20} onPress={() => setPasswordVisible(prev => !prev)} />}
+                            leftIconContainerStyle={{ paddingLeft: 10 }}
+                            leftIcon={<Icon name="key" color={COLORS.gray1} size={20} />}
                         />
                         <TouchableOpacity
                             style={styles.loginbtn}
-                            onPress={handleLogin}
+                            onPress={() => {setLoading(true); setTimeout(() => setLoading(false), 1000)}}
                             activeOpacity={0.7}
                             disabled={loading}
                         >
                             { loading ? (
                                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap:10}}>
-                                <Loader height={20} width={20}></Loader>
+                                <Loader height={20} width={20} />
                                 <Text style={styles.loginText}>
                                     Logging in...
                                 </Text>
                             </View>
                             ) : (
-                            <Text style={styles.loginText}>
+                                <Text style={styles.loginText}>
                                 Login
                             </Text>
                             )}
                         </TouchableOpacity>
+                        
                     </View>
                 </View>
                 <View style={styles.loginOptionsContainer}>

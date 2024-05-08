@@ -234,7 +234,7 @@ const EditModal = ({ editModalOpen, setEditModalOpen, selTypeOfPayment, selAccou
                         value={receiverID}
                         onChangeText={(val) => setReceiverID(val)}
                         underlineColorAndroid="transparent"
-                        selectionColor={COLORS.green1}
+                        selectionColor={COLORS.main4}
                         placeholderTextColor={COLORS.gray3}
                         numberOfLines={1}
                     />
@@ -257,7 +257,7 @@ const EditModal = ({ editModalOpen, setEditModalOpen, selTypeOfPayment, selAccou
                         value={desc}
                         onChangeText={(val) => setDesc(val)}
                         underlineColorAndroid="transparent"
-                        selectionColor={COLORS.green1}
+                        selectionColor={COLORS.main4}
                         placeholderTextColor={COLORS.gray3}
                         multiline
                         numberOfLines={5}
@@ -282,7 +282,7 @@ const EditModal = ({ editModalOpen, setEditModalOpen, selTypeOfPayment, selAccou
                                 setAmount(val);
                         }}
                         underlineColorAndroid="transparent"
-                        selectionColor={COLORS.green1}
+                        selectionColor={COLORS.main4}
                         placeholderTextColor={COLORS.gray3}
                         numberOfLines={1}
                         leftIconContainerStyle={{ paddingLeft: 10 }}

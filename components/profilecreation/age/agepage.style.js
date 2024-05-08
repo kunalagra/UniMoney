@@ -8,8 +8,7 @@ const styles = StyleSheet.create({
     },
 
     mainContainer: {
-        height: '100%', 
-        width: '100%', 
+        height: '100%',
         justifyContent: 'space-between', 
         paddingTop: 10
     },
@@ -23,23 +22,14 @@ const styles = StyleSheet.create({
     },
 
     ageCardContainer: (selectedAgeGroup, ageGroup) => ({
-        width: '100%', 
         height: 60, 
         justifyContent: 'center', 
         alignItems: 'center', 
         borderRadius: 8, 
         borderWidth: 2, 
         borderColor: selectedAgeGroup===ageGroup? COLORS.main3 : COLORS.white4,  
-        opacity: selectedAgeGroup===ageGroup? 1 : 1
-    }),
-
-    cardBackground: (selectedAgeGroup, ageGroup) => ({
-        width: '100%', 
-        height: '100%', 
-        position: 'absolute', 
-        opacity: selectedAgeGroup===ageGroup? 0.3 : 1,
-        backgroundColor: selectedAgeGroup===ageGroup? COLORS.main3 : COLORS.white3,
-        borderRadius: 8, 
+        opacity: selectedAgeGroup===ageGroup? 1 : 1,
+        backgroundColor: selectedAgeGroup===ageGroup? COLORS.main4 : COLORS.white3,
     }),
 
     cardTitle: {

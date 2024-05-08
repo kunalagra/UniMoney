@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
     },
 
     fileContainer: {
-        width: "100%",
         flexDirection: "column",
         justifyContent: "center",
         gap: 10,
@@ -94,11 +93,9 @@ const styles = StyleSheet.create({
         fontSize: SIZES.regular,
         color: exists? COLORS.gray3 : COLORS.gray1,
         alignSelf: "center",
-        width: "50%",
     }),
 
     buttonContainer: {
-        width: "100%",
         flexDirection: "row",
         justifyContent:"center"
     },

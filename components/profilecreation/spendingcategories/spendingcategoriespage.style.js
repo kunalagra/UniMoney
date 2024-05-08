@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
 
     mainContainer: {
         height: '100%', 
-        width: '100%', 
         justifyContent: 'space-between', 
         paddingTop: 10
     },
@@ -19,7 +18,6 @@ const styles = StyleSheet.create({
     },
 
     cardsContainer: {
-        width: '100%',
         padding: 20,
         flexDirection: 'row',
         flexWrap: 'wrap',

@@ -10,20 +10,18 @@ const styles = StyleSheet.create({
 
     mainContainer: {
         height: '100%', 
-        width: '100%', 
         justifyContent: 'space-between', 
         paddingTop: 10
     },
 
 
     inputOuterContainerStyle: {
-        width: '100%', 
+        alignSelf: 'stretch',
         paddingHorizontal: 0, 
         height: 49
     },
 
     inputInnerContainerStyle: {
-        width: '100%', 
         borderColor: COLORS.gray1, 
         borderRadius: 8, 
         borderWidth: 1, 
@@ -31,8 +29,7 @@ const styles = StyleSheet.create({
     },
 
     input: {
-        alignSelf: 'center', 
-        width: '100%', 
+        alignSelf: 'center',  
         height: 45, 
         fontSize: SIZES.regular, 
         color: COLORS.gray2, 
@@ -63,7 +60,6 @@ const styles = StyleSheet.create({
     },
 
     categoryCardContainer: {
-        width: '100%', 
         padding: 10,
         justifyContent: 'center',
         alignItems: 'center', 
@@ -79,7 +75,7 @@ const styles = StyleSheet.create({
     },
 
     sliderTitlesContainer: {
-        width: '100%', 
+        alignSelf: 'stretch',
         flexDirection: 'row', 
         justifyContent: 'space-between', 
         alignItems: 'center'

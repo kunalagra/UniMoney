@@ -67,12 +67,14 @@ const SignUp = (props) => {
                             containerStyle={styles.inputOuterContainerStyle}
                             inputContainerStyle={styles.inputInnerContainerStyle}
                             style={styles.input}
-                            placeholder='Name'
+                            placeholder='Full name'
                             value={username}
                             onChangeText={(e) => dispatch(setUsername(e))}
                             underlineColorAndroid="transparent"
-                            selectionColor={COLORS.green1}
+                            selectionColor={COLORS.main4}
                             placeholderTextColor={COLORS.gray2}
+                            leftIconContainerStyle={{ paddingLeft: 10 }}
+                            leftIcon={<Icon name="account-circle" color={COLORS.gray1} size={20} />}
                         />
                         <Input
                             containerStyle={styles.inputOuterContainerStyle}
@@ -82,8 +84,10 @@ const SignUp = (props) => {
                             value={email}
                             onChangeText={(e) => dispatch(setEmail(e))}
                             underlineColorAndroid="transparent"
-                            selectionColor={COLORS.green1}
+                            selectionColor={COLORS.main4}
                             placeholderTextColor={COLORS.gray2}
+                            leftIconContainerStyle={{ paddingLeft: 10 }}
+                            leftIcon={<Icon name="email" color={COLORS.gray1} size={20} />}
                         />
                         <Input
                             containerStyle={styles.inputOuterContainerStyle}
@@ -93,11 +97,13 @@ const SignUp = (props) => {
                             value={password}
                             onChangeText={(e) => dispatch(setPassword(e))}
                             underlineColorAndroid="transparent"
-                            selectionColor={COLORS.green1}
+                            selectionColor={COLORS.main4}
                             placeholderTextColor={COLORS.gray2}
                             secureTextEntry={!passwordVisible}
                             rightIconContainerStyle={{ paddingRight: 15 }}
                             rightIcon={<Icon name={passwordVisible? "visibility-off" : "visibility"} color={COLORS.gray1} size={20} onPress={() => setPasswordVisible(prev => !prev)} />}
+                            leftIconContainerStyle={{ paddingLeft: 10 }}
+                            leftIcon={<Icon name="key" color={COLORS.gray1} size={20} />}
                         />
                         <TouchableOpacity
                             style={styles.signupBtn}

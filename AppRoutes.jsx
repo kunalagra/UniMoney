@@ -18,7 +18,7 @@ import TransactionByBank from './components/banks/getTransactionsBy-bank/Transac
 import TransactionByCat from './components/main/budget/transactionByCat/transactionByCat';
 import TransactionByInsights from './components/main/insights/transactionbyinsights/transactionByInsights';
 import Profile from './components/settings/profile/Profile';
-import UpdateBill from './components/bills/update-bill/UpdeteBill';
+import UpdateBill from './components/bills/update-bill/UpdateBill';
 
 const Stack = createNativeStackNavigator();
 

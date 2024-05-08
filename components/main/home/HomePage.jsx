@@ -5,7 +5,6 @@ import ExpenseCard from '../common/cards/expense/ExpenseCard';
 import StreakBanner from './streakbanner/StreakBanner';
 import TransactionCard from '../common/cards/transaction/TransactionCard';
 import styles from './homepage.style';
-import { Dialog, Input } from '@rneui/themed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { setUsername, setEmail, setImage } from '../../../store/profilecreation';

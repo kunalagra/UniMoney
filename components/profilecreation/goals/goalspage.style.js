@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
 
     mainContainer: {
         height: '100%', 
-        width: '100%', 
         justifyContent: 'space-between', 
         paddingTop: 10
     },
@@ -22,8 +21,7 @@ const styles = StyleSheet.create({
         gap: 10
     },
 
-    goalCardContainer: (goalSelected) => ({
-        width: '100%', 
+    goalCardContainer: (goalSelected) => ({ 
         height: 60, 
         justifyContent: 'space-between', 
         flexDirection: 'row',
@@ -31,15 +29,7 @@ const styles = StyleSheet.create({
         borderRadius: 8, 
         borderWidth: 2, 
         borderColor: goalSelected===1? COLORS.main3 : COLORS.white4,  
-    }),
-
-    cardBackground: (goalSelected) => ({
-        width: '100%', 
-        height: '100%', 
-        position: 'absolute', 
-        opacity: goalSelected===1? 0.3 : 1,
-        backgroundColor: goalSelected===1? COLORS.main3 : COLORS.white3,
-        borderRadius: 8, 
+        backgroundColor: goalSelected===1? COLORS.main4 : COLORS.white3,
     }),
 
     cardTitle: {

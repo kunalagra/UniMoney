@@ -9,13 +9,11 @@ const styles = StyleSheet.create({
 
     mainContainer: {
         height: '100%', 
-        width: '100%', 
         justifyContent: 'flex-start', 
         paddingTop: 10
     },
 
     midContainer: {
-        width: '100%', 
         justifyContent: 'center', 
         flexDirection: 'column',
         alignItems: 'flex-start',
@@ -24,7 +22,6 @@ const styles = StyleSheet.create({
     },
 
     textContainer: {
-        width: '100%',
         alignItems: 'flex-start'
     },
 
@@ -39,12 +36,12 @@ const styles = StyleSheet.create({
     },
 
     innerContainer: {
-        width: '100%', 
+        alignSelf: 'stretch', 
         gap: 80
     },
 
     progressContainer: {
-        width: '100%', 
+        alignSelf: 'stretch', 
         gap: 10
     },
 
@@ -67,7 +64,6 @@ const styles = StyleSheet.create({
 
     progressBlock: {
         height: 12, 
-        width: '100%', 
         backgroundColor: COLORS.white4, 
         flexDirection: 'row', 
         justifyContent: 'flex-start', 
@@ -77,24 +73,22 @@ const styles = StyleSheet.create({
     
     currentProgress: (progress) => ({
         height: 12, 
-        width: `${progress}%`, 
+        flex: progress, 
         backgroundColor: COLORS.main3,
         borderRadius: 20
     }),
 
     imageBlock: {
-        width: '100%', 
         alignItems: 'center'
     },
 
     imageContainer: {
-        width: '90%', 
         aspectRatio: 1
     },
 
     image: {
-        width: '100%', 
-        height: '100%', 
+        width: 300, 
+        height: 300, 
         objectFit: 'contain'
     },
 

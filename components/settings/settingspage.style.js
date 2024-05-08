@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     },
 
     optionDetailsContainer: {
-        width: '70%',
+        flex: 0.8,
         flexDirection: 'row', 
         alignItems: 'center', 
         gap: 20, 

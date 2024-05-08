@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
 
     mainContainer: {
         height: '100%', 
-        width: '100%', 
         justifyContent: 'space-between', 
         paddingTop: 10
     },
@@ -23,7 +22,6 @@ const styles = StyleSheet.create({
     },
 
     goalCardContainer: {
-        width: '100%', 
         padding: 10,
         justifyContent: 'center',
         alignItems: 'center', 
@@ -39,7 +37,7 @@ const styles = StyleSheet.create({
     },
 
     sliderTitlesContainer: {
-        width: '100%', 
+        alignSelf: 'stretch', 
         flexDirection: 'row', 
         justifyContent: 'space-between', 
         alignItems: 'center'

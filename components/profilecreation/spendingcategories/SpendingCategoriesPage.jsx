@@ -22,7 +22,7 @@ const CategoryCard = ({title, category, image, selectedCategories, setCategories
                 <Image
                     source={image}
                     alt={title}
-                    style={{width: '100%', height: '100%'}}
+                    style={{width: 45, height: 45}}
                 />
             </View>
             <Text style={styles.cardTitle}>{title}</Text>
@@ -47,12 +47,12 @@ const SpendingCategoriesPage = (props) => {
                         title1={'Conservation'}
                         title2={'Where you spend the most?'}
                         title3={'Choose at least one category'}
-                        progress={'50%'}
+                        progress={0.5}
                         currentPageNum={3}
                     />
 
                     <View style={styles.bottomContainer}>
-                        <ScrollView style={{width: '100%', height: 380}}>
+                        <ScrollView style={{height: 380}}>
                             <View style={styles.cardsContainer}>
                                 {spendingCategories.map((category, index) => (
                                     <CategoryCard

@@ -21,10 +21,11 @@ const styles = StyleSheet.create({
     }),
 
     prevProgress: (first) => ({
-        width: '40%', 
+        flex: 1, 
         height: 5, 
         backgroundColor: first? COLORS.white2 : COLORS.gray1, 
-        borderRadius: 100
+        borderRadius: 100,
+        marginHorizontal: 4
     }),
 
     currentPage: {
@@ -43,14 +44,16 @@ const styles = StyleSheet.create({
     },
     
     currentProgressContainer: (last) => ({
-        width: '40%', 
+        flex: 1, 
         height: 5, 
         backgroundColor: last? COLORS.white2 : COLORS.white5, 
-        borderRadius: 100
+        borderRadius: 100,
+        marginHorizontal: 4,
+        flexDirection: 'row'
     }),
 
     currentProgress: (progress, last) => ({
-        width: progress, 
+        flex: progress, 
         height: 5, 
         backgroundColor: last? COLORS.white2 : COLORS.gray1, 
         borderRadius: 100

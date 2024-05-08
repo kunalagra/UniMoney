@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     },
 
     mainContainer: {
-        width: '70%', 
+        width: 280, 
         gap: 50
     },
 
@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
     },
 
     image: {
-        height: '100%',
-        width: '100%'
+        height: 55,
+        width: 55
     },
 
     logoText: {
@@ -43,18 +43,17 @@ const styles = StyleSheet.create({
     },
 
     signupContainer: {
-        width: '100%', 
+        alignSelf: 'stretch', 
         gap: 10
     },
 
     inputOuterContainerStyle: {
-        width: '100%', 
+        alignSelf: 'stretch', 
         paddingHorizontal: 0, 
         height: 49
     },
 
     inputInnerContainerStyle: {
-        width: '100%', 
         borderColor: COLORS.gray1, 
         borderRadius: 8, 
         borderWidth: 1, 
@@ -64,12 +63,11 @@ const styles = StyleSheet.create({
 
     input: {
         alignSelf: 'center', 
-        width: '100%', 
         height: 45, 
         fontSize: SIZES.small, 
         color: COLORS.gray2, 
         fontFamily: FONT.regular, 
-        paddingHorizontal: 15
+        paddingRight: 15
     },
 
     signupBtn: [

@@ -69,7 +69,7 @@ const PushNotificationPage = (props) => {
                     <CustomProgress
                         title1={'Synchronize'}
                         title2={"You're almost done!"}
-                        progress={'100%'}
+                        progress={1}
                         currentPageNum={4}
                     />
 

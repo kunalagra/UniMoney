@@ -13,8 +13,6 @@ const AgeCard = ({ageGroup, selectedAgeGroup, setSelectedAgeGroup, dispatch}) =>
             onPress={() => dispatch(setSelectedAgeGroup(ageGroup))}
             activeOpacity={0.6}
         >
-            <View style={styles.cardBackground(selectedAgeGroup, ageGroup)}/>
-
             <Text style={styles.cardTitle}>{ageGroup}</Text>
         </TouchableOpacity>
     )
@@ -36,13 +34,13 @@ const AgePage = (props) => {
                     <CustomProgress
                         title1={'About you'}
                         title2={'What is your age?'}
-                        progress={'100%'}
+                        progress={1}
                         currentPageNum={1}
                         first={true}
                     />
 
                     <View style={styles.bottomContainer}>
-                        <ScrollView style={{width: '100%', height: 'auto'}}>
+                        <ScrollView style={{}}>
                             <View style={styles.cardsContainer}>
                                 <AgeCard 
                                     ageGroup={'18-24'}

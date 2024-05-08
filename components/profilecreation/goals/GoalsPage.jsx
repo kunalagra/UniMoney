@@ -22,8 +22,6 @@ const GoalCard = ({goal, title, selectedGoals, setGoals, dispatch}) => {
             onPress={handleToggle}
             activeOpacity={0.6}
         >
-            <View style={styles.cardBackground(selectedGoals[goal])}/>
-
             <Text style={styles.cardTitle}>{title}</Text>
 
             <CheckBox 
@@ -59,12 +57,12 @@ const GoalsPage = (props) => {
                         title1={'Aspiration'}
                         title2={'What are your goals?'}
                         title3={'Choose up to 3 goals for more precise personlization'}
-                        progress={'50%'}
+                        progress={0.5}
                         currentPageNum={2}
                     />
 
                     <View style={styles.bottomContainer}>
-                        <ScrollView style={{width: '100%', height: 380}}>
+                        <ScrollView style={{height: 380}}>
                             <View style={styles.cardsContainer}>
                                 {userGoals.map((title, index) => (
                                     <GoalCard
