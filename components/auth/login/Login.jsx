@@ -20,15 +20,15 @@ const Login = (props) => {
     const [loading, setLoading] = useState(false);
     const [modalLoading, setModalLoading] = useState(false);
 
-    const handleLogin = async ({gemail, gpassword}) => {
+    const handleLogin = async (isGoogleSignIn=false, gemail="", gpassword="") => {
         Keyboard.dismiss();
         setLoading(true);
         const options = {
             method: 'POST',
             url: `${REACT_APP_BACKEND_URL}/auth/login`,
             data: {
-                email: email ? email : gemail,
-                password: password ? password : gpassword
+                email: !isGoogleSignIn ? email : gemail,
+                password: !isGoogleSignIn ? password : gpassword
             }
         };
 
@@ -69,7 +69,7 @@ const Login = (props) => {
             // console.log(userInfo);
             if (userInfo) {
                 setModalLoading(true);
-                handleLogin({gemail: userInfo.user.email, gpassword: 'google'});
+                handleLogin(true, userInfo.user.email, 'google');
             } else {
                 console.log('error');
                 alert('Google Signin failed');
@@ -145,7 +145,7 @@ const Login = (props) => {
                         />
                         <TouchableOpacity
                             style={styles.loginbtn}
-                            onPress={() => { handleLogin({ gemail: '', gpassword: '' }) }}
+                            onPress={handleLogin}
                             disabled={loading}
                         >
                             { loading ? (
