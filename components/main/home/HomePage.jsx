@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, SafeAreaView, StatusBar, Image, ScrollView, TouchableOpacity,RefreshControl, PermissionsAndroid, ToastAndroid } from 'react-native';
+import { View, Text, SafeAreaView, StatusBar, Image, ScrollView, TouchableOpacity,RefreshControl, PermissionsAndroid, ToastAndroid, Linking } from 'react-native';
 import { COLORS, images } from '../../../constants'
 import ExpenseCard from '../common/cards/expense/ExpenseCard';
 import StreakBanner from './streakbanner/StreakBanner';
@@ -336,7 +336,7 @@ const HomePage = ({ navigateTo }) => {
                 if (permReq === PermissionsAndroid.RESULTS.GRANTED) {
                     fetchData();
                 } else {
-                    ToastAndroid.show('Permission denied', ToastAndroid.SHORT);
+                    ToastAndroid.show('SMS Permission denied', ToastAndroid.SHORT);
                     setTimeout(() => {
                         Linking.openSettings();
                     }, 2000);

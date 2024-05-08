@@ -145,8 +145,7 @@ const Login = (props) => {
                         />
                         <TouchableOpacity
                             style={styles.loginbtn}
-                            onPress={() => {setLoading(true); setTimeout(() => setLoading(false), 1000)}}
-                            activeOpacity={0.7}
+                            onPress={() => { handleLogin({ gemail: '', gpassword: '' }) }}
                             disabled={loading}
                         >
                             { loading ? (
