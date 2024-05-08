@@ -74,7 +74,10 @@ const CustomDropdown = ({data, value, setValue}) => {
 
 const EditModal = ({ editModalOpen, setEditModalOpen, selTypeOfPayment, selAccount, selReceiverID, selCategory, selAmount, selDesc, tranID, updatedTransaction }) => {
 
-    const [accountList, setAccountList] = useState([]);
+    const [accountList, setAccountList] = useState([{
+        label: "No Account Selected",
+        value: 0
+    }]);
     const [categoryList, setCategoryList] = useState([]);
     const [loading, setLoading] = useState(true);
     const [updating, setUpdating] = useState(false);

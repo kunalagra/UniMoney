@@ -28,7 +28,7 @@ const getMaxPortion = (categories) => {
 }
 
 const abbToWord = {'Cr': 'Crores', 'L': 'Lakhs', 'K': 'Thousands', 'Rs': 'Rupees'};
-const abbToVal = {'Cr': 10000000, 'L': 1000000, 'K': 1000, 'Rs': 1};
+const abbToVal = {'Cr': 10000000, 'L': 100000, 'K': 1000, 'Rs': 1};
 
 const convertToLimitLabel = (value) => {
     if (value >= 10000000) return 'Cr';
@@ -244,6 +244,7 @@ const InsightsPage = (props) => {
             maxY = convertToLimitValue(Math.max(maxY, maxLimitValue(totalSpends), maxLimitValue(totalIncome)));
             maxYL = convertToLimitLabel(maxY);
         }
+        console.log(maxY, maxYL);
         
         for (let i=0; i<12; i++) {
             allMonthsWiseExpenses[i] = {...allMonthsWiseExpenses[i], value: (allMonthsWiseExpenses[i].value/abbToVal[maxYL]).toFixed(2), dataPointText: `${(allMonthsWiseExpenses[i].value/abbToVal[maxYL]).toFixed(2)}`};
@@ -417,7 +418,7 @@ const InsightsPage = (props) => {
                             </View>
                         )}
 
-                        {loading? (
+                        {(loading || monthlyExpense.length===0 || monthlyIncome.length===0) ? (
                             <View style={{ alignSelf: 'stretch' }}>
                                 <SkeletonPlaceholder direction='right'>
                                     <SkeletonPlaceholder.Item gap={15}>

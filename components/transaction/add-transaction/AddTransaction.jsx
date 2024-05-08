@@ -90,7 +90,7 @@ const AddTransactionPage = (props) => {
                 setAccountList(response.data.bank.map((item) => {
                     return {
                         label: item.id.name,
-                        value: item.id._id
+                        value: item.number
                     }
                 }));
             }
