@@ -1,6 +1,6 @@
 import { BottomSheet,Icon, Input } from "@rneui/themed";
 import { COLORS, FONT, icons } from "../../../../constants";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, ToastAndroid } from "react-native";
 import BudgetCard from "../budgetcard/BudgetCard";
 import styles from "./budgetdetailsbar.style";
 import { Dropdown } from "react-native-element-dropdown";
@@ -172,7 +172,7 @@ const BudgetDetailsBar = ({ visible, setVisibility, selectedCategory, setSelecte
                                 activeOpacity={0.85}
                                 onPress={async () => {
                                     if (amount < 1000) {
-                                        alert("Amount should be at least ₹ 1,000");
+                                        ToastAndroid.show('Amount should be at least ₹ 1,000', ToastAndroid.SHORT);
                                         return;
                                     }
                                     if (title === 'Monthly Budget') {

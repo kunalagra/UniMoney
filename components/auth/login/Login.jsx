@@ -1,11 +1,13 @@
 "use strict";
 import React, { useState } from "react";
-import { View, Text, Image, TouchableOpacity, Keyboard } from "react-native";
+import { View, Text, Image, TouchableOpacity, Keyboard, ToastAndroid } from "react-native";
 import { images, icons, COLORS, SIZES, FONT } from "../../../constants";
 import { Input, Icon, Dialog } from '@rneui/themed';
 import styles from "./login.style";
 import { useNavigation } from "@react-navigation/native";
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setUsername, setEmail, setPassword } from '../../../store/profilecreation';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { REACT_APP_GOOGLE_CLIENT_ID, REACT_APP_ANDROID_CLIENT_ID,REACT_APP_BACKEND_URL} from '@env';
@@ -15,20 +17,21 @@ import AnimatedLoader from "../../shared/Loader/Loader";
 const Login = (props) => {
 
     const navigation = useNavigation();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const dispatch = useDispatch();
+    const [email, setuserEmail] = useState('');
+    const [password, setuserPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [modalLoading, setModalLoading] = useState(false);
 
-    const handleLogin = async (isGoogleSignIn=false, gemail="", gpassword="") => {
+    const handleLogin = async (gemail="", gpassword="", google=false) => {
         Keyboard.dismiss();
         setLoading(true);
         const options = {
             method: 'POST',
             url: `${REACT_APP_BACKEND_URL}/auth/login`,
             data: {
-                email: !isGoogleSignIn ? email : gemail,
-                password: !isGoogleSignIn ? password : gpassword
+                email: !google ? email : gemail,
+                password: !google ? password : gpassword
             }
         };
 
@@ -43,11 +46,15 @@ const Login = (props) => {
                 });
             }
         } catch (error) {
-            console.log(error);
-            setPassword('');
-            setEmail('');
-            if (error.response.status === 401) {
-                alert('Invalid email or password done');
+            setuserPassword('');
+            setuserEmail('');
+            if (google) {
+                ToastAndroid.show('Sign Up with Google first', ToastAndroid.SHORT);
+                setLoading(false);
+                props.navigation.navigate('GenderPage');
+            }
+            else {
+                ToastAndroid.show('Invalid email or password', ToastAndroid.SHORT);
             }
             setLoading(false);
         } finally {
@@ -69,10 +76,12 @@ const Login = (props) => {
             // console.log(userInfo);
             if (userInfo) {
                 setModalLoading(true);
-                handleLogin(true, userInfo.user.email, 'google');
+                dispatch(setUsername(userInfo.user.name));
+                dispatch(setEmail(userInfo.user.email));
+                dispatch(setPassword('google'));
+                handleLogin(userInfo.user.email, 'google', true);
             } else {
-                console.log('error');
-                alert('Google Signin failed');
+                ToastAndroid.show('Google sign in failed', ToastAndroid.SHORT);
             }
 
         } catch (error) {
@@ -120,7 +129,7 @@ const Login = (props) => {
                             style={styles.input}
                             placeholder='Email address'
                             value={email}
-                            onChangeText={(e) => setEmail(e)}
+                            onChangeText={(e) => setuserEmail(e)}
                             underlineColorAndroid="transparent"
                             selectionColor={COLORS.main4}
                             placeholderTextColor={COLORS.gray2}
@@ -133,7 +142,7 @@ const Login = (props) => {
                             style={styles.input}
                             placeholder='Password'
                             value={password}
-                            onChangeText={(e) => setPassword(e)}
+                            onChangeText={(e) => setuserPassword(e)}
                             underlineColorAndroid="transparent"
                             selectionColor={COLORS.main4}
                             placeholderTextColor={COLORS.gray2}

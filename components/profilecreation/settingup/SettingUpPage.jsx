@@ -1,4 +1,4 @@
-import { View, SafeAreaView, StatusBar, Text, Image, Alert } from 'react-native';
+import { View, SafeAreaView, StatusBar, Text, Image, Alert, ToastAndroid } from 'react-native';
 import styles from './settinguppage.style';
 import CustomProgress from '../common/progress/CustomProgress';
 import { COLORS, images } from '../../../constants';
@@ -163,7 +163,7 @@ const SettingUpPage = () => {
                 } catch (error) {
                     console.log(error);
                     if (error.response.status === 401) {
-                        alert('Invalid email or password');
+                        ToastAndroid.show('Invalid email or password', ToastAndroid.SHORT);
                     }
                 }
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, ToastAndroid } from "react-native";
 import { images, icons, COLORS } from "../../../constants";
 import styles from "./signup.style";
 import { Icon, Input } from "@rneui/themed";
@@ -37,8 +37,7 @@ const SignUp = (props) => {
                 dispatch(setPassword('google'));
                 props.navigation.navigate('GenderPage');
             }else {
-                console.log('error');
-                alert('Google Signin failed');
+                ToastAndroid.show('Google sign in failed', ToastAndroid.SHORT);
             }
 
         } catch (error) {
@@ -110,9 +109,9 @@ const SignUp = (props) => {
                             onPress={() => { 
                                 // apply validation here password.length > 6 && email.includes('@')
                                 if (!email.includes('@')) {
-                                    alert('Invalid email address');
+                                    ToastAndroid.show('Invalid email address', ToastAndroid.SHORT);
                                 } else if (password.length < 6) {
-                                    alert('Password must be at least 6 characters');
+                                    ToastAndroid.show('Password must be at least 6 characters', ToastAndroid.SHORT);
                                 } else {
                                     props.navigation.navigate('GenderPage');
                                 }

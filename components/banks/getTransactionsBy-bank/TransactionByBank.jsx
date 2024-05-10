@@ -66,8 +66,8 @@ const TransactionByBank = (props) => {
         };
         try {
             const response = await axios(options);
-            console.log(response.data);
-            props.navigation.pop();
+            // console.log(response.data);
+            props.navigation.navigate('Banks')
         }
         catch (error) {
             console.log(error);
@@ -273,7 +273,7 @@ const TransactionByBank = (props) => {
                         <TouchableOpacity activeOpacity={0.85} style={styles.addButton} onPress={() => props.navigation.navigate('AddTransactionPage')}>
                             <Text style={styles.addButtonText}>Add Transaction</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.85} style={styles.deleteButton} onPress={() => handleDelete()}>
+                        <TouchableOpacity activeOpacity={0.85} style={styles.deleteButton} onPress={() => {handleDelete()}}>
                             <Text style={styles.addButtonText}>Remove Bank</Text>
                         </TouchableOpacity>
                     </View>

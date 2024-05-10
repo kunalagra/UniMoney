@@ -1,4 +1,4 @@
-import { SafeAreaView, View, Text, ScrollView, StatusBar, TouchableOpacity, Image } from "react-native";
+import { SafeAreaView, View, Text, ScrollView, StatusBar, TouchableOpacity, Image, ToastAndroid } from "react-native";
 import { COLORS, FONT, SIZES, icons, images } from "../../constants";
 import { useState } from "react";
 import { Icon, Input } from "@rneui/themed";
@@ -51,7 +51,7 @@ const AddCategory = (props) => {
         // send image in formdata format
         // apply validations on category name and image
         if (categoryName === '' || imageData === '') {
-            alert('Please fill all the fields');
+            ToastAndroid.show('Please fill all the fields', ToastAndroid.SHORT);
             return;
         }
 

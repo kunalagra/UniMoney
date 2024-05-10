@@ -111,7 +111,11 @@ const Banks = ({ navigation }) => {
 
     useEffect(() => {
         getMyBanks();
-    }, [refreshing]);
+    }, [refreshing, alltransactions]);
+
+    useEffect(() => {
+        getMyBanks();
+    }, []);
 
     const { ArrowleftIcon } = icons;
 

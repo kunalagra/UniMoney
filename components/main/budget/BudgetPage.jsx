@@ -33,6 +33,7 @@ const BudgetPage = ({ navigateTo }) => {
         const isMonthlyBudget = await AsyncStorage.getItem('isMonthlyBudget');
         const monthlyBudgetLimit = await AsyncStorage.getItem('monthlyBudgetLimit');
         setIsMonthlyBudget(isMonthlyBudget === 'true');
+        setIsBudgetMode(isMonthlyBudget === 'true');
         setMonthlyBudgetLimit( monthlyBudgetLimit ? parseInt(monthlyBudgetLimit) : 20000);
         return isMonthlyBudget === 'true';
     }
@@ -62,7 +63,7 @@ const BudgetPage = ({ navigateTo }) => {
 
     useEffect(() => {
         const getsettings = async () => {
-            const isMonthlyBudget = await AsyncStorage.getItem('BudgetMode');
+            const isMonthlyBudget = await AsyncStorage.getItem('isMonthlyBudget');
             setIsBudgetMode(isMonthlyBudget === 'true');
         }
         getsettings();
@@ -183,7 +184,7 @@ const BudgetPage = ({ navigateTo }) => {
                                 trackColor={{ false: COLORS.gray1, true: COLORS.main4 }}
                                 thumbColor={isBudgetMode ? COLORS.main3 : COLORS.white4}
                                 onValueChange={() => {setIsBudgetMode(prev => !prev),
-                                    AsyncStorage.setItem('BudgetMode', (!isBudgetMode).toString());
+                                    AsyncStorage.setItem('isMonthlyBudget', (!isBudgetMode).toString());
                                     getCategory();
                                 }}
                                 value={isBudgetMode}

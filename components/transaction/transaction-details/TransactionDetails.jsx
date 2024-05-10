@@ -1,4 +1,4 @@
-import {Text, View, TouchableOpacity, ScrollView, Image, SafeAreaView, StatusBar, RefreshControl } from 'react-native';
+import {Text, View, TouchableOpacity, ScrollView, Image, SafeAreaView, StatusBar, RefreshControl, ToastAndroid } from 'react-native';
 import styles from './transactiondetails.style';
 import { COLORS, FONT, SIZES, icons } from '../../../constants';
 import { useCallback, useEffect, useState } from 'react';
@@ -155,8 +155,7 @@ const EditModal = ({ editModalOpen, setEditModalOpen, selTypeOfPayment, selAccou
     }
     catch (error) {
         setUpdating(false);
-        alert("Error updating transaction");
-        console.log(error);
+        ToastAndroid.show('Error updating transaction', ToastAndroid.SHORT);
     }
     }
 

@@ -244,7 +244,6 @@ const InsightsPage = (props) => {
             maxY = convertToLimitValue(Math.max(maxY, maxLimitValue(totalSpends), maxLimitValue(totalIncome)));
             maxYL = convertToLimitLabel(maxY);
         }
-        console.log(maxY, maxYL);
         
         for (let i=0; i<12; i++) {
             allMonthsWiseExpenses[i] = {...allMonthsWiseExpenses[i], value: (allMonthsWiseExpenses[i].value/abbToVal[maxYL]).toFixed(2), dataPointText: `${(allMonthsWiseExpenses[i].value/abbToVal[maxYL]).toFixed(2)}`};
@@ -418,7 +417,7 @@ const InsightsPage = (props) => {
                             </View>
                         )}
 
-                        {(loading || monthlyExpense.length===0 || monthlyIncome.length===0) ? (
+                        {(loading & monthlyExpense.length===0 & monthlyIncome.length===0 & maxYValue===0) ? (
                             <View style={{ alignSelf: 'stretch' }}>
                                 <SkeletonPlaceholder direction='right'>
                                     <SkeletonPlaceholder.Item gap={15}>

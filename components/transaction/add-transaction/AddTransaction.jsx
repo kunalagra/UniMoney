@@ -1,4 +1,4 @@
-import { SafeAreaView, View, Text, ScrollView, StatusBar, TouchableOpacity, Image } from "react-native";
+import { SafeAreaView, View, Text, ScrollView, StatusBar, TouchableOpacity, Image, ToastAndroid } from "react-native";
 import { COLORS, FONT, SIZES, icons, images } from "../../../constants";
 import { useState, useEffect } from "react";
 import { Dropdown } from 'react-native-element-dropdown';
@@ -111,7 +111,7 @@ const AddTransactionPage = (props) => {
 
     const postTransaction = async () => {
         if (amount === "" || category === "") {
-            alert("Please fill all the fields");
+            ToastAndroid.show("Please fill all the fields", ToastAndroid.SHORT);
             return;
         }
         const options = {
