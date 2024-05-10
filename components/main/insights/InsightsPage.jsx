@@ -141,6 +141,7 @@ const InsightsPage = (props) => {
     }, []);
 
     useEffect(() => {
+        setLoading(true);
         let monthWiseTransactions = [];
         if (isFilter) {
             if (bankNumber) {
@@ -255,6 +256,7 @@ const InsightsPage = (props) => {
         setMonthlyExpense(allMonthsWiseExpenses);
         setMonthlyIncome(allMonthsWiseIncomes);
         setRefreshing(false);
+        setLoading(false);
 
         
     }, [alltransactions, Categories, date, refreshing]);

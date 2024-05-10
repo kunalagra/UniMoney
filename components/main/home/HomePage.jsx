@@ -45,7 +45,7 @@ const HomePage = ({ navigateTo }) => {
         const isCredited = (str) => {
             return /(?:credited|received|deposited|has sent)/i.test(str);
         };
-        const bankKeywordsRegex = /(credited|debited|payment|withdraw|received|sent|available balance)/i;
+        const bankKeywordsRegex = /(credited|debited|payment|withdraw|withdrawn|received|sent|available balance)/i;
         const spamKeywordsRegex = /(Congratulations|won|win|prize|lucky|offer|discount|sale|reward|requested money|RAZORPAY|PAYPAL)/i;
 
         console.log('Permission granted');
