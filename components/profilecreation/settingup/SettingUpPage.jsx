@@ -24,8 +24,8 @@ const SettingUpPage = () => {
         'Setting goals',
         'Syncing all the messages',
         'Syncing all the messages',
-        'Creating user profile',
-        'Creating user profile'
+        'Creating profile',
+        'Creating profile'
     ];
     const navigation = useNavigation();
     const { username, email, password, ageGroup, gender, goals, goalsProgress, categories, categoriesLimits } = useSelector(state => state.profilecreation);
@@ -139,7 +139,8 @@ const SettingUpPage = () => {
 
         try {
             const response = await axios.request(options);
-            setProgress(98);
+            setProgress(0.98);
+            setTitle('Creating profile');
             if (response.status === 201) {
                 const options = {
                     method: 'POST',
@@ -152,7 +153,7 @@ const SettingUpPage = () => {
                 try {
                     const response = await axios.request(options);
                     if (response.status === 200) {
-                        setProgress(100);
+                        setProgress(1);
                         // console.log(response.data.token);
                         AsyncStorage.setItem('token', response.data.token);
                         setTimeout(() => {

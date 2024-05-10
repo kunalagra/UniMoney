@@ -491,6 +491,17 @@ const HomePage = ({ navigateTo }) => {
                     </View>
                 </ScrollView>
                 )}
+
+                {!loading && (
+                    <View style={{ position: 'absolute', bottom: 20, right: 20 }}>
+                        <TouchableOpacity style={{ padding: 14, backgroundColor: COLORS.main3, borderRadius: 100 }} onPress={() => navigateTo('AddTransactionPage')}>
+                            <Image
+                                source={images.plus_icon}
+                                style={{ width: 30, height: 30, tintColor: COLORS.white1 }}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                )}
             </View>
 
         </SafeAreaView>
