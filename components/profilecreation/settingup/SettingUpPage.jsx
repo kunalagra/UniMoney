@@ -34,12 +34,12 @@ const SettingUpPage = () => {
     const getBankMessages = async () => {
         // Example amount: Rs. 1,000.00 , Rs 7,38,373.267
         // get complete amount till the decimal point
-        const amountRegex = /(?:Rs\.|Rs|INR|₹)\s?(\d+(?:,\d+)*(?:\.\d+)?)/i;
-        const isCredited = (str) => {
-            return /(?:credited|received|deposited|has sent)/i.test(str);
-        };
-        const bankKeywordsRegex = /(credited|debited|payment|withdraw|withdrawn|received|sent)/i;
-        const spamKeywordsRegex = /(Congratulations|won|win|prize|lucky|offer|discount|sale|reward|requested money|RAZORPAY|PAYPAL)/i;
+        // const amountRegex = /(?:Rs\.|Rs|INR|₹)\s?(\d+(?:,\d+)*(?:\.\d+)?)/i;
+        // const isCredited = (str) => {
+        //     return /(?:credited|received|deposited|has sent)/i.test(str);
+        // };
+        // const bankKeywordsRegex = /(credited|debited|payment|withdraw|withdrawn|received|sent)/i;
+        // const spamKeywordsRegex = /(Congratulations|won|win|prize|lucky|offer|discount|sale|reward|requested money|RAZORPAY|PAYPAL)/i;
 
         console.log('Permission granted');
         const date = new Date();
@@ -60,14 +60,14 @@ const SettingUpPage = () => {
                 // console.log(parsedSmsList);
                 let smsdata = [];
                 parsedSmsList.filter((transaction) => {
-                    const valid = bankKeywordsRegex.test(transaction.body);
-                    const spam = spamKeywordsRegex.test(transaction.body);
-                    if (valid && !spam) {
+                    const transactionInfo = getTransactionInfo(transaction.body);
+                    // const valid = bankKeywordsRegex.test(transaction.body);
+                    // const spam = spamKeywordsRegex.test(transaction.body);
+                    if (transactionInfo.account.type && transactionInfo.transaction.amount) {
                         // console.log(transaction);
                         // const amount = amountRegex.exec(transaction.body);
                         // const amountValue = amount ? parseFloat(amount[1].replace(/,/g, '')) : null;
-                    const transactionInfo = getTransactionInfo(transaction.body);
-                    const type = isCredited(transaction.body) ? 'credit' : 'debit';
+                    const type = transactionInfo.transaction.type;
                     const name = transactionInfo.transaction.merchant ? transactionInfo.transaction.merchant : transactionInfo.transaction.detail ? transactionInfo.transaction.detail : transaction.address;
                     // const date = formatDateTime(transaction.date);
                     const amountValue = transactionInfo.transaction.amount;
@@ -88,7 +88,6 @@ const SettingUpPage = () => {
                         );
                     }
                     }
-                    return valid;
                 });
 
                 const messages = smsdata.filter((sms, index, self) =>

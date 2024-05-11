@@ -419,7 +419,7 @@ const InsightsPage = (props) => {
                             </View>
                         )}
 
-                        {(loading & monthlyExpense.length===0 & monthlyIncome.length===0 & maxYValue===0) ? (
+                        {(loading || monthlyExpense.length===0 || monthlyIncome.length===0 || maxYValue===0) ? (
                             <View style={{ alignSelf: 'stretch' }}>
                                 <SkeletonPlaceholder direction='right'>
                                     <SkeletonPlaceholder.Item gap={15}>
@@ -631,6 +631,7 @@ const InsightsPage = (props) => {
                                     <Text style={[styles.lineContainerHeading, { marginTop: -10, textAlign: 'center', fontSize: SIZES.regular }]}>
                                         F.Y. {date.getFullYear()}
                                     </Text>
+                                    { monthlyExpense.length===0 && (
                                     <View style={styles.lineChartContainer}>
                                         {lineGraphSelected===0? (
                                             <LineChart
@@ -697,7 +698,7 @@ const InsightsPage = (props) => {
                                                 textFontSize={SIZES.regular-1}
                                             />
                                         )}
-                                    </View>
+                                    </View>)}
                                     <View style={styles.lineLegendsContainer}>
                                         {lineGraphSelected!==1 && (
                                             <View style={styles.lineLegend} >

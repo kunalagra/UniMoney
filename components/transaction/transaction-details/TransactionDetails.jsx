@@ -465,7 +465,7 @@ const TransactionDetailsPage = (props) => {
 
                     <View style={styles.transactionDetailsContainer}>
                         <Text style={styles.paymentText}>
-                            Payment Details
+                            {isCredited ? 'Credit' : 'Debit'} Details
                         </Text>
                         <View style={styles.transactionContainer}>
                             <View style={styles.transactionDetails}>
