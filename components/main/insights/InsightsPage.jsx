@@ -631,7 +631,7 @@ const InsightsPage = (props) => {
                                     <Text style={[styles.lineContainerHeading, { marginTop: -10, textAlign: 'center', fontSize: SIZES.regular }]}>
                                         F.Y. {date.getFullYear()}
                                     </Text>
-                                    { monthlyExpense.length===0 && (
+                                    { monthlyExpense.length>0 && monthlyIncome.length>0 && (
                                     <View style={styles.lineChartContainer}>
                                         {lineGraphSelected===0? (
                                             <LineChart
