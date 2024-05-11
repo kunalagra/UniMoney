@@ -110,8 +110,8 @@ const HomePage = ({ navigateTo }) => {
                 // console.log(smsdata);
 
                 const messages = smsdata.filter((sms, index, self) =>
-                    index === self.findIndex((t) => (
-                        (t.txid!==0 && sms.txid!==0 && t.txid === sms.txid) && t.amount === sms.amount && t.type === sms.type
+                    sms.txid === 0 || index === self.findIndex((t) => (
+                        (t.txid !== 0 && sms.txid !== 0 && t.txid === sms.txid)
                     ))
                 );
 
@@ -321,8 +321,10 @@ const HomePage = ({ navigateTo }) => {
 
     const requestReadSmsPermission = async () => {
         try {
+            const notificationCheck = await PermissionsAndroid.check(
+                PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
             const permCheck = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_SMS);
-            if (permCheck === PermissionsAndroid.RESULTS.GRANTED) {
+            if (permCheck === PermissionsAndroid.RESULTS.GRANTED && notificationCheck === PermissionsAndroid.RESULTS.GRANTED) {
                 fetchData();
             } else {
                 const permReq = await PermissionsAndroid.request(
@@ -332,13 +334,23 @@ const HomePage = ({ navigateTo }) => {
                         message: "Allow us to read SMS messages"
                     }
                 );
-                if (permReq === PermissionsAndroid.RESULTS.GRANTED) {
+                const permReq2 = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+                    {
+                        title: "Unimoney",
+                        message: "Allow us to push notifications"
+                    }
+                );
+
+                if (permReq === PermissionsAndroid.RESULTS.GRANTED && permReq2 === PermissionsAndroid.RESULTS.GRANTED) {
                     fetchData();
                 } else {
                     ToastAndroid.show('SMS Permission denied', ToastAndroid.SHORT);
+                    ToastAndroid.show('Notification Permission denied', ToastAndroid.SHORT);
                     setTimeout(() => {
                         Linking.openSettings();
                     }, 2000);
+
                 }
             }
         } catch (err) {

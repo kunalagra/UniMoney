@@ -117,6 +117,7 @@ const UpdateBill = (props) => {
                 "Authorization": "Bearer " + await AsyncStorage.getItem('token')
             },
             data: {
+                _id: reminderData._id,
                 title: name,
                 date: date,
                 amount: amount,
@@ -135,6 +136,7 @@ const UpdateBill = (props) => {
                     allowWhileIdle: true,
                     // repeatType: reminder === "does-not-repeat" ? '' : reminder === "monthly" ? 'month' : reminder === "bi-monthly" ? 'month' : reminder === "quarterly" ? 'month' : reminder === "every-6-months" ? 'month' : 'year',
                 });
+                props.navigation.pop();
             });
 
         } catch (error) {

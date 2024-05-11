@@ -38,7 +38,6 @@ const AddTransactionPage = (props) => {
             console.log("NOTIFICATION:", notification);
             props.navigation.navigate('BillsPage');
         },
-        requestPermissions: Platform.OS === 'ios',
         popInitialNotification: true,
         permissions: {
             alert: true,
