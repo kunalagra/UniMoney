@@ -63,7 +63,7 @@ const SettingUpPage = () => {
                     const transactionInfo = getTransactionInfo(transaction.body);
                     // const valid = bankKeywordsRegex.test(transaction.body);
                     // const spam = spamKeywordsRegex.test(transaction.body);
-                    if (transactionInfo.account.type && transactionInfo.transaction.amount) {
+                    if (transactionInfo.account.type && transactionInfo.transaction.amount && transactionInfo.transaction.type) {
                         // console.log(transaction);
                         // const amount = amountRegex.exec(transaction.body);
                         // const amountValue = amount ? parseFloat(amount[1].replace(/,/g, '')) : null;

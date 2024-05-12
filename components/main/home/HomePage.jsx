@@ -70,7 +70,7 @@ const HomePage = ({ navigateTo }) => {
                     // const valid = bankKeywordsRegex.test(transaction.body);
                     // const spam = spamKeywordsRegex.test(transaction.body);
                     const transactionInfo = getTransactionInfo(transaction.body);
-                    if (transactionInfo.account.type && transactionInfo.transaction.amount) {
+                    if (transactionInfo.account.type && transactionInfo.transaction.amount && transactionInfo.transaction.type) {
                         // console.log(transaction);
                         // const amount = amountRegex.exec(transaction.body);
                         // const amountValue = amount ? parseFloat(amount[1].replace(/,/g, '')) : null;
@@ -342,8 +342,8 @@ const HomePage = ({ navigateTo }) => {
                     }
                 );
 
-                // if (permReq === PermissionsAndroid.RESULTS.GRANTED && permReq2 === PermissionsAndroid.RESULTS.GRANTED) {
-                if (permReq === PermissionsAndroid.RESULTS.GRANTED) {
+                if (permReq === PermissionsAndroid.RESULTS.GRANTED && permReq2 === PermissionsAndroid.RESULTS.GRANTED) {
+                // if (permReq === PermissionsAndroid.RESULTS.GRANTED) {
                     fetchData();
                 } else {
                     ToastAndroid.show('SMS Permission denied', ToastAndroid.SHORT);
