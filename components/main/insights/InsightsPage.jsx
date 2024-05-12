@@ -249,8 +249,8 @@ const InsightsPage = (props) => {
         }
         
         for (let i=0; i<12; i++) {
-            allMonthsWiseExpenses[i] = {...allMonthsWiseExpenses[i], value: (allMonthsWiseExpenses[i].value/abbToVal[maxYExpL]).toFixed(2), dataPointText: `${(allMonthsWiseExpenses[i].value/abbToVal[maxYExpL]).toFixed(2)}`};
-            allMonthsWiseIncomes[i] = {...allMonthsWiseIncomes[i], value: (allMonthsWiseIncomes[i].value/abbToVal[maxYIncL]).toFixed(2), dataPointText: `${(allMonthsWiseIncomes[i].value/abbToVal[maxYIncL]).toFixed(2)}`};
+            allMonthsWiseExpenses[i] = {...allMonthsWiseExpenses[i], value: Number((allMonthsWiseExpenses[i].value/abbToVal[maxYExpL]).toFixed(2)), dataPointText: `${(allMonthsWiseExpenses[i].value/abbToVal[maxYExpL]).toFixed(2)}`};
+            allMonthsWiseIncomes[i] = {...allMonthsWiseIncomes[i], value: Number((allMonthsWiseIncomes[i].value/abbToVal[maxYIncL]).toFixed(2)), dataPointText: `${(allMonthsWiseIncomes[i].value/abbToVal[maxYIncL]).toFixed(2)}`};
         }
 
         setMaxYExpenseValue(maxYExp/abbToVal[maxYExpL]);
