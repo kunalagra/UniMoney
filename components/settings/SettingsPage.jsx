@@ -94,7 +94,7 @@ const SettingsPage = (props) => {
             title: "FAQs",
             image: images.help_outline,
             desc: "Facing any issues?",
-            handlePress: () => {},
+            handlePress: () => {props.navigation.navigate('FAQs')},
         },
         {
             title: "Logout",

@@ -19,6 +19,7 @@ import TransactionByCat from './components/main/budget/transactionByCat/transact
 import TransactionByInsights from './components/main/insights/transactionbyinsights/transactionByInsights';
 import Profile from './components/settings/profile/Profile';
 import UpdateBill from './components/bills/update-bill/UpdateBill';
+import FAQs from './components/settings/faqs/FAQs';
 
 const Stack = createNativeStackNavigator();
 
@@ -178,6 +179,11 @@ function AppRoutes({ token }) {
           }}
         />
         <Stack.Screen name="UpdateBill" component={UpdateBill}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="FAQs" component={FAQs}
           options={{
             headerShown: false,
           }}
