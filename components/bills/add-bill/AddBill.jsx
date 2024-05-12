@@ -33,6 +33,19 @@ const CustomDropdown = ({ data, value, setValue }) => {
 
 const AddTransactionPage = (props) => {
 
+    PushNotification.createChannel({
+        channelId: "reminders",
+        channelName: "Reminders",
+        channelDescription: "Reminders for bills and other payments",
+        playSound: true,
+        soundName: "default",
+        importance: 4,
+        vibrate: true,
+
+
+    },
+);
+
     PushNotification.configure({
         onNotification: function (notification) {
             console.log("NOTIFICATION:", notification);
@@ -124,6 +137,7 @@ const AddTransactionPage = (props) => {
         };
         try {
             const response = await axios.request(options).then((res) => {
+                console.log(date);
                 PushNotification.localNotificationSchedule({
                     channelId: "reminders",
                     title: name,
