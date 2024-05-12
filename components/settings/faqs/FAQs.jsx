@@ -11,7 +11,7 @@ import styles from './faqs.style';
 import {COLORS, FONT, SHADOWS, icons} from '../../../constants';
 import { ListItem } from '@rneui/themed';
 
-const FAQs = () => {
+const FAQs = (props) => {
   const {ArrowleftIcon} = icons;
   const [expanded, setExpanded] = useState(0); 
   const faqs = [
