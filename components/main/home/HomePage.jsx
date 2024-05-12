@@ -342,7 +342,8 @@ const HomePage = ({ navigateTo }) => {
                     }
                 );
 
-                if (permReq === PermissionsAndroid.RESULTS.GRANTED && permReq2 === PermissionsAndroid.RESULTS.GRANTED) {
+                // if (permReq === PermissionsAndroid.RESULTS.GRANTED && permReq2 === PermissionsAndroid.RESULTS.GRANTED) {
+                if (permReq === PermissionsAndroid.RESULTS.GRANTED) {
                     fetchData();
                 } else {
                     ToastAndroid.show('SMS Permission denied', ToastAndroid.SHORT);

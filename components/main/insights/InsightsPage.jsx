@@ -5,7 +5,7 @@ import TransactionCard from '../common/cards/transaction/TransactionCard';
 import { icons, COLORS, images, SIZES } from '../../../constants';
 import React, { useState, useCallback, useEffect } from 'react';
 import { moneyTextHelper } from '../../../utils';
-import { LineChart, PieChart } from 'react-native-gifted-charts';
+import { PieChart, LineChart } from 'react-native-gifted-charts';
 import CustomButton from '../../profilecreation/common/button/CustomButton';
 import DatePicker from 'react-native-date-picker';
 import MonthPicker from 'react-native-month-year-picker';
@@ -80,8 +80,10 @@ const InsightsPage = (props) => {
     const [totalIncome, setTotalIncome] = useState(0);
     const [monthlyExpense, setMonthlyExpense] = useState([]);
     const [monthlyIncome, setMonthlyIncome] = useState([]);
-    const [maxYValue, setMaxYValue] = useState(0);
-    const [maxYLabel, setMaxYLabel] = useState('Rs');
+    const [maxYExpenseValue, setMaxYExpenseValue] = useState(0);
+    const [maxYExpenseLabel, setMaxYExpenseLabel] = useState('Rs');
+    const [maxYIncomeValue, setMaxYIncomeValue] = useState(0);
+    const [maxYIncomeLabel, setMaxYIncomeLabel] = useState('Rs');
     const [loading, setLoading] = useState(true);
 
     const [isExpenseSelected, setIsExpenseSelected] = useState(true);
@@ -222,8 +224,8 @@ const InsightsPage = (props) => {
 
         let allMonthsWiseExpenses = [];
         let allMonthsWiseIncomes = [];
-        let maxY = 0;
-        let maxYL = 'Rs';
+        let maxYExp = 0, maxYInc = 0;
+        let maxYExpL = 'Rs', maxYIncL = 'Rs';
 
         for (let i=0; i<12; i++) {
             const monthWiseTransactions = alltransactions.filter((item) => {
@@ -237,22 +239,24 @@ const InsightsPage = (props) => {
             const totalSpends = spends.reduce((acc, item) => acc + item.amount, 0);
             const totalIncome = income.reduce((acc, item) => acc + item.amount, 0);
 
-            // if (totalSpends === 0 && totalIncome === 0) continue;
-
             allMonthsWiseExpenses.push({label: `${months[i]}`, value: totalSpends, dataPointText: `${totalSpends}`});
             allMonthsWiseIncomes.push({label: `${months[i]}`, value: totalIncome, dataPointText: `${totalIncome}`});
             
-            maxY = convertToLimitValue(Math.max(maxY, maxLimitValue(totalSpends), maxLimitValue(totalIncome)));
-            maxYL = convertToLimitLabel(maxY);
+            maxYExp = convertToLimitValue(Math.max(maxYExp, maxLimitValue(totalSpends)));
+            maxYExpL = convertToLimitLabel(maxYExp);
+            maxYInc = convertToLimitValue(Math.max(maxYInc, maxLimitValue(totalIncome)));
+            maxYIncL = convertToLimitLabel(maxYInc);
         }
         
         for (let i=0; i<12; i++) {
-            allMonthsWiseExpenses[i] = {...allMonthsWiseExpenses[i], value: (allMonthsWiseExpenses[i].value/abbToVal[maxYL]).toFixed(2), dataPointText: `${(allMonthsWiseExpenses[i].value/abbToVal[maxYL]).toFixed(2)}`};
-            allMonthsWiseIncomes[i] = {...allMonthsWiseIncomes[i], value: (allMonthsWiseIncomes[i].value/abbToVal[maxYL]).toFixed(2), dataPointText: `${(allMonthsWiseIncomes[i].value/abbToVal[maxYL]).toFixed(2)}`};
+            allMonthsWiseExpenses[i] = {...allMonthsWiseExpenses[i], value: (allMonthsWiseExpenses[i].value/abbToVal[maxYExpL]).toFixed(2), dataPointText: `${(allMonthsWiseExpenses[i].value/abbToVal[maxYExpL]).toFixed(2)}`};
+            allMonthsWiseIncomes[i] = {...allMonthsWiseIncomes[i], value: (allMonthsWiseIncomes[i].value/abbToVal[maxYIncL]).toFixed(2), dataPointText: `${(allMonthsWiseIncomes[i].value/abbToVal[maxYIncL]).toFixed(2)}`};
         }
 
-        setMaxYValue(maxY/abbToVal[maxYL]);
-        setMaxYLabel(maxYL);
+        setMaxYExpenseValue(maxYExp/abbToVal[maxYExpL]);
+        setMaxYExpenseLabel(maxYExpL);
+        setMaxYIncomeValue(maxYInc/abbToVal[maxYIncL]);
+        setMaxYIncomeLabel(maxYIncL);
         setMonthlyExpense(allMonthsWiseExpenses);
         setMonthlyIncome(allMonthsWiseIncomes);
         setRefreshing(false);
@@ -419,7 +423,7 @@ const InsightsPage = (props) => {
                             </View>
                         )}
 
-                        {(loading || monthlyExpense.length===0 || monthlyIncome.length===0 || maxYValue===0) ? (
+                        {loading ? (
                             <View style={{ alignSelf: 'stretch' }}>
                                 <SkeletonPlaceholder direction='right'>
                                     <SkeletonPlaceholder.Item gap={15}>
@@ -609,73 +613,45 @@ const InsightsPage = (props) => {
                                         <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => setLineGraphSelected(0)}>
                                             <RadioButton selected={lineGraphSelected===0} />
                                             <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===0? COLORS.gray3 : COLORS.gray1 }]}>
-                                                Both                                                
+                                                Income                                                
                                             </Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => setLineGraphSelected(1)}>
                                             <RadioButton selected={lineGraphSelected===1} />
                                             <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===1? COLORS.gray3 : COLORS.gray1 }]}>
-                                                Income                                                
-                                            </Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => setLineGraphSelected(2)}>
-                                            <RadioButton selected={lineGraphSelected===2} />
-                                            <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===2? COLORS.gray3 : COLORS.gray1 }]}>
                                                 Expense                                              
                                             </Text>
                                         </TouchableOpacity>
                                     </View>
-                                    <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1 }]}>
-                                        {lineGraphSelected===0? "Income vs Expense" : lineGraphSelected===1? "Income" : "Expense"} (in {abbToWord[maxYLabel]})
-                                    </Text>
                                     <Text style={[styles.lineContainerHeading, { marginTop: -10, textAlign: 'center', fontSize: SIZES.regular }]}>
                                         F.Y. {date.getFullYear()}
                                     </Text>
-                                    { monthlyExpense.length>0 && monthlyIncome.length>0 && (
                                     <View style={styles.lineChartContainer}>
+
                                         {lineGraphSelected===0? (
-                                            <LineChart
-                                                data={monthlyExpense}
-                                                data2={monthlyIncome}
-                                                color1={COLORS.gray1}
-                                                color2={COLORS.main3}
-                                                dataPointsColor1={COLORS.gray1}
-                                                dataPointsColor2={COLORS.main3}
-                                                yAxisTextStyle={styles.lineChartAxisText}
-                                                xAxisLabelTextStyle={styles.lineChartAxisText}
-                                                maxValue={maxYValue}
-                                                noOfSections={5}
-                                                spacing={50}
-                                                verticalLinesSpacing={50}
-                                                thickness={3}
-                                                yAxisLabelSuffix={maxYLabel}
-                                                showVerticalLines
-                                                curved
-                                                textShiftX={-5}
-                                                textShiftY={-5}
-                                                textColor={COLORS.gray2}
-                                                textFontSize={SIZES.regular-1}
-                                                textFontSize1={SIZES.regular-1}
-                                            />
-                                        ) : lineGraphSelected===1? (
                                             <LineChart
                                                 data={monthlyIncome}
                                                 color1={COLORS.main3}
                                                 dataPointsColor1={COLORS.main3}
                                                 yAxisTextStyle={styles.lineChartAxisText}
                                                 xAxisLabelTextStyle={styles.lineChartAxisText}
-                                                maxValue={maxYValue}
+                                                maxValue={maxYIncomeValue}
                                                 noOfSections={5}
                                                 spacing={50}
                                                 verticalLinesSpacing={50}
                                                 thickness={3}
-                                                yAxisLabelSuffix={maxYLabel}
+                                                yAxisLabelSuffix={maxYIncomeLabel}
                                                 showVerticalLines
                                                 curved
                                                 textShiftX={-5}
                                                 textShiftY={-5}
                                                 textColor={COLORS.gray2}
                                                 textFontSize={SIZES.regular-1}
+                                                areaChart
+                                                startFillColor={COLORS.main3}
+                                                startOpacity={0.5}
+                                                endFillColor={COLORS.main3}
+                                                endOpacity={0.1}
                                             />
                                         ) : (
                                             <LineChart
@@ -684,35 +660,40 @@ const InsightsPage = (props) => {
                                                 dataPointsColor1={COLORS.gray1}
                                                 yAxisTextStyle={styles.lineChartAxisText}
                                                 xAxisLabelTextStyle={styles.lineChartAxisText}
-                                                maxValue={maxYValue}
+                                                maxValue={maxYExpenseValue}
                                                 noOfSections={5}
                                                 spacing={50}
                                                 verticalLinesSpacing={50}
                                                 thickness={3}
-                                                yAxisLabelSuffix={maxYLabel}
+                                                yAxisLabelSuffix={maxYExpenseLabel}
                                                 showVerticalLines
                                                 curved
                                                 textShiftX={-5}
                                                 textShiftY={-5}
                                                 textColor={COLORS.gray2}
                                                 textFontSize={SIZES.regular-1}
+                                                areaChart
+                                                startFillColor={COLORS.gray1}
+                                                startOpacity={0.5}
+                                                endFillColor={COLORS.gray1}
+                                                endOpacity={0.1}
                                             />
                                         )}
-                                    </View>)}
+                                    </View>
                                     <View style={styles.lineLegendsContainer}>
-                                        {lineGraphSelected!==1 && (
+                                        {lineGraphSelected===1 && (
                                             <View style={styles.lineLegend} >
                                                 <View style={styles.lineLegendDot(COLORS.gray1)} />
                                                 <Text style={styles.lineLegendText}>
-                                                    Expense
+                                                    Expense (in {abbToWord[maxYExpenseLabel]})
                                                 </Text>
                                             </View>
                                         )}
-                                        {lineGraphSelected!==2 && (
+                                        {lineGraphSelected===0 && (
                                             <View style={styles.lineLegend} >
                                                 <View style={styles.lineLegendDot(COLORS.main3)} />
                                                 <Text style={styles.lineLegendText}>
-                                                    Income
+                                                    Income (in {abbToWord[maxYIncomeLabel]})
                                                 </Text>
                                             </View>
                                         )}
