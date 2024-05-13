@@ -89,6 +89,7 @@ const InsightsPage = (props) => {
     const [maxYBothValue, setMaxYBothValue] = useState(0);
     const [maxYBothLabel, setMaxYBothLabel] = useState('Rs');
     const [loading, setLoading] = useState(true);
+    const [graphsLoading, setGraphsLoading] = useState(true);
 
     const [isExpenseSelected, setIsExpenseSelected] = useState(true);
     const [lineGraphSelected, setLineGraphSelected] = useState(0);
@@ -282,6 +283,10 @@ const InsightsPage = (props) => {
         setMonthlyIncome(incomes);
         setRefreshing(false);
         setLoading(false);
+
+        setTimeout(() => {
+            setGraphsLoading(false);
+        }, 1500);
         
     }, [alltransactions, Categories, date, refreshing]);
 
@@ -465,7 +470,7 @@ const InsightsPage = (props) => {
                             </View>
                         )}
 
-                        {loading ? (
+                        {(loading || monthlyIncome.length===0 || monthlyExpense.length===0 || maxYBothValue===0) ? (
                             <View style={{ alignSelf: 'stretch' }}>
                                 <SkeletonPlaceholder direction='right'>
                                     <SkeletonPlaceholder.Item gap={15}>
@@ -647,201 +652,210 @@ const InsightsPage = (props) => {
                                     </View>
                                 </View>
 
-                                <View style={styles.lineAnalysisContainer}>
-                                    <Text style={styles.lineContainerHeading}>
-                                        Yearly Pattern
-                                    </Text>
-                                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 15, alignItems: 'center' }}>
-                                        <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => handleChangeMonthlyGraph(0)}>
-                                            <RadioButton selected={lineGraphSelected===0} />
-                                            <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===0? COLORS.gray3 : COLORS.gray1 }]}>
-                                                Both                                           
-                                            </Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => handleChangeMonthlyGraph(1)}>
-                                            <RadioButton selected={lineGraphSelected===1} />
-                                            <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===1? COLORS.gray3 : COLORS.gray1 }]}>
-                                                Income                                                
-                                            </Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => handleChangeMonthlyGraph(2)}>
-                                            <RadioButton selected={lineGraphSelected===2} />
-                                            <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===2? COLORS.gray3 : COLORS.gray1 }]}>
-                                                Expense                                              
-                                            </Text>
-                                        </TouchableOpacity>
+                                {graphsLoading? (
+                                    <View style={{ alignSelf: 'stretch' }}>
+                                        <SkeletonPlaceholder direction='right'>
+                                            <SkeletonPlaceholder.Item gap={15}>
+                                                <SkeletonPlaceholder.Item alignSelf='stretch' height={300} borderRadius={12} />
+                                            </SkeletonPlaceholder.Item>
+                                        </SkeletonPlaceholder>
                                     </View>
-                                    <Text style={[styles.lineContainerHeading, { marginTop: -10, textAlign: 'center', fontSize: SIZES.regular }]}>
-                                        F.Y. {date.getFullYear()}
-                                    </Text>
-                                    <View style={styles.lineChartContainer}>
-                                        {lineGraphSelected===0? (
-                                            <LineChart
-                                                data={monthlyIncome}
-                                                data2={monthlyExpense}
-                                                color1={COLORS.main3}
-                                                color2={COLORS.gray1}
-                                                dataPointsColor1={COLORS.main3}
-                                                dataPointsColor2={COLORS.gray1}
-                                                yAxisTextStyle={styles.lineChartAxisText}
-                                                xAxisLabelTextStyle={styles.lineChartAxisText}
-                                                maxValue={maxYBothValue}
-                                                noOfSections={5}
-                                                spacing={50}
-                                                verticalLinesSpacing={50}
-                                                thickness={3}
-                                                yAxisLabelSuffix={maxYBothLabel}
-                                                showVerticalLines
-                                                curved
-                                                textShiftX={-5}
-                                                textShiftY={-5}
-                                                textColor={COLORS.gray2}
-                                                textFontSize={SIZES.regular-1}
-                                                areaChart
-                                                startFillColor={COLORS.main3}
-                                                startOpacity={0.5}
-                                                endFillColor={COLORS.main3}
-                                                endOpacity={0.1}
-                                                startFillColor2={COLORS.gray1}
-                                                startOpacity2={0.5}
-                                                endFillColor2={COLORS.gray1}
-                                                endOpacity2={0.1}
-                                                isAnimated
-                                                animationDuration={1000}
-                                                pointerConfig={{
-                                                    pointerStripUptoDataPoint: true,
-                                                    pointerStripColor: COLORS.main1,
-                                                    pointerStripWidth: 2,
-                                                    strokeDashArray: [2, 5],
-                                                    pointerColor: COLORS.main1,
-                                                    radius: 4,
-                                                    pointerLabelWidth: 100,
-                                                    pointerLabelHeight: 120,
-                                                    activatePointersOnLongPress: true,
-                                                    pointerLabelComponent: items => {
-                                                        return (
-                                                        <View
-                                                            style={{
-                                                            height: 120,
-                                                            paddingLeft:16,
-                                                            paddingBottom: 100
-                                                        }}>
-                                                            <View style={{
-                                                                backgroundColor: COLORS.white3,
-                                                                borderRadius: 4,
-                                                                paddingHorizontal: 10,
-                                                                paddingVertical: 5,
-                                                                width: 100,
-                                                                height: 100,
+                                ) : (
+                                    <View style={styles.lineAnalysisContainer}>
+                                        <Text style={styles.lineContainerHeading}>
+                                            Yearly Pattern
+                                        </Text>
+                                        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 15, alignItems: 'center' }}>
+                                            <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => handleChangeMonthlyGraph(0)}>
+                                                <RadioButton selected={lineGraphSelected===0} />
+                                                <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===0? COLORS.gray3 : COLORS.gray1 }]}>
+                                                    Both                                           
+                                                </Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => handleChangeMonthlyGraph(1)}>
+                                                <RadioButton selected={lineGraphSelected===1} />
+                                                <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===1? COLORS.gray3 : COLORS.gray1 }]}>
+                                                    Income                                                
+                                                </Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => handleChangeMonthlyGraph(2)}>
+                                                <RadioButton selected={lineGraphSelected===2} />
+                                                <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===2? COLORS.gray3 : COLORS.gray1 }]}>
+                                                    Expense                                              
+                                                </Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                        <Text style={[styles.lineContainerHeading, { marginTop: -10, textAlign: 'center', fontSize: SIZES.regular }]}>
+                                            F.Y. {date.getFullYear()}
+                                        </Text>
+                                        <View style={styles.lineChartContainer}>
+                                            {lineGraphSelected===0? (
+                                                <LineChart
+                                                    data={monthlyIncome}
+                                                    data2={monthlyExpense}
+                                                    color1={COLORS.main3}
+                                                    color2={COLORS.gray1}
+                                                    dataPointsColor1={COLORS.main3}
+                                                    dataPointsColor2={COLORS.gray1}
+                                                    yAxisTextStyle={styles.lineChartAxisText}
+                                                    xAxisLabelTextStyle={styles.lineChartAxisText}
+                                                    maxValue={maxYBothValue}
+                                                    noOfSections={5}
+                                                    spacing={50}
+                                                    verticalLinesSpacing={50}
+                                                    thickness={3}
+                                                    yAxisLabelSuffix={maxYBothLabel}
+                                                    showVerticalLines
+                                                    curved
+                                                    textShiftX={-5}
+                                                    textShiftY={-5}
+                                                    textColor={COLORS.gray2}
+                                                    textFontSize={SIZES.regular-1}
+                                                    areaChart
+                                                    startFillColor={COLORS.main3}
+                                                    startOpacity={0.5}
+                                                    endFillColor={COLORS.main3}
+                                                    endOpacity={0.1}
+                                                    startFillColor2={COLORS.gray1}
+                                                    startOpacity2={0.5}
+                                                    endFillColor2={COLORS.gray1}
+                                                    endOpacity2={0.1}
+                                                    isAnimated
+                                                    animationDuration={1000}
+                                                    pointerConfig={{
+                                                        pointerStripUptoDataPoint: true,
+                                                        pointerStripColor: COLORS.main1,
+                                                        pointerStripWidth: 2,
+                                                        strokeDashArray: [2, 5],
+                                                        pointerColor: COLORS.main1,
+                                                        radius: 4,
+                                                        pointerLabelWidth: 100,
+                                                        pointerLabelHeight: 120,
+                                                        activatePointersOnLongPress: true,
+                                                        pointerLabelComponent: items => {
+                                                            return (
+                                                            <View
+                                                                style={{
+                                                                height: 120,
+                                                                paddingLeft:16,
+                                                                paddingBottom: 100
                                                             }}>
-                                                                <Text style={{color: COLORS.gray2, fontFamily: FONT.medium, fontSize: SIZES.regular}}>
-                                                                    {items[0].label} {date.getFullYear()}
-                                                                </Text>
-                                                                <Text style={{color: COLORS.gray1, fontFamily: FONT.regular, fontSize: SIZES.small}}>
-                                                                    Income
-                                                                </Text>
-                                                                <Text style={{color: COLORS.gray2, fontFamily: FONT.medium, fontSize: SIZES.regular}}>
-                                                                    {items[0].value} {maxYBothLabel}
-                                                                </Text>
-                                                                <Text style={{color: COLORS.gray1, fontFamily: FONT.regular, fontSize: SIZES.small}}>
-                                                                    Expense
-                                                                </Text>
-                                                                <Text style={{color: COLORS.gray2, fontFamily: FONT.medium, fontSize: SIZES.regular}}>
-                                                                    {items[1].value} {maxYBothLabel}
-                                                                </Text>
+                                                                <View style={{
+                                                                    backgroundColor: COLORS.white3,
+                                                                    borderRadius: 4,
+                                                                    paddingHorizontal: 10,
+                                                                    paddingVertical: 5,
+                                                                    width: 100,
+                                                                    height: 100,
+                                                                }}>
+                                                                    <Text style={{color: COLORS.gray2, fontFamily: FONT.medium, fontSize: SIZES.regular}}>
+                                                                        {items[0].label} {date.getFullYear()}
+                                                                    </Text>
+                                                                    <Text style={{color: COLORS.gray1, fontFamily: FONT.regular, fontSize: SIZES.small}}>
+                                                                        Income
+                                                                    </Text>
+                                                                    <Text style={{color: COLORS.gray2, fontFamily: FONT.medium, fontSize: SIZES.regular}}>
+                                                                        {items[0].value} {maxYBothLabel}
+                                                                    </Text>
+                                                                    <Text style={{color: COLORS.gray1, fontFamily: FONT.regular, fontSize: SIZES.small}}>
+                                                                        Expense
+                                                                    </Text>
+                                                                    <Text style={{color: COLORS.gray2, fontFamily: FONT.medium, fontSize: SIZES.regular}}>
+                                                                        {items[1].value} {maxYBothLabel}
+                                                                    </Text>
+                                                                </View>
                                                             </View>
-                                                        </View>
-                                                        );
-                                                    },
-                                                }}
-
-                                            />
-                                        ) : lineGraphSelected===1? (
-                                            <LineChart
-                                                data={monthlyIncome}
-                                                color1={COLORS.main3}
-                                                dataPointsColor1={COLORS.main3}
-                                                yAxisTextStyle={styles.lineChartAxisText}
-                                                xAxisLabelTextStyle={styles.lineChartAxisText}
-                                                maxValue={maxYIncomeValue}
-                                                noOfSections={5}
-                                                spacing={50}
-                                                verticalLinesSpacing={50}
-                                                thickness={3}
-                                                yAxisLabelSuffix={maxYIncomeLabel}
-                                                showVerticalLines
-                                                curved
-                                                textShiftX={-5}
-                                                textShiftY={-5}
-                                                textColor={COLORS.gray2}
-                                                textFontSize={SIZES.regular-1}
-                                                areaChart
-                                                startFillColor={COLORS.main3}
-                                                startOpacity={0.5}
-                                                endFillColor={COLORS.main3}
-                                                endOpacity={0.1}
-                                                isAnimated
-                                                animateOnDataChange
-                                                animationDuration={1000}
-                                                onDataChangeAnimationDuration={300}
-                                            />
-                                        ) : (
-                                            <LineChart
-                                                data={monthlyExpense}
-                                                color1={COLORS.gray1}
-                                                dataPointsColor1={COLORS.gray1}
-                                                yAxisTextStyle={styles.lineChartAxisText}
-                                                xAxisLabelTextStyle={styles.lineChartAxisText}
-                                                maxValue={maxYExpenseValue}
-                                                noOfSections={5}
-                                                spacing={50}
-                                                verticalLinesSpacing={50}
-                                                thickness={3}
-                                                yAxisLabelSuffix={maxYExpenseLabel}
-                                                showVerticalLines
-                                                curved
-                                                textShiftX={-5}
-                                                textShiftY={-5}
-                                                textColor={COLORS.gray2}
-                                                textFontSize={SIZES.regular-1}
-                                                areaChart
-                                                startFillColor={COLORS.gray1}
-                                                startOpacity={0.5}
-                                                endFillColor={COLORS.gray1}
-                                                endOpacity={0.1}
-                                                isAnimated
-                                                animateOnDataChange
-                                                animationDuration={1000}
-                                                onDataChangeAnimationDuration={300}
-                                            />
-                                        )}
-                                    </View>
-                                    <View style={{ gap: 5 }}>
-                                        <View style={styles.lineLegendsContainer}>
-                                            {lineGraphSelected!==2 && (
-                                                <View style={styles.lineLegend} >
-                                                    <View style={styles.lineLegendDot(COLORS.main3)} />
-                                                    <Text style={styles.lineLegendText}>
-                                                        Income {lineGraphSelected===1 && `(in ${abbToWord[maxYIncomeLabel]})`}
-                                                    </Text>
-                                                </View>
-                                            )}
-                                            {lineGraphSelected!==1 && (
-                                                <View style={styles.lineLegend} >
-                                                    <View style={styles.lineLegendDot(COLORS.gray1)} />
-                                                    <Text style={styles.lineLegendText}>
-                                                        Expense {lineGraphSelected===2 && `(in ${abbToWord[maxYExpenseLabel]})`}
-                                                    </Text>
-                                                </View>
+                                                            );
+                                                        },
+                                                    }}
+                                                />
+                                            ) : lineGraphSelected===1? (
+                                                <LineChart
+                                                    data={monthlyIncome}
+                                                    color1={COLORS.main3}
+                                                    dataPointsColor1={COLORS.main3}
+                                                    yAxisTextStyle={styles.lineChartAxisText}
+                                                    xAxisLabelTextStyle={styles.lineChartAxisText}
+                                                    maxValue={maxYIncomeValue}
+                                                    noOfSections={5}
+                                                    spacing={50}
+                                                    verticalLinesSpacing={50}
+                                                    thickness={3}
+                                                    yAxisLabelSuffix={maxYIncomeLabel}
+                                                    showVerticalLines
+                                                    curved
+                                                    textShiftX={-5}
+                                                    textShiftY={-5}
+                                                    textColor={COLORS.gray2}
+                                                    textFontSize={SIZES.regular-1}
+                                                    areaChart
+                                                    startFillColor={COLORS.main3}
+                                                    startOpacity={0.5}
+                                                    endFillColor={COLORS.main3}
+                                                    endOpacity={0.1}
+                                                    isAnimated
+                                                    animateOnDataChange
+                                                    animationDuration={1000}
+                                                    onDataChangeAnimationDuration={300}
+                                                />
+                                            ) : (
+                                                <LineChart
+                                                    data={monthlyExpense}
+                                                    color1={COLORS.gray1}
+                                                    dataPointsColor1={COLORS.gray1}
+                                                    yAxisTextStyle={styles.lineChartAxisText}
+                                                    xAxisLabelTextStyle={styles.lineChartAxisText}
+                                                    maxValue={maxYExpenseValue}
+                                                    noOfSections={5}
+                                                    spacing={50}
+                                                    verticalLinesSpacing={50}
+                                                    thickness={3}
+                                                    yAxisLabelSuffix={maxYExpenseLabel}
+                                                    showVerticalLines
+                                                    curved
+                                                    textShiftX={-5}
+                                                    textShiftY={-5}
+                                                    textColor={COLORS.gray2}
+                                                    textFontSize={SIZES.regular-1}
+                                                    areaChart
+                                                    startFillColor={COLORS.gray1}
+                                                    startOpacity={0.5}
+                                                    endFillColor={COLORS.gray1}
+                                                    endOpacity={0.1}
+                                                    isAnimated
+                                                    animateOnDataChange
+                                                    animationDuration={1000}
+                                                    onDataChangeAnimationDuration={300}
+                                                />
                                             )}
                                         </View>
-                                        {lineGraphSelected===0 && (
-                                            <Text style={[styles.lineLegendText, { textAlign: 'center' }]}>
-                                                in ({abbToVal[maxYExpenseLabel] >= abbToVal[maxYIncomeLabel]? abbToWord[maxYExpenseLabel] : abbToWord[maxYIncomeLabel]})
-                                            </Text>
-                                        )}
+                                        <View style={{ gap: 5 }}>
+                                            <View style={styles.lineLegendsContainer}>
+                                                {lineGraphSelected!==2 && (
+                                                    <View style={styles.lineLegend} >
+                                                        <View style={styles.lineLegendDot(COLORS.main3)} />
+                                                        <Text style={styles.lineLegendText}>
+                                                            Income {lineGraphSelected===1 && `(in ${abbToWord[maxYIncomeLabel]})`}
+                                                        </Text>
+                                                    </View>
+                                                )}
+                                                {lineGraphSelected!==1 && (
+                                                    <View style={styles.lineLegend} >
+                                                        <View style={styles.lineLegendDot(COLORS.gray1)} />
+                                                        <Text style={styles.lineLegendText}>
+                                                            Expense {lineGraphSelected===2 && `(in ${abbToWord[maxYExpenseLabel]})`}
+                                                        </Text>
+                                                    </View>
+                                                )}
+                                            </View>
+                                            {lineGraphSelected===0 && (
+                                                <Text style={[styles.lineLegendText, { textAlign: 'center' }]}>
+                                                    in ({abbToVal[maxYExpenseLabel] >= abbToVal[maxYIncomeLabel]? abbToWord[maxYExpenseLabel] : abbToWord[maxYIncomeLabel]})
+                                                </Text>
+                                            )}
+                                        </View>
                                     </View>
-                                </View>
+                                )}
                             </View>
                         </ScrollView>
                         )}
