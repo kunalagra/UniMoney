@@ -2,7 +2,7 @@ import { View, Text, SafeAreaView, StatusBar, ScrollView, TouchableOpacity, Refr
 import styles from './insightspage.style';
 import { chartColors } from '../../../constants/fakeData';
 import TransactionCard from '../common/cards/transaction/TransactionCard';
-import { icons, COLORS, images, SIZES } from '../../../constants';
+import { icons, COLORS, images, SIZES, FONT } from '../../../constants';
 import React, { useState, useCallback, useEffect } from 'react';
 import { moneyTextHelper } from '../../../utils';
 import { PieChart, LineChart } from 'react-native-gifted-charts';
@@ -80,10 +80,14 @@ const InsightsPage = (props) => {
     const [totalIncome, setTotalIncome] = useState(0);
     const [monthlyExpense, setMonthlyExpense] = useState([]);
     const [monthlyIncome, setMonthlyIncome] = useState([]);
+    const [totalMonthlyExpense, setTotalMonthlyExpense] = useState([]);
+    const [totalMonthlyIncome, setTotalMonthlyIncome] = useState([]);
     const [maxYExpenseValue, setMaxYExpenseValue] = useState(0);
     const [maxYExpenseLabel, setMaxYExpenseLabel] = useState('Rs');
     const [maxYIncomeValue, setMaxYIncomeValue] = useState(0);
     const [maxYIncomeLabel, setMaxYIncomeLabel] = useState('Rs');
+    const [maxYBothValue, setMaxYBothValue] = useState(0);
+    const [maxYBothLabel, setMaxYBothLabel] = useState('Rs');
     const [loading, setLoading] = useState(true);
 
     const [isExpenseSelected, setIsExpenseSelected] = useState(true);
@@ -247,25 +251,63 @@ const InsightsPage = (props) => {
             maxYInc = convertToLimitValue(Math.max(maxYInc, maxLimitValue(totalIncome)));
             maxYIncL = convertToLimitLabel(maxYInc);
         }
+
+        let expenses = [...allMonthsWiseExpenses];
+        let incomes = [...allMonthsWiseIncomes];
+
         
-        for (let i=0; i<12; i++) {
-            allMonthsWiseExpenses[i] = {...allMonthsWiseExpenses[i], value: Number((allMonthsWiseExpenses[i].value/abbToVal[maxYExpL]).toFixed(2)), dataPointText: `${(allMonthsWiseExpenses[i].value/abbToVal[maxYExpL]).toFixed(2)}`};
-            allMonthsWiseIncomes[i] = {...allMonthsWiseIncomes[i], value: Number((allMonthsWiseIncomes[i].value/abbToVal[maxYIncL]).toFixed(2)), dataPointText: `${(allMonthsWiseIncomes[i].value/abbToVal[maxYIncL]).toFixed(2)}`};
+        if ((maxYExp * abbToVal[maxYExpL]) >= (maxYInc * abbToVal[maxYIncL])) {
+            setMaxYBothValue(maxYExp/abbToVal[maxYExpL]);
+            setMaxYBothLabel(maxYExpL);
+            for (let i=0; i<12; i++) {
+                expenses[i] = {...expenses[i], value: Number((expenses[i].value/abbToVal[maxYExpL]).toFixed(2)), dataPointText: `${(expenses[i].value/abbToVal[maxYExpL]).toFixed(2)}`};
+                incomes[i] = {...incomes[i], value: Number((incomes[i].value/abbToVal[maxYExpL]).toFixed(2)), dataPointText: `${(incomes[i].value/abbToVal[maxYExpL]).toFixed(2)}`};
+            }
+        } else {
+            setMaxYBothValue(maxYInc/abbToVal[maxYIncL]);
+            setMaxYBothLabel(maxYIncL);
+            for (let i=0; i<12; i++) {
+                expenses[i] = {...expenses[i], value: Number((expenses[i].value/abbToVal[maxYIncL]).toFixed(2)), dataPointText: `${(expenses[i].value/abbToVal[maxYIncL]).toFixed(2)}`};
+                incomes[i] = {...incomes[i], value: Number((incomes[i].value/abbToVal[maxYIncL]).toFixed(2)), dataPointText: `${(incomes[i].value/abbToVal[maxYIncL]).toFixed(2)}`};
+            }
         }
 
         setMaxYExpenseValue(maxYExp/abbToVal[maxYExpL]);
         setMaxYExpenseLabel(maxYExpL);
         setMaxYIncomeValue(maxYInc/abbToVal[maxYIncL]);
         setMaxYIncomeLabel(maxYIncL);
-        setMonthlyExpense(allMonthsWiseExpenses);
-        setMonthlyIncome(allMonthsWiseIncomes);
+        setTotalMonthlyExpense(allMonthsWiseExpenses);
+        setTotalMonthlyIncome(allMonthsWiseIncomes);
+        setMonthlyExpense(expenses);
+        setMonthlyIncome(incomes);
         setRefreshing(false);
         setLoading(false);
-
         
     }, [alltransactions, Categories, date, refreshing]);
 
-
+    const handleChangeMonthlyGraph = (value) => {
+        setLineGraphSelected(value);
+        let allMonthsWiseExpenses = [...totalMonthlyExpense];
+        let allMonthsWiseIncomes = [...totalMonthlyIncome];
+        if (value===0) {
+            for (let i=0; i<12; i++) {
+                allMonthsWiseExpenses[i] = {...allMonthsWiseExpenses[i], value: Number((allMonthsWiseExpenses[i].value/abbToVal[maxYBothLabel]).toFixed(2)), dataPointText: `${(allMonthsWiseExpenses[i].value/abbToVal[maxYBothLabel]).toFixed(2)}`};
+                allMonthsWiseIncomes[i] = {...allMonthsWiseIncomes[i], value: Number((allMonthsWiseIncomes[i].value/abbToVal[maxYBothLabel]).toFixed(2)), dataPointText: `${(allMonthsWiseIncomes[i].value/abbToVal[maxYBothLabel]).toFixed(2)}`};
+            }
+            setMonthlyExpense(allMonthsWiseExpenses);
+            setMonthlyIncome(allMonthsWiseIncomes);
+        } else if (value===1) {
+            for (let i=0; i<12; i++) {
+                allMonthsWiseIncomes[i] = {...allMonthsWiseIncomes[i], value: Number((allMonthsWiseIncomes[i].value/abbToVal[maxYIncomeLabel]).toFixed(2)), dataPointText: `${(allMonthsWiseIncomes[i].value/abbToVal[maxYIncomeLabel]).toFixed(2)}`};
+            }
+            setMonthlyIncome(allMonthsWiseIncomes);
+        } else {
+            for (let i=0; i<12; i++) {
+                allMonthsWiseExpenses[i] = {...allMonthsWiseExpenses[i], value: Number((allMonthsWiseExpenses[i].value/abbToVal[maxYExpenseLabel]).toFixed(2)), dataPointText: `${(allMonthsWiseExpenses[i].value/abbToVal[maxYExpenseLabel]).toFixed(2)}`};
+            }
+            setMonthlyExpense(allMonthsWiseExpenses);
+        }
+    }
 
     const onValueChange = (event, newDate) => {
         setIsMonthModalOpen(false);
@@ -610,15 +652,21 @@ const InsightsPage = (props) => {
                                         Yearly Pattern
                                     </Text>
                                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 15, alignItems: 'center' }}>
-                                        <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => setLineGraphSelected(0)}>
+                                        <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => handleChangeMonthlyGraph(0)}>
                                             <RadioButton selected={lineGraphSelected===0} />
                                             <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===0? COLORS.gray3 : COLORS.gray1 }]}>
+                                                Both                                           
+                                            </Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => handleChangeMonthlyGraph(1)}>
+                                            <RadioButton selected={lineGraphSelected===1} />
+                                            <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===1? COLORS.gray3 : COLORS.gray1 }]}>
                                                 Income                                                
                                             </Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => setLineGraphSelected(1)}>
-                                            <RadioButton selected={lineGraphSelected===1} />
-                                            <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===1? COLORS.gray3 : COLORS.gray1 }]}>
+                                        <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => handleChangeMonthlyGraph(2)}>
+                                            <RadioButton selected={lineGraphSelected===2} />
+                                            <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===2? COLORS.gray3 : COLORS.gray1 }]}>
                                                 Expense                                              
                                             </Text>
                                         </TouchableOpacity>
@@ -627,8 +675,88 @@ const InsightsPage = (props) => {
                                         F.Y. {date.getFullYear()}
                                     </Text>
                                     <View style={styles.lineChartContainer}>
-
                                         {lineGraphSelected===0? (
+                                            <LineChart
+                                                data={monthlyIncome}
+                                                data2={monthlyExpense}
+                                                color1={COLORS.main3}
+                                                color2={COLORS.gray1}
+                                                dataPointsColor1={COLORS.main3}
+                                                dataPointsColor2={COLORS.gray1}
+                                                yAxisTextStyle={styles.lineChartAxisText}
+                                                xAxisLabelTextStyle={styles.lineChartAxisText}
+                                                maxValue={maxYBothValue}
+                                                noOfSections={5}
+                                                spacing={50}
+                                                verticalLinesSpacing={50}
+                                                thickness={3}
+                                                yAxisLabelSuffix={maxYBothLabel}
+                                                showVerticalLines
+                                                curved
+                                                textShiftX={-5}
+                                                textShiftY={-5}
+                                                textColor={COLORS.gray2}
+                                                textFontSize={SIZES.regular-1}
+                                                areaChart
+                                                startFillColor={COLORS.main3}
+                                                startOpacity={0.5}
+                                                endFillColor={COLORS.main3}
+                                                endOpacity={0.1}
+                                                startFillColor2={COLORS.gray1}
+                                                startOpacity2={0.5}
+                                                endFillColor2={COLORS.gray1}
+                                                endOpacity2={0.1}
+                                                isAnimated
+                                                animationDuration={1000}
+                                                pointerConfig={{
+                                                    pointerStripUptoDataPoint: true,
+                                                    pointerStripColor: COLORS.main1,
+                                                    pointerStripWidth: 2,
+                                                    strokeDashArray: [2, 5],
+                                                    pointerColor: COLORS.main1,
+                                                    radius: 4,
+                                                    pointerLabelWidth: 100,
+                                                    pointerLabelHeight: 120,
+                                                    activatePointersOnLongPress: true,
+                                                    pointerLabelComponent: items => {
+                                                        return (
+                                                        <View
+                                                            style={{
+                                                            height: 120,
+                                                            paddingLeft:16,
+                                                            paddingBottom: 100
+                                                        }}>
+                                                            <View style={{
+                                                                backgroundColor: COLORS.white3,
+                                                                borderRadius: 4,
+                                                                paddingHorizontal: 10,
+                                                                paddingVertical: 5,
+                                                                width: 100,
+                                                                height: 100,
+                                                            }}>
+                                                                <Text style={{color: COLORS.gray2, fontFamily: FONT.medium, fontSize: SIZES.regular}}>
+                                                                    {items[0].label} {date.getFullYear()}
+                                                                </Text>
+                                                                <Text style={{color: COLORS.gray1, fontFamily: FONT.regular, fontSize: SIZES.small}}>
+                                                                    Income
+                                                                </Text>
+                                                                <Text style={{color: COLORS.gray2, fontFamily: FONT.medium, fontSize: SIZES.regular}}>
+                                                                    {items[0].value} {maxYBothLabel}
+                                                                </Text>
+                                                                <Text style={{color: COLORS.gray1, fontFamily: FONT.regular, fontSize: SIZES.small}}>
+                                                                    Expense
+                                                                </Text>
+                                                                <Text style={{color: COLORS.gray2, fontFamily: FONT.medium, fontSize: SIZES.regular}}>
+                                                                    {items[1].value} {maxYBothLabel}
+                                                                </Text>
+                                                            </View>
+                                                        </View>
+                                                        );
+                                                    },
+                                                }}
+
+                                            />
+                                        ) : lineGraphSelected===1? (
                                             <LineChart
                                                 data={monthlyIncome}
                                                 color1={COLORS.main3}
@@ -652,6 +780,10 @@ const InsightsPage = (props) => {
                                                 startOpacity={0.5}
                                                 endFillColor={COLORS.main3}
                                                 endOpacity={0.1}
+                                                isAnimated
+                                                animateOnDataChange
+                                                animationDuration={1000}
+                                                onDataChangeAnimationDuration={300}
                                             />
                                         ) : (
                                             <LineChart
@@ -677,25 +809,36 @@ const InsightsPage = (props) => {
                                                 startOpacity={0.5}
                                                 endFillColor={COLORS.gray1}
                                                 endOpacity={0.1}
+                                                isAnimated
+                                                animateOnDataChange
+                                                animationDuration={1000}
+                                                onDataChangeAnimationDuration={300}
                                             />
                                         )}
                                     </View>
-                                    <View style={styles.lineLegendsContainer}>
-                                        {lineGraphSelected===1 && (
-                                            <View style={styles.lineLegend} >
-                                                <View style={styles.lineLegendDot(COLORS.gray1)} />
-                                                <Text style={styles.lineLegendText}>
-                                                    Expense (in {abbToWord[maxYExpenseLabel]})
-                                                </Text>
-                                            </View>
-                                        )}
+                                    <View style={{ gap: 5 }}>
+                                        <View style={styles.lineLegendsContainer}>
+                                            {lineGraphSelected!==2 && (
+                                                <View style={styles.lineLegend} >
+                                                    <View style={styles.lineLegendDot(COLORS.main3)} />
+                                                    <Text style={styles.lineLegendText}>
+                                                        Income {lineGraphSelected===1 && `(in ${abbToWord[maxYIncomeLabel]})`}
+                                                    </Text>
+                                                </View>
+                                            )}
+                                            {lineGraphSelected!==1 && (
+                                                <View style={styles.lineLegend} >
+                                                    <View style={styles.lineLegendDot(COLORS.gray1)} />
+                                                    <Text style={styles.lineLegendText}>
+                                                        Expense {lineGraphSelected===2 && `(in ${abbToWord[maxYExpenseLabel]})`}
+                                                    </Text>
+                                                </View>
+                                            )}
+                                        </View>
                                         {lineGraphSelected===0 && (
-                                            <View style={styles.lineLegend} >
-                                                <View style={styles.lineLegendDot(COLORS.main3)} />
-                                                <Text style={styles.lineLegendText}>
-                                                    Income (in {abbToWord[maxYIncomeLabel]})
-                                                </Text>
-                                            </View>
+                                            <Text style={[styles.lineLegendText, { textAlign: 'center' }]}>
+                                                in ({abbToVal[maxYExpenseLabel] >= abbToVal[maxYIncomeLabel]? abbToWord[maxYExpenseLabel] : abbToWord[maxYIncomeLabel]})
+                                            </Text>
                                         )}
                                     </View>
                                 </View>
