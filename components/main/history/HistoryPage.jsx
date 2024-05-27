@@ -62,8 +62,10 @@ const HistoryPage = ({ navigateTo }) => {
         setTimeout(() => {
             setLoading(false);
         }, 1000);
+        // console.log(alltransactions);
         if (alltransactions) {
             let tmp = alltransactions.filter((item) => {
+                if (!item ) return false;
                 let itemDate = new Date(item.date);
                 return itemDate >= new Date(date.getFullYear(), date.getMonth()) && itemDate < new Date(date.getFullYear(), date.getMonth()+1);
             });

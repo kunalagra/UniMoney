@@ -4,15 +4,18 @@ import { COLORS, FONT, SIZES, icons } from '../../../constants';
 import { useCallback, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { REACT_APP_BACKEND_URL } from "@env";
 import CustomButton from '../../profilecreation/common/button/CustomButton';
 import { Dialog, Icon, Input } from '@rneui/themed';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { Dropdown } from 'react-native-element-dropdown';
+import { setAllTransactions } from '../../../store/transactiondata'
 
 
 const CategoryCard = ({id, category, selectedCategory, setSelectedCategory, tranID}) => {
+    const dispatch = useDispatch();
+    const { alltransactions } = useSelector(state => state.transactiondata);
     return (
         <TouchableOpacity 
             style={styles.categoryContainer}
@@ -31,7 +34,20 @@ const CategoryCard = ({id, category, selectedCategory, setSelectedCategory, tran
                 };
                 try {
                     const response = await axios(options);
-                    // console.log(response.data);
+                    // update the category in a transaction in the alltransactions array in redux
+                    const updatedTransactions = alltransactions.map((item) => {
+                        if (item._id === tranID) {
+                            return {
+                                ...item,
+                                category: category
+                            }
+                        }
+                        return item;
+                    }
+                    );
+                    // console.log(updatedTransactions);
+                    dispatch(setAllTransactions(updatedTransactions));
+
                 }
                 catch (error) {
                     console.log(error);
@@ -305,7 +321,8 @@ const EditModal = ({ editModalOpen, setEditModalOpen, selTypeOfPayment, selAccou
 }
 
 const DeleteModal = ({ deleteModalOpen, setDeleteModalOpen, tranID, navigation }) => {
-
+    const dispatch = useDispatch();
+    const { alltransactions } = useSelector(state => state.transactiondata);
     const handleDelete = async () => {
         const options = {
             method: 'DELETE',
@@ -317,7 +334,11 @@ const DeleteModal = ({ deleteModalOpen, setDeleteModalOpen, tranID, navigation }
         };
         try {
             const response = await axios(options);
-            console.log(response.data);
+            // console.log(response.data);
+            // remove the transaction from the alltransactions array in redux
+            const updatedTransactions = alltransactions.filter((item) => item._id !== tranID);
+            // console.log(updatedTransactions);
+            dispatch(setAllTransactions(updatedTransactions));
             navigation.pop();
         }
         catch (error) {
@@ -362,13 +383,14 @@ const DeleteModal = ({ deleteModalOpen, setDeleteModalOpen, tranID, navigation }
 
 const TransactionDetailsPage = (props) => {
     
+    const dispatch = useDispatch();
     const [transaction, setTransaction] = useState(props.route.params);
     const [selectedCategory, setSelectedCategory] = useState(transaction.category);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
     const { ArrowleftIcon } = icons;
-    const { Categories } = useSelector(state => state.transactiondata);
+    const { Categories, alltransactions } = useSelector(state => state.transactiondata);
     const [isCredited, setIsCredited] = useState(transaction.isExpense ? false : true);
 
     const [refreshing, setRefreshing] = useState(false);
@@ -398,6 +420,22 @@ const TransactionDetailsPage = (props) => {
                 category: response.data.category.name,
                 isExpense: response.data.type === "debit",
             });
+            // update the transaction in the alltransactions array in redux
+            const updatedTransactions = alltransactions.map((item) => {
+                if (item._id === transaction.id) {
+                    return {
+                        ...item,
+                        name: response.data.name,
+                        amount: response.data.amount,
+                        category: response.data.category,
+                        isExpense: response.data.type === "debit"
+                    }
+                }
+                return item;
+            }
+            );
+            // console.log(updatedTransactions);
+            dispatch(setAllTransactions(updatedTransactions));
             setSelectedCategory(response.data.category.name);
             setIsCredited(response.data.type === "credit");
             setEditModalOpen(false);
