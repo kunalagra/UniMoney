@@ -1,5 +1,5 @@
 "use strict";
-import { SafeAreaView, View, Text, ScrollView, StatusBar, TouchableOpacity, Image, Switch } from "react-native";
+import { SafeAreaView, View, Text, ScrollView, StatusBar, TouchableOpacity, Image, Switch , ToastAndroid} from "react-native";
 import { COLORS, SHADOWS, icons, images } from "../../constants";
 import { useState, useEffect } from "react";
 import styles from "./settingspage.style";
@@ -7,6 +7,9 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector } from "react-redux";
 import LinearGradient from "react-native-linear-gradient";
+import axios from "axios";
+import { REACT_APP_BACKEND_URL } from "@env";
+
 
 
 const SettingsPage = (props) => {
@@ -22,6 +25,11 @@ const SettingsPage = (props) => {
         const getsettings = async () => {
             const isMonthlyBudget = await AsyncStorage.getItem('isMonthlyBudget');
             setIsBudgetMode(isMonthlyBudget === 'true');
+            const isPushNotifications = await AsyncStorage.getItem('isPushNotifications');
+            setIsPushNotifications(isPushNotifications === 'true');
+            const isExpenseReminderOn = await AsyncStorage.getItem('isExpenseReminderOn');
+            setIsExpenseRemainderOn(isExpenseReminderOn === 'true');
+
         }
         getsettings();
         // console.log(isBudgetMode)
@@ -56,14 +64,20 @@ const SettingsPage = (props) => {
             title: "Instant notifications",
             image: images.bell_ring,
             desc: "Receive timely reminders",
-            handlePress: () => setIsPushNotifications(prev => !prev),
+            handlePress: () => {
+                setIsPushNotifications(prev => !prev),
+                AsyncStorage.setItem('isPushNotifications', (!isPushNotifications).toString());
+            },
             isToggle: true
         },
         {
             title: "Cash expense reminder",
             image: images.plus_icon,
             desc: "Get regular alerts to add cash expenses against your ATM withdrawals",
-            handlePress: () => setIsExpenseRemainderOn(prev => !prev),
+            handlePress: () => {
+                setIsExpenseRemainderOn(prev => !prev),
+                AsyncStorage.setItem('isExpenseReminderOn', (!isExpenseReminderOn).toString());
+            },
             isToggle: true
         },
         {
@@ -76,7 +90,23 @@ const SettingsPage = (props) => {
             title: "Reset app data",
             image: images.bin,
             desc: "Delete app data and set it up again",
-            handlePress: () => {},
+            handlePress: async () => {
+                const options = {
+                method: 'DELETE',
+                url: `${REACT_APP_BACKEND_URL}/transaction/cleardata`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + await AsyncStorage.getItem('token')
+                }
+            };
+            try {
+                const response = await axios(options);
+                ToastAndroid.show("Data cleared successfully", ToastAndroid.SHORT);
+            }
+            catch (error) {
+                console.log(error);
+            }
+            }
         },
         {
             title: "About us",

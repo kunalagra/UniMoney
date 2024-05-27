@@ -31,7 +31,9 @@ const HomePage = ({ navigateTo }) => {
         setTimeout(() => setRefreshing(false), 1000);
     }, []);
 
-    const [transactionsData, setTransactionsData] = useState([]);
+    const { alltransactions } = useSelector(state => state.transactiondata);
+
+    const [transactionsData, setTransactionsData] = useState(alltransactions);
     const [name, setName] = useState('');
     const [img , setImg] = useState('');
 
@@ -328,22 +330,14 @@ const HomePage = ({ navigateTo }) => {
                 fetchData();
             } else {
                 const permReq = await PermissionsAndroid.request(
-                    PermissionsAndroid.PERMISSIONS.READ_SMS,
-                    {
-                        title: "Unimoney",
-                        message: "Allow us to read SMS messages"
-                    }
+                    PermissionsAndroid.PERMISSIONS.READ_SMS
                 );
                 const permReq2 = await PermissionsAndroid.request(
-                    PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-                    {
-                        title: "Unimoney",
-                        message: "Allow us to push notifications"
-                    }
+                    PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
                 );
 
-                // if (permReq === PermissionsAndroid.RESULTS.GRANTED && permReq2 === PermissionsAndroid.RESULTS.GRANTED) {
-                if (permReq === PermissionsAndroid.RESULTS.GRANTED) {
+                if (permReq === PermissionsAndroid.RESULTS.GRANTED && permReq2 === PermissionsAndroid.RESULTS.GRANTED) {
+                // if (permReq === PermissionsAndroid.RESULTS.GRANTED) {
                     fetchData();
                 } else {
                     ToastAndroid.show('SMS Permission denied', ToastAndroid.SHORT);
