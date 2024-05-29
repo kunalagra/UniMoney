@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, SafeAreaView, StatusBar, Image, ScrollView, TouchableOpacity,RefreshControl, PermissionsAndroid, ToastAndroid, Linking } from 'react-native';
+import { View, Text, SafeAreaView, StatusBar, Image, ScrollView, TouchableOpacity,RefreshControl, PermissionsAndroid, ToastAndroid, Linking, Platform } from 'react-native';
 import { COLORS, images } from '../../../constants'
 import ExpenseCard from '../common/cards/expense/ExpenseCard';
 import StreakBanner from './streakbanner/StreakBanner';
@@ -321,41 +321,41 @@ const HomePage = ({ navigateTo }) => {
         }
     }
 
-    const requestReadSmsPermission = async () => {
-        try {
-            const notificationCheck = await PermissionsAndroid.check(
-                PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
-            const permCheck = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_SMS);
-            if (permCheck === PermissionsAndroid.RESULTS.GRANTED && notificationCheck === PermissionsAndroid.RESULTS.GRANTED) {
-                fetchData();
-            } else {
-                const permReq = await PermissionsAndroid.request(
-                    PermissionsAndroid.PERMISSIONS.READ_SMS
-                );
-                const permReq2 = await PermissionsAndroid.request(
-                    PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
-                );
-
-                if (permReq === PermissionsAndroid.RESULTS.GRANTED && permReq2 === PermissionsAndroid.RESULTS.GRANTED) {
-                // if (permReq === PermissionsAndroid.RESULTS.GRANTED) {
-                    fetchData();
-                } else {
-                    ToastAndroid.show('SMS Permission denied', ToastAndroid.SHORT);
-                    ToastAndroid.show('Notification Permission denied', ToastAndroid.SHORT);
-                    setTimeout(() => {
-                        Linking.openSettings();
-                    }, 2000);
-
-                }
-            }
-        } catch (err) {
-            // console.log(err.message);
-        }
+const checkAndRequestPermission = async (permission) => {
+    const isGranted = await PermissionsAndroid.check(permission);
+    if (!isGranted) {
+        const result = await PermissionsAndroid.request(permission);
+        return result === PermissionsAndroid.RESULTS.GRANTED;
     }
+    return true;
+};
+
+const fetchDataIfPermissionsGranted = async () => {
+    try {
+        const isNotificationPermissionAvailable = Platform.Version >= 33;
+        const permissions = [
+            PermissionsAndroid.PERMISSIONS.READ_SMS,
+            ...(isNotificationPermissionAvailable ? [PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS] : [])
+        ];
+
+        const permissionsGranted = await Promise.all(permissions.map(checkAndRequestPermission));
+
+        if (permissionsGranted.every(Boolean)) {
+            fetchData();
+        } else {
+            ToastAndroid.show('Required permissions denied', ToastAndroid.SHORT);
+            setTimeout(() => {
+                Linking.openSettings();
+            }, 2000);
+        }
+    } catch (err) {
+        console.error(err.message);
+    }
+};
 
     useEffect(() => {
         setLoading(true);
-        requestReadSmsPermission();
+        fetchDataIfPermissionsGranted();
     }, []);
 
     const data = [
