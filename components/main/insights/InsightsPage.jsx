@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, StatusBar, ScrollView, TouchableOpacity, RefreshControl, Image } from 'react-native'
+import { View, Text, SafeAreaView, StatusBar, ScrollView, TouchableOpacity, RefreshControl, Image, ToastAndroid } from 'react-native'
 import styles from './insightspage.style';
 import { chartColors } from '../../../constants/fakeData';
 import TransactionCard from '../common/cards/transaction/TransactionCard';
@@ -137,7 +137,7 @@ const InsightsPage = (props) => {
                 setBankData([...response.data]);
             }
             catch (error) {
-                console.log(error);
+                ToastAndroid.show('Failed to fetch data!!', 4);
             }
             finally {
                 setLoading(false);
@@ -283,6 +283,10 @@ const InsightsPage = (props) => {
         setMonthlyIncome(incomes);
         setRefreshing(false);
         setLoading(false);
+        if (maxYExp===0 && maxYInc===0) setLineGraphSelected(-1);
+        else if (maxYInc===0) setLineGraphSelected(2);
+        else if (maxYExp===0) setLineGraphSelected(1);
+        else setLineGraphSelected(0);
 
         setTimeout(() => {
             setGraphsLoading(false);
@@ -470,7 +474,7 @@ const InsightsPage = (props) => {
                             </View>
                         )}
 
-                        {(loading || monthlyIncome.length===0 || monthlyExpense.length===0 || maxYBothValue===0) ? (
+                        {loading ? (
                             <View style={{ alignSelf: 'stretch' }}>
                                 <SkeletonPlaceholder direction='right'>
                                     <SkeletonPlaceholder.Item gap={15}>
@@ -566,91 +570,103 @@ const InsightsPage = (props) => {
                                         This is where you {isExpenseSelected? "spent" : "earned"}
                                     </Text>
                                     {isExpenseSelected? 
-                                        spendsData.map((item, index) => (
-                                            <TransactionCard 
-                                                key={index} 
-                                                name={item.name}
-                                                image={item.image}
-                                                url={true}
-                                                description={`${Math.round((item.amount/totalSpends).toFixed(2) * 100)}% of total spends`}
-                                                amount={item.amount}
-                                                isExpense={true}
-                                                acc={item.acc}
-                                                navigateTo={() => { props.navigation.navigate('TransactionByInsights', { alltransactions: spendTransactions, name: item.name }) }} 
-                                            />
-                                        )) : 
-                                        incomeData.map((item, index) => (
-                                            <TransactionCard 
-                                                key={index} 
-                                                name={item.name}
-                                                image={item.image}
-                                                url={true}
-                                                description={`${Math.round((item.amount/totalIncome).toFixed(2) * 100)}% of total income`}
-                                                amount={item.amount}
-                                                isExpense={false}
-                                                acc={item.acc}
-                                                navigateTo={() => { props.navigation.navigate('TransactionByInsights', { alltransactions: incomeTransactions, name: item.name }) }}
-                                            />
-                                        ))
+                                        spendsData.length > 0? 
+                                            spendsData.map((item, index) => (
+                                                <TransactionCard 
+                                                    key={index} 
+                                                    name={item.name}
+                                                    image={item.image}
+                                                    url={true}
+                                                    description={`${Math.round((item.amount/totalSpends).toFixed(2) * 100)}% of total spends`}
+                                                    amount={item.amount}
+                                                    isExpense={true}
+                                                    acc={item.acc}
+                                                    navigateTo={() => { props.navigation.navigate('TransactionByInsights', { alltransactions: spendTransactions, name: item.name }) }} 
+                                                />
+                                            )) : (
+                                                <Text style={[styles.pieContainerHeading, { color: COLORS.gray1 }]}>
+                                                    No expense found
+                                                </Text>
+                                        ) : 
+                                        incomeData.length > 0? 
+                                            incomeData.map((item, index) => (
+                                                <TransactionCard 
+                                                    key={index} 
+                                                    name={item.name}
+                                                    image={item.image}
+                                                    url={true}
+                                                    description={`${Math.round((item.amount/totalIncome).toFixed(2) * 100)}% of total income`}
+                                                    amount={item.amount}
+                                                    isExpense={false}
+                                                    acc={item.acc}
+                                                    navigateTo={() => { props.navigation.navigate('TransactionByInsights', { alltransactions: incomeTransactions, name: item.name }) }}
+                                                />
+                                            )) : (
+                                                <Text style={[styles.pieContainerHeading, { color: COLORS.gray1 }]}>
+                                                    No income found
+                                                </Text>
+                                            )
                                     }
                                 </View>
 
-                                <View style={styles.pieAnalysisContainer}>
-                                    <Text style={styles.pieContainerHeading}>
-                                        {isExpenseSelected? "Expense" : "Income"} split across categories
-                                    </Text>
-                                    <View style={styles.pieChartContainer}>
-                                        <PieChart
-                                            data={isExpenseSelected? expenseSplitData : incomeSplitData}
-                                            donut
-                                            showGradient
-                                            sectionAutoFocus
-                                            focusOnPress
-                                            radius={90}
-                                            toggleFocusOnPress
-                                            innerRadius={60}
-                                            innerCircleColor={COLORS.darkblue1}
-                                            centerLabelComponent={() => {
-                                                const item = isExpenseSelected? maxExpense : maxIncome;
-                                                return (
-                                                <View style={styles.pieCenterContainer}>
-                                                    <Text
-                                                    style={styles.pieCenterText1}>
-                                                        {Math.round((item.value/(isExpenseSelected? totalSpends : totalIncome)).toFixed(2) * 100)}%
-                                                    </Text>
-                                                    <Text style={styles.pieCenterText2}>
-                                                        {item.category}
-                                                    </Text>
-                                                    <Text style={styles.pieCenterText3}>
-                                                        (max portion)
-                                                    </Text>
-                                                </View>
-                                                );
-                                            }}
-                                        />
+                                {((isExpenseSelected && expenseSplitData.length > 0) || (!isExpenseSelected && incomeSplitData.length > 0)) && (
+                                    <View style={styles.pieAnalysisContainer}>
+                                        <Text style={styles.pieContainerHeading}>
+                                            {isExpenseSelected? "Expense" : "Income"} split across categories
+                                        </Text>
+                                        <View style={styles.pieChartContainer}>
+                                            <PieChart
+                                                data={isExpenseSelected? expenseSplitData : incomeSplitData}
+                                                donut
+                                                showGradient
+                                                sectionAutoFocus
+                                                focusOnPress
+                                                radius={90}
+                                                toggleFocusOnPress
+                                                innerRadius={60}
+                                                innerCircleColor={COLORS.darkblue1}
+                                                centerLabelComponent={() => {
+                                                    const item = isExpenseSelected? maxExpense : maxIncome;
+                                                    return (
+                                                    <View style={styles.pieCenterContainer}>
+                                                        <Text
+                                                        style={styles.pieCenterText1}>
+                                                            {Math.round((item.value/(isExpenseSelected? totalSpends : totalIncome)).toFixed(2) * 100)}%
+                                                        </Text>
+                                                        <Text style={styles.pieCenterText2}>
+                                                            {item.category}
+                                                        </Text>
+                                                        <Text style={styles.pieCenterText3}>
+                                                            (max portion)
+                                                        </Text>
+                                                    </View>
+                                                    );
+                                                }}
+                                            />
+                                        </View>
+                                        <View style={styles.pieLegendsContainer}>
+                                            {
+                                                isExpenseSelected? 
+                                                expenseSplitData.map((item, index) => (
+                                                    <View key={index} style={styles.pieLegend} >
+                                                        <View style={styles.pieLegendDot(item.color)} />
+                                                        <Text style={styles.pieLegendText}>
+                                                            {item.name}: {Math.round((item.value/totalSpends).toFixed(2) * 100)}%
+                                                        </Text>
+                                                    </View>
+                                                )) : 
+                                                incomeSplitData.map((item, index) => (
+                                                    <View key={index} style={styles.pieLegend} >
+                                                        <View style={styles.pieLegendDot(item.color)} />
+                                                        <Text style={styles.pieLegendText}>
+                                                            {item.name}: {Math.round((item.value/totalIncome).toFixed(2) * 100)}%
+                                                        </Text>
+                                                    </View>
+                                                ))
+                                            }
+                                        </View>
                                     </View>
-                                    <View style={styles.pieLegendsContainer}>
-                                        {
-                                            isExpenseSelected? 
-                                            expenseSplitData.map((item, index) => (
-                                                <View key={index} style={styles.pieLegend} >
-                                                    <View style={styles.pieLegendDot(item.color)} />
-                                                    <Text style={styles.pieLegendText}>
-                                                        {item.name}: {Math.round((item.value/totalSpends).toFixed(2) * 100)}%
-                                                    </Text>
-                                                </View>
-                                            )) : 
-                                            incomeSplitData.map((item, index) => (
-                                                <View key={index} style={styles.pieLegend} >
-                                                    <View style={styles.pieLegendDot(item.color)} />
-                                                    <Text style={styles.pieLegendText}>
-                                                        {item.name}: {Math.round((item.value/totalIncome).toFixed(2) * 100)}%
-                                                    </Text>
-                                                </View>
-                                            ))
-                                        }
-                                    </View>
-                                </View>
+                                )}
 
                                 {graphsLoading? (
                                     <View style={{ alignSelf: 'stretch' }}>
@@ -666,28 +682,41 @@ const InsightsPage = (props) => {
                                             Yearly Pattern
                                         </Text>
                                         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 15, alignItems: 'center' }}>
-                                            <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => handleChangeMonthlyGraph(0)}>
-                                                <RadioButton selected={lineGraphSelected===0} />
-                                                <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===0? COLORS.gray3 : COLORS.gray1 }]}>
-                                                    Both                                           
+                                            {maxYExpenseValue===0 && maxYIncomeValue===0? (
+                                                <Text style={[styles.pieContainerHeading, { color: COLORS.gray1 }]}>
+                                                    No Income/Expense found
                                                 </Text>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => handleChangeMonthlyGraph(1)}>
-                                                <RadioButton selected={lineGraphSelected===1} />
-                                                <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===1? COLORS.gray3 : COLORS.gray1 }]}>
-                                                    Income                                                
-                                                </Text>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => handleChangeMonthlyGraph(2)}>
-                                                <RadioButton selected={lineGraphSelected===2} />
-                                                <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===2? COLORS.gray3 : COLORS.gray1 }]}>
-                                                    Expense                                              
-                                                </Text>
-                                            </TouchableOpacity>
+                                            ) : null}
+                                            {maxYExpenseValue > 0 && maxYIncomeValue > 0? (
+                                                <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => handleChangeMonthlyGraph(0)}>
+                                                    <RadioButton selected={lineGraphSelected===0} />
+                                                    <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===0? COLORS.gray3 : COLORS.gray1 }]}>
+                                                        Both                                           
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            ) : null}
+                                            {maxYIncomeValue > 0? (
+                                                <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => handleChangeMonthlyGraph(1)}>
+                                                    <RadioButton selected={lineGraphSelected===1} />
+                                                    <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===1? COLORS.gray3 : COLORS.gray1 }]}>
+                                                        Income                                                
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            ) : null}
+                                            {maxYExpenseValue > 0? (
+                                                <TouchableOpacity style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} onPress={() => handleChangeMonthlyGraph(2)}>
+                                                    <RadioButton selected={lineGraphSelected===2} />
+                                                    <Text style={[styles.lineContainerHeading, { fontSize: SIZES.medium - 1, color: lineGraphSelected===2? COLORS.gray3 : COLORS.gray1 }]}>
+                                                        Expense                                              
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            ) : null}
                                         </View>
-                                        <Text style={[styles.lineContainerHeading, { marginTop: -10, textAlign: 'center', fontSize: SIZES.regular }]}>
-                                            F.Y. {date.getFullYear()}
-                                        </Text>
+                                        {(maxYExpenseValue > 0 || maxYIncomeValue > 0) && (
+                                            <Text style={[styles.lineContainerHeading, { marginTop: -10, textAlign: 'center', fontSize: SIZES.regular }]}>
+                                                F.Y. {date.getFullYear()}
+                                            </Text>
+                                        )}
                                         <View style={styles.lineChartContainer}>
                                             {lineGraphSelected===0? (
                                                 <LineChart
@@ -738,7 +767,6 @@ const InsightsPage = (props) => {
                                                                 style={{
                                                                 height: 120,
                                                                 paddingLeft:16,
-                                                                paddingBottom: 100
                                                             }}>
                                                                 <View style={{
                                                                     backgroundColor: COLORS.white3,
@@ -797,8 +825,47 @@ const InsightsPage = (props) => {
                                                     animateOnDataChange
                                                     animationDuration={1000}
                                                     onDataChangeAnimationDuration={300}
+                                                    pointerConfig={{
+                                                        pointerStripUptoDataPoint: true,
+                                                        pointerStripColor: COLORS.main1,
+                                                        pointerStripWidth: 2,
+                                                        strokeDashArray: [2, 5],
+                                                        pointerColor: COLORS.main1,
+                                                        radius: 4,
+                                                        pointerLabelWidth: 100,
+                                                        pointerLabelHeight: 120,
+                                                        activatePointersOnLongPress: true,
+                                                        pointerLabelComponent: items => {
+                                                            return (
+                                                            <View
+                                                                style={{
+                                                                height: 70,
+                                                                paddingLeft:16,
+                                                            }}>
+                                                                <View style={{
+                                                                    backgroundColor: COLORS.white3,
+                                                                    borderRadius: 4,
+                                                                    paddingHorizontal: 10,
+                                                                    paddingVertical: 5,
+                                                                    width: 100,
+                                                                    height: 70,
+                                                                }}>
+                                                                    <Text style={{color: COLORS.gray2, fontFamily: FONT.medium, fontSize: SIZES.regular}}>
+                                                                        {items[0].label} {date.getFullYear()}
+                                                                    </Text>
+                                                                    <Text style={{color: COLORS.gray1, fontFamily: FONT.regular, fontSize: SIZES.small}}>
+                                                                        Income
+                                                                    </Text>
+                                                                    <Text style={{color: COLORS.gray2, fontFamily: FONT.medium, fontSize: SIZES.regular}}>
+                                                                        {items[0].value} {maxYBothLabel}
+                                                                    </Text>
+                                                                </View>
+                                                            </View>
+                                                            );
+                                                        },
+                                                    }}
                                                 />
-                                            ) : (
+                                            ) : lineGraphSelected===2? (
                                                 <LineChart
                                                     data={monthlyExpense}
                                                     color1={COLORS.gray1}
@@ -826,12 +893,51 @@ const InsightsPage = (props) => {
                                                     animateOnDataChange
                                                     animationDuration={1000}
                                                     onDataChangeAnimationDuration={300}
+                                                    pointerConfig={{
+                                                        pointerStripUptoDataPoint: true,
+                                                        pointerStripColor: COLORS.main1,
+                                                        pointerStripWidth: 2,
+                                                        strokeDashArray: [2, 5],
+                                                        pointerColor: COLORS.main1,
+                                                        radius: 4,
+                                                        pointerLabelWidth: 100,
+                                                        pointerLabelHeight: 120,
+                                                        activatePointersOnLongPress: true,
+                                                        pointerLabelComponent: items => {
+                                                            return (
+                                                            <View
+                                                                style={{
+                                                                height: 70,
+                                                                paddingLeft:16,
+                                                            }}>
+                                                                <View style={{
+                                                                    backgroundColor: COLORS.white3,
+                                                                    borderRadius: 4,
+                                                                    paddingHorizontal: 10,
+                                                                    paddingVertical: 5,
+                                                                    width: 100,
+                                                                    height: 70,
+                                                                }}>
+                                                                    <Text style={{color: COLORS.gray2, fontFamily: FONT.medium, fontSize: SIZES.regular}}>
+                                                                        {items[0].label} {date.getFullYear()}
+                                                                    </Text>
+                                                                    <Text style={{color: COLORS.gray1, fontFamily: FONT.regular, fontSize: SIZES.small}}>
+                                                                        Expense
+                                                                    </Text>
+                                                                    <Text style={{color: COLORS.gray2, fontFamily: FONT.medium, fontSize: SIZES.regular}}>
+                                                                        {items[1].value} {maxYExpenseLabel}
+                                                                    </Text>
+                                                                </View>
+                                                            </View>
+                                                            );
+                                                        },
+                                                    }}
                                                 />
-                                            )}
+                                            ) : <></>}
                                         </View>
                                         <View style={{ gap: 5 }}>
                                             <View style={styles.lineLegendsContainer}>
-                                                {lineGraphSelected!==2 && (
+                                                {(lineGraphSelected!==2 && lineGraphSelected!==-1) && (
                                                     <View style={styles.lineLegend} >
                                                         <View style={styles.lineLegendDot(COLORS.main3)} />
                                                         <Text style={styles.lineLegendText}>
@@ -839,7 +945,7 @@ const InsightsPage = (props) => {
                                                         </Text>
                                                     </View>
                                                 )}
-                                                {lineGraphSelected!==1 && (
+                                                {(lineGraphSelected!==1 && lineGraphSelected!==-1) && (
                                                     <View style={styles.lineLegend} >
                                                         <View style={styles.lineLegendDot(COLORS.gray1)} />
                                                         <Text style={styles.lineLegendText}>

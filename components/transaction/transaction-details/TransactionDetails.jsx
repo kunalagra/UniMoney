@@ -508,7 +508,7 @@ const TransactionDetailsPage = (props) => {
                         <View style={styles.transactionContainer}>
                             <View style={styles.transactionDetails}>
                                 <Image
-                                    source={transaction.image}
+                                    source={transaction.url? { uri: transaction.image } : transaction.image}
                                     alt={transaction.name}
                                     style={styles.transactionImage}
                                 />

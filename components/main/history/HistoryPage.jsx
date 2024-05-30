@@ -19,7 +19,7 @@ const HistoryPage = ({ navigateTo }) => {
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(true);
 
-    const [transactionsData, setTransactionsData] = useState();
+    const [transactionsData, setTransactionsData] = useState([]);
 
     const { alltransactions } = useSelector(state => state.transactiondata);
 
@@ -314,7 +314,7 @@ const HistoryPage = ({ navigateTo }) => {
                                             <TransactionCard
                                                 key={index}
                                                 name={item.name}
-                                                image={item.image}
+                                                image={item.category.img}
                                                 description={item.timestamp}
                                                 amount={item.amount}
                                                 isExpense={item.isExpense}
@@ -322,6 +322,7 @@ const HistoryPage = ({ navigateTo }) => {
                                                 category={item.category.name}
                                                 id={item._id}
                                                 acc={item.acc}
+                                                url={true}
                                             />
                                         ))}
                                     </View>

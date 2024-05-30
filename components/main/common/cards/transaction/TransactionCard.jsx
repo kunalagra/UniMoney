@@ -7,7 +7,7 @@ const TransactionCard = ({ name, image, description, amount, isExpense, navigate
     <TouchableOpacity 
         style={styles.cardContainer}
         activeOpacity={0.6}
-        onPress={() => navigateTo('TransactionDetailsPage', {name, image, time: description, amount, category, id, isExpense, acc})}
+        onPress={() => navigateTo('TransactionDetailsPage', {name, image, time: description, amount, category, id, isExpense, acc, url})}
     >
         <View style={styles.transactionDetailsContainer}>
             <Image

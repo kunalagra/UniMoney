@@ -246,7 +246,6 @@ const HomePage = ({ navigateTo }) => {
                 transactions[i].timestamp = formatDateTime(transactions[i].date);
             }
             // set first 10 transactions to display on the homepage
-            // console.log(transactions)
             setTransactionsData(transactions.slice(0, 10));
             dispatch(setAllTransactions(transactions));
             calculateDailyIncome(transactions);
@@ -481,7 +480,8 @@ const fetchDataIfPermissionsGranted = async () => {
                                     <TransactionCard
                                         key={index}
                                         name={item.name}
-                                        image={item.image}
+                                        image={item.category.img}
+                                        url={true}
                                         description={item.timestamp}
                                         amount={item.amount}
                                         isExpense={item.isExpense}

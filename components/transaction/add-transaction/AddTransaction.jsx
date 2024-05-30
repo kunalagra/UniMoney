@@ -66,10 +66,7 @@ const AddTransactionPage = (props) => {
     //     { label: "Travel", value: "travel" },
     // ];
 
-    const [accountList, setAccountList] = useState([{
-        label: "No Account Selected",
-        value: 0
-    }]);
+    const [accountList, setAccountList] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -137,6 +134,7 @@ const AddTransactionPage = (props) => {
         }
         try {
             const response = await axios(options);
+            props.navigation.pop();
             // console.log(response);
         } catch (error) {
             console.log(error);
@@ -241,7 +239,19 @@ const AddTransactionPage = (props) => {
                             <Text style={styles.rowHeader}>
                                 { typeOfPayment === "debit" ? "Debit\n" : "Credit\n" }Account
                             </Text>
-                            <CustomDropdown data={accountList} value={account} setValue={setAccount} />
+                            {accountList.length===0? (
+                                <TouchableOpacity
+                                    style={{ backgroundColor: COLORS.gray1, paddingVertical: 10, borderRadius: 8, width: 200 }}
+                                    activeOpacity={0.85}
+                                    onPress={() => props.navigation.navigate('Banks')}
+                                >
+                                    <Text style={styles.buttonText}>
+                                        Add an account
+                                    </Text>
+                                </TouchableOpacity>
+                            ) : (
+                                <CustomDropdown data={accountList} value={account} setValue={setAccount} />
+                            )}
                         </View>
 
                         <View style={styles.rowField}>
@@ -361,16 +371,16 @@ const AddTransactionPage = (props) => {
                             onPress={() => {postTransaction()}}
                         >
                             <Text style={styles.buttonText}>
-                                Save & Add more
+                                Save
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.lowerButton}
                             activeOpacity={0.85}
-                            onPress={() => {postTransaction(); props.navigation.pop();}}
+                            onPress={() => {props.navigation.pop()}}
                         >
                             <Text style={styles.buttonText}>
-                                Save & Close
+                                Close
                             </Text>
                         </TouchableOpacity>
                     </View>
