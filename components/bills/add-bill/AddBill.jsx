@@ -137,7 +137,7 @@ const AddTransactionPage = (props) => {
         };
         try {
             const response = await axios.request(options).then((res) => {
-                console.log(date);
+                // console.log(date);
                 PushNotification.localNotificationSchedule({
                     channelId: "reminders",
                     title: name,
@@ -146,6 +146,7 @@ const AddTransactionPage = (props) => {
                     allowWhileIdle: true,
                     // repeatType: reminder === "does-not-repeat" ? '' : reminder === "monthly" ? 'month' : reminder === "bi-monthly" ? 'month' : reminder === "quarterly" ? 'month' : reminder === "every-6-months" ? 'month' : 'year',
                 });
+                props.navigation.pop();
             });
 
         } catch (error) {
@@ -299,21 +300,21 @@ const AddTransactionPage = (props) => {
                         <TouchableOpacity
                             style={styles.upperButton}
                             activeOpacity={0.85}
-                            onPress={() => { setReminderValue() }}
+                            onPress={() => setReminderValue()}
                             disabled={name==='' || amount===''}
                         >
                             <Text style={styles.buttonText}>
-                                Save & Add more
+                                Save
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.lowerButton}
                             activeOpacity={0.85}
-                            onPress={() => { props.navigation.pop(), setReminderValue() }}
+                            onPress={() => props.navigation.pop()}
                             disabled={name==='' || amount===''}
                         >
                             <Text style={styles.buttonText}>
-                                Save & Close
+                                Close
                             </Text>
                         </TouchableOpacity>
                     </View>
