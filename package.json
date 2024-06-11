@@ -28,7 +28,7 @@
     "react-native": "^0.74.2",
     "react-native-calendars": "^1.1305.0",
     "react-native-date-picker": "^4.4.2",
-    "react-native-document-picker": "^9.1.0",
+    "react-native-document-picker": "^9.3.0",
     "react-native-dotenv": "^3.4.11",
     "react-native-element-dropdown": "^2.10.1",
     "react-native-file-viewer": "^2.1.5",
