@@ -120,7 +120,7 @@ const GamePage = (props) => {
             rolls: 0,
             trophies: 0,
             month: 'June',
-            loggedInDays: [1,0,1,1,1,1,1,1,2,1,1,3,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+            loggedInDays: [1,0,1,1,1,1,1,1,2,1,1,5,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
           }
         }
       }
@@ -241,11 +241,11 @@ const GamePage = (props) => {
   }
 
   const toRulesSection = () => {
-    scrollViewRef.current?.scrollTo({ x: 860, animated: true });
+    scrollViewRef.current?.scrollTo({ x: 930, animated: true });
   }
 
   const toLeaderboardSection = () => {
-    scrollViewRef.current?.scrollTo({ x: 500, animated: true });
+    scrollViewRef.current?.scrollTo({ x: 550, animated: true });
   }
 
   return (
@@ -434,7 +434,7 @@ const GamePage = (props) => {
                               tile >= 3? (
                                 <View style={styles.tileInnerImgContainer}>
                                   <Image 
-                                    source={images.dice6}
+                                    source={images[`dice${Math.max(1,Math.min(6, tile-3))}`]}
                                     style={[styles.tileInnerImg, { tintColor: COLORS.main3 }]}
                                   />
                                 </View>  
