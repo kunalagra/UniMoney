@@ -8,14 +8,18 @@ import { REACT_APP_BACKEND_URL } from "@env";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
+import MonthPicker from "react-native-month-year-picker";
 
 const GamePage = (props) => {
 
   const { ArrowleftIcon } = icons;
+  const date = new Date();
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+  const [curDate, setCurDate] = useState(date);
   const [refreshing, setRefreshing] = useState(false);
   const [diceModalVisible, setDiceModalVisible] = useState(false);
-  const [curProgress, setCurProgress] = useState(1);
+  const [curProgress, setCurProgress] = useState(0);
   const [curDiceNo, setCurDiceNo] = useState(1);
   const [done, setDone] = useState(0);
   const scrollViewRef = useRef(null);
@@ -25,6 +29,30 @@ const GamePage = (props) => {
   const [leaderboard, setLeaderboard] = useState([]);
   const [MyRank, setMyRank] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [tiles, setTiles] = useState([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+  const [curMonthCoins, setCurMonthCoins] = useState(0);
+  const [curMonthTrophies, setCurMonthTrophies] = useState(0);
+  const [isMonthModalOpen, setIsMonthModalOpen] = useState(false);
+
+  const noOfDaysInMonth = new Date(curDate.getMonth()+1, curDate.getFullYear(), 0).getDate();
+  const starTimePeriod = Math.ceil(noOfDaysInMonth/3);
+
+
+  const onValueChange = (event, newDate) => {
+    setIsMonthModalOpen(false);
+    const selectedDate = newDate || new Date(curDate);
+    setDate(selectedDate);
+  };
+
+  const prevMonth = () => {
+    if (curDate.getMonth()!==0) setDate(new Date(curDate.getFullYear(), date.curDate()-1));
+    else setDate(new Date(curDate.getFullYear()-1, 11));
+  }
+
+  const nextMonth = () => {
+    if (curDate.getMonth()!==11) setDate(new Date(curDate.getFullYear(), curDate.getMonth()+1));
+    else setDate(new Date(curDate.getFullYear()+1, 0));
+  }
 
   const onRefresh = useCallback(() => {
       setRefreshing(true);
@@ -45,10 +73,12 @@ const GamePage = (props) => {
       const response = await axios(options);
       setLeaderboard(response.data.top5);
       setMyRank(response.data.currentRank);
-      setLoading(false);
     }
     catch (error) {
       console.log(error);
+    } 
+    finally {
+      setLoading(false);
     }
   }
 
@@ -62,13 +92,64 @@ const GamePage = (props) => {
       }
   }
   try {
-      const response = await axios(options);
+      // const response = await axios(options);
       // console.log(response.data);
+      // console.log(response.data);
+      // setStreak(response.data.streak.consecutiveLoginDays);
+      // setCoins(response.data.streak.totalPoints);
+      // setTrophies(response.data.streak.trophies);
+      // setCurProgress(response.data.streak.totalPoints%50);
+      // setDone(response.data.streak.rolls);
+
+      /* 
+        for input:
+
+        Store the previous 10 months only for optimisation if needed.
+        month - curDate.getMonth()
+        year - curDate.getFullYear()
+      
+      */
+
+      const response = {
+        data: {
+          streak: {
+            _id: "663f3dd85b8ed59a52f1d400",
+            name: "Kunal",
+            totalPoints: 24,
+            consecutiveLoginDays: 13,
+            rolls: 0,
+            trophies: 0,
+            month: 'June',
+            loggedInDays: [1,0,1,1,1,1,1,1,2,1,1,3,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          }
+        }
+      }
+
+      const blocks = [...response.data.streak.loggedInDays];
+      let lastOne = 0, curCoins = 0, curTrophies = 0;
+      for (let i=0; i < noOfDaysInMonth-1; i++) {
+        if (blocks[i] >= 1) {
+          lastOne = i+1; curCoins++;
+          if (blocks[i]===2) curTrophies++;
+          if (blocks[i] >= 3) curCoins += blocks[i] - 3;
+        }
+      }
+
+      setCurMonthCoins(curCoins);
+      setCurMonthTrophies(curTrophies);
+      setCurProgress(lastOne);
+      setTiles(blocks);
       setStreak(response.data.streak.consecutiveLoginDays);
       setCoins(response.data.streak.totalPoints);
       setTrophies(response.data.streak.trophies);
-      setCurProgress(response.data.streak.totalPoints%50);
       setDone(response.data.streak.rolls);
+
+      if (response.data.streak.consecutiveLoginDays!==0 && response.data.streak.consecutiveLoginDays % 7 === 0) {
+        ToastAndroid.show('Yayy!! You earned a trophy for maintaining a 7-day streak!', 4);
+      }
+      if (response.data.streak.consecutiveLoginDays!==0 && response.data.streak.consecutiveLoginDays % 10 === 0) {
+        ToastAndroid.show(`It's 10-day streak already, Roll the dice!!`, 4);
+      }
       fetchLeaderboard();
   }
   catch (error) {
@@ -81,29 +162,21 @@ const GamePage = (props) => {
   fetchStreak();
   }, []);
 
-
-
-
   const getRandomDiceNo = () => {
     const num = Math.floor(Math.random() * 6 + 1);
     setCurDiceNo(num);
     return num;
   }
 
-  const tiles = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49];
-  // const leaders = [
-  //   { trophies: 71, username: 'John Doe' },
-  //   { trophies: 63, username: 'Harry Potter' },
-  //   { trophies: 59, username: 'John Snow' },
-  //   { trophies: 52, username: 'Super Mario' },
-  //   { trophies: 50, username: 'Uncle Roger' },
-  // ];
   const rules = [
-    `The game board consists of 49 tiles arranged linearly, with each tile representing a step towards a milestone or progress towards achieving the goal.`,
-    `Users' progress is incremented by 1 for each day they check in the app, and after maintaining a streak of 10 days, they receive additional movements based on a dice roll (1-5 extra movements).`,
-    `The game can be started at any time, and each month follows the same process, with progress resetting at the end of each month, allowing users to start a new.`,
-    `Achievements, such as maintaining a streak of 10 days or crossing a certain number of tiles, can be displayed on a leaderboard, fostering a competitive atmosphere and potentially earning users exclusive content or other prizes.`
-  ];
+    `The game board consists of tiles, arranged linearly, according to the number of days in the current month, with each tile representing a day towards a milestone or progress towards achieving the goal.`,
+    `Users' progress is incremented by 1, and they receive one unicoin for each day they check in the app.`,
+    `After maintaining a streak of 7 days, they receive a trophy as a reward.`,
+    `After maintaining a streak of 10 days, they receive additional coins (unicoins) based on a dice roll between 1 and 6.`,
+    `The game can be started at any time, and each month follows the same process, with progress resetting at the end of each month, allowing users to start anew.`,
+    `Achievements, such as maintaining a streak of 10 days or the current streak, can be displayed on a leaderboard, fostering a competitive atmosphere.`,
+    `We will be adding some exclusive rewards at a cost of unicoins soon.`,
+] ;
 
   const StatView = ({ image, stat, title, size=16 }) => {
     return (
@@ -168,16 +241,26 @@ const GamePage = (props) => {
   }
 
   const toRulesSection = () => {
-    scrollViewRef.current?.scrollTo({ x: 980, animated: true });
+    scrollViewRef.current?.scrollTo({ x: 860, animated: true });
   }
 
   const toLeaderboardSection = () => {
-    scrollViewRef.current?.scrollTo({ x: 600, animated: true });
+    scrollViewRef.current?.scrollTo({ x: 500, animated: true });
   }
 
   return (
     <SafeAreaView style={{backgroundColor: COLORS.white2}}>
       <StatusBar barStyle={'dark-content'} backgroundColor={COLORS.white2} />
+
+      {isMonthModalOpen && (
+          <MonthPicker
+              onChange={onValueChange}
+              value={curDate}
+              minimumDate={new Date(2014, 1)}
+              maximumDate={new Date(date.getFullYear(), date.getMonth())}
+              locale="en"
+          />
+      )}
 
       <View style={styles.sectionContainer}>
         <View style={styles.mainContainer}>
@@ -204,10 +287,11 @@ const GamePage = (props) => {
                         <SkeletonPlaceholder.Item width={40} height={40} borderRadius={100} />
                       </View>
                     </View>
+                    <SkeletonPlaceholder.Item alignSelf='stretch' height={40} borderRadius={12} />
                     <View style={{ alignItems: 'center' }}>
                       <SkeletonPlaceholder.Item alignSelf='stretch' height={80} borderRadius={12} />
                     </View>
-                    <SkeletonPlaceholder.Item alignSelf='stretch' height={300} borderRadius={12} />
+                    <SkeletonPlaceholder.Item alignSelf='stretch' height={200} borderRadius={12} />
                     <View style={{ marginTop: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                         <SkeletonPlaceholder.Item width={200} height={40} borderRadius={12} />
                         <SkeletonPlaceholder.Item width={70} height={40} borderRadius={8} />
@@ -264,6 +348,35 @@ const GamePage = (props) => {
                   </View>
                 </View>
 
+                <View style={styles.datesContainer}>
+                  <TouchableOpacity onPress={prevMonth}>
+                      <Text style={styles.arrowText}>
+                          {'<'}
+                      </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                  >
+                      <Text style={styles.dateHeading}>
+                          {months[curDate.getMonth()]} {curDate.getFullYear()}
+                      </Text>
+                  </TouchableOpacity>
+                  <View style={styles.headingIconsContainer}>
+                      <TouchableOpacity onPress={nextMonth} disabled={curDate.getMonth()===date.getMonth() && curDate.getFullYear()===date.getFullYear()}>
+                          <Text style={styles.arrowText}>
+                              {'>'}
+                          </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                          onPress={() => setIsMonthModalOpen(true)}
+                      >
+                          <Image
+                              source={images.calendar} 
+                              style={styles.calendarIcon}
+                          />
+                      </TouchableOpacity>
+                  </View>
+                </View>
+
                 <View style={{}}>
                   <TouchableOpacity 
                       style={styles.starProgressContainer}
@@ -278,14 +391,14 @@ const GamePage = (props) => {
                             <View style={{ gap: 10, alignItems: 'flex-end', flexDirection: 'row' }}>
                               <View style={styles.horizontalLine} />
                               <View style={styles.starsContainer}>
-                                <Star size={24} progress={curProgress/16} />
-                                <Star size={32} progress={curProgress > 16? (curProgress-16)/17 : 0} />
-                                <Star size={24} progress={curProgress > 33? (curProgress-33)/16 : 0} />
+                                <Star size={24} progress={curProgress / starTimePeriod} />
+                                <Star size={32} progress={curProgress > starTimePeriod? (curProgress - starTimePeriod)/starTimePeriod : 0} />
+                                <Star size={24} progress={curProgress > (2*starTimePeriod)? (curProgress - 2*starTimePeriod)/starTimePeriod : 0} />
                               </View>
                               <View style={styles.horizontalLine} />
                             </View>
                             <Text style={{fontFamily: FONT.regular, fontSize: SIZES.small, color: COLORS.lightblue1}}>
-                              {`(10 coins, 2 trophies) collected in this month`}
+                              {`(${curMonthCoins} coins, ${curMonthTrophies} trophies) collected in this month`}
                             </Text>
                           </View>
                       </LinearGradient>
@@ -297,10 +410,10 @@ const GamePage = (props) => {
                   start={{x: 0, y: 0}} end={{x: 1, y: 0}}
                   style={styles.tilesGradientContainer}>
                   <View style={styles.tilesContainer}>
-                    {tiles.map((tile) => (
-                      <TouchableOpacity key={tile} 
-                        style={{ position: 'relative', width: 35, height: 35, backgroundColor: curProgress >= tile? COLORS.white1 : COLORS.white3, borderRadius: 5, opacity: curProgress >= tile? 0.7 : 0.5 }}>
-                          {curProgress===tile && (
+                    {tiles.map((tile, index) => (
+                      <TouchableOpacity key={index} 
+                        style={{ position: 'relative', width: 35, height: 35, backgroundColor: tile >= 1? COLORS.white1 : COLORS.white3, borderRadius: 5, opacity: tile >= 1? 0.7 : 0.5 }}>
+                          {(curProgress-1)===index && (
                             <View style={styles.tileInnerImgContainer}>
                               <Image 
                                 source={images.boy_gamer}
@@ -308,13 +421,33 @@ const GamePage = (props) => {
                               />
                             </View>
                           )}
-                          {curProgress > tile && (
-                            <View style={styles.tileInnerImgContainer}>
-                              <Image 
-                                source={images.tick}
-                                style={styles.tileInnerImg}
-                              />
-                            </View>
+                          {(curProgress-1) > index && (
+                            tile >= 1?
+                            tile===2? (
+                              <View style={styles.tileInnerImgContainer}>
+                                <Image 
+                                  source={images.trophy}
+                                  style={styles.tileInnerImg}
+                                />
+                              </View>  
+                              ) : 
+                              tile >= 3? (
+                                <View style={styles.tileInnerImgContainer}>
+                                  <Image 
+                                    source={images.dice6}
+                                    style={[styles.tileInnerImg, { tintColor: COLORS.main3 }]}
+                                  />
+                                </View>  
+                              ) : (
+                                <View style={styles.tileInnerImgContainer}>
+                                  <Image 
+                                    source={images.tick}
+                                    style={styles.tileInnerImg}
+                                  />
+                                </View> 
+                            ) : (
+                              <></>
+                            )
                           )}
                       </TouchableOpacity>
                     ))}
@@ -382,14 +515,12 @@ const GamePage = (props) => {
         </View>
 
 
-        { !diceModalVisible && !loading && 
+        { !diceModalVisible && !loading && !(curProgress===noOfDaysInMonth) &&
           <View style={{ position: 'absolute', bottom: 120, alignSelf: 'center' }}>
             <TouchableOpacity style={{ width: 80, height: 80, borderRadius: 100, backgroundColor: COLORS.main2, justifyContent: 'center', alignItems: 'center' }}
               onPress={() => {
                 if (!done) {
-                  ToastAndroid.show('You need to maintain a streak of 10 days to roll the dice!!', 4);
-                } else if (curProgress===49) {
-                  ToastAndroid.show('You already crossed all the tiles!!', 4);
+                  ToastAndroid.show(`Maintain a streak of ${10 - (streak%10)} days more to roll the dice!!`, 4);
                 } else {
                   setDiceModalVisible(true); getRandomDiceNo();
                 }

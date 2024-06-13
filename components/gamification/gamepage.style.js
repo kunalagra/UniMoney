@@ -126,6 +126,37 @@ const styles = StyleSheet.create({
         color: COLORS.gray3
     },
 
+    datesContainer: {
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        alignItems: 'center'
+    },
+
+    arrowText: {
+        color: COLORS.gray3, 
+        fontFamily: FONT.medium, 
+        fontSize: SIZES.large
+    },
+
+    dateHeading: {
+        color: COLORS.gray3, 
+        fontFamily: FONT.medium, 
+        fontSize: SIZES.medium
+    },
+
+    headingIconsContainer: {
+        flexDirection: 'row', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        gap: 20
+    },
+
+    calendarIcon: {
+        width: 24, 
+        height: 24,
+        tintColor: COLORS.main3
+    },
+
     starProgressContainer: {
         borderRadius: 10, 
         elevation: 10, 
@@ -163,13 +194,13 @@ const styles = StyleSheet.create({
         position: 'absolute', 
         top: 0, 
         left: 0, 
-        // width: '100%',
+        width: '100%',
     },
 
     frontStarProgressContainer: (progress) => ({
         width: 0, 
         overflow: 'hidden', 
-        paddingRight: `${progress * 100}%`
+        paddingRight: `${Math.min(100, progress * 100)}%`
     }),
 
     frontStarImg: (size) => ({
@@ -189,12 +220,11 @@ const styles = StyleSheet.create({
 
     tilesContainer: {
         width: 305, 
-        height: 305, 
         flexDirection: 'row', 
         gap: 10, 
         flexWrap: 'wrap', 
         alignItems: 'center', 
-        justifyContent: 'center'
+        justifyContent: 'flex-start'
     },
 
     tileInnerImgContainer: {
