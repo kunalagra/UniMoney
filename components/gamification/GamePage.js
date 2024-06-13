@@ -41,17 +41,17 @@ const GamePage = (props) => {
   const onValueChange = (event, newDate) => {
     setIsMonthModalOpen(false);
     const selectedDate = newDate || new Date(curDate);
-    setDate(selectedDate);
+    setCurDate(selectedDate);
   };
 
   const prevMonth = () => {
-    if (curDate.getMonth()!==0) setDate(new Date(curDate.getFullYear(), date.curDate()-1));
-    else setDate(new Date(curDate.getFullYear()-1, 11));
+    if (curDate.getMonth()!==0) setCurDate(new Date(curDate.getFullYear(), curDate.getMonth()-1));
+    else setCurDate(new Date(curDate.getFullYear()-1, 11));
   }
 
   const nextMonth = () => {
-    if (curDate.getMonth()!==11) setDate(new Date(curDate.getFullYear(), curDate.getMonth()+1));
-    else setDate(new Date(curDate.getFullYear()+1, 0));
+    if (curDate.getMonth()!==11) setCurDate(new Date(curDate.getFullYear(), curDate.getMonth()+1));
+    else setCurDate(new Date(curDate.getFullYear()+1, 0));
   }
 
   const onRefresh = useCallback(() => {
