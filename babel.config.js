@@ -7,6 +7,5 @@ module.exports = {
       "blacklist": null,
       "whitelist": null,
     }],
-    ['@babel/plugin-transform-private-methods', { "loose": true }],
   ]
 };

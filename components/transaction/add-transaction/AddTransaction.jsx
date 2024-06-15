@@ -9,6 +9,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from 'axios';
 import { REACT_APP_BACKEND_URL } from "@env";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
+import { setAllTransactions } from '../../../store/transactiondata'
+import { useSelector, useDispatch } from 'react-redux';
+import { formatDateTime } from "../../../utils";
 
 const CustomDropdown = ({data, value, setValue}) => {
     return (
@@ -32,6 +35,8 @@ const CustomDropdown = ({data, value, setValue}) => {
 
 const AddTransactionPage = (props) => {
 
+    const dispatch = useDispatch();
+
     const { ArrowleftIcon } = icons;
     const { params } = props.route;
     const categoryName = params ? params.categoryName : null;
@@ -39,6 +44,7 @@ const AddTransactionPage = (props) => {
         { label: "Expense", value: "debit" },
         { label: "Income", value: "credit" },
     ];
+    const { alltransactions } = useSelector(state => state.transactiondata);
 
     // const accountList = [
     //     { label: "PAYTM Bank", value: "paytm-bank" },
@@ -91,6 +97,17 @@ const AddTransactionPage = (props) => {
                     }
                 }));
             }
+            // add cash account to the list
+            setAccountList((prev) => {
+                return [
+                    ...prev,
+                    {
+                        label: "Cash",
+                        value: 0
+                    }
+                ]
+            });
+
                 setCategoryList(response.data.category.map((item) => {
                     if (item.details)
                     return {
@@ -113,13 +130,12 @@ const AddTransactionPage = (props) => {
         }
         const options = {
             method: 'POST',
-            url: `${REACT_APP_BACKEND_URL}/transaction/`,
+            url: `${REACT_APP_BACKEND_URL}/transaction/add`,
             headers: {
                 "Content-type": "application/json",
                 "Authorization": "Bearer " + await AsyncStorage.getItem('token')
             },
             data: {
-                List : [{
                     type: typeOfPayment,
                     amount: amount,
                     category: {
@@ -128,12 +144,23 @@ const AddTransactionPage = (props) => {
                     date: date.getTime(),
                     acc: account,
                     name: receiverID,
-                    txid: 0
-                }]
+                    txid: 0,
+                    comment: desc
             }
         }
         try {
             const response = await axios(options);
+
+            // update the transaction list in the redux store with the new transaction
+            const newTransaction = response.data;
+            newTransaction.timestamp = formatDateTime(newTransaction.date);
+            newTransaction.isExpense = newTransaction.type === 'debit' ? true : false;
+
+            // add the new transaction to the list of all transactions in the redux store and sort it by date
+            const newTransactionList = [...alltransactions, newTransaction].sort((a, b) => b.date - a.date);
+
+            dispatch(setAllTransactions(newTransactionList));
+            
             props.navigation.pop();
             // console.log(response);
         } catch (error) {
