@@ -35,6 +35,19 @@ const UpdateBill = (props) => {
 
     const { reminderData } = props.route.params;
 
+    PushNotification.createChannel({
+        channelId: "reminders",
+        channelName: "Reminders",
+        channelDescription: "Reminders for bills and other payments",
+        playSound: true,
+        soundName: "default",
+        importance: 4,
+        vibrate: true,
+
+
+    },
+);
+
     PushNotification.configure({
         onNotification: function (notification) {
             console.log("NOTIFICATION:", notification);

@@ -6,6 +6,7 @@ module.exports = {
       "path": ".env",
       "blacklist": null,
       "whitelist": null,
-    }]
+    }],
+    ['@babel/plugin-transform-private-methods', { "loose": true }],
   ]
 };

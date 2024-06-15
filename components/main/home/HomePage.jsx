@@ -258,6 +258,11 @@ const HomePage = ({ navigateTo }) => {
         }
     }
 
+    useEffect(() => {
+        setTransactionsData(alltransactions.slice(0, 10));
+    }, [alltransactions]);
+
+
     const fetchData = async () => {
         // console.log(await AsyncStorage.getItem('token'));
         const options = {
@@ -386,9 +391,9 @@ const fetchDataIfPermissionsGranted = async () => {
 
                 {loading? (
                     <ScrollView
-                    refreshControl={
-                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[COLORS.main3]} />
-                    }
+                    // refreshControl={
+                    //     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[COLORS.main3]} />
+                    // }
                     style={{ height: '100%'}}
                 >
 
