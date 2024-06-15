@@ -34,9 +34,8 @@ const GamePage = (props) => {
   const [curMonthTrophies, setCurMonthTrophies] = useState(0);
   const [isMonthModalOpen, setIsMonthModalOpen] = useState(false);
 
-  const noOfDaysInMonth = new Date(curDate.getMonth()+1, curDate.getFullYear(), 0).getDate();
-  const starTimePeriod = Math.ceil(noOfDaysInMonth/3);
-
+  const noOfDaysInMonth = new Date(curDate.getFullYear(), curDate.getMonth()+1, 0).getDate();
+  const starTimePeriod = Math.ceil((noOfDaysInMonth + Math.floor(noOfDaysInMonth/7) + Math.floor(noOfDaysInMonth/10))/3);
 
   const onValueChange = (event, newDate) => {
     setIsMonthModalOpen(false);
@@ -92,46 +91,24 @@ const GamePage = (props) => {
       }
   }
   try {
-      // const response = await axios(options);
-      // console.log(response.data);
-      // console.log(response.data);
-      // setStreak(response.data.streak.consecutiveLoginDays);
-      // setCoins(response.data.streak.totalPoints);
-      // setTrophies(response.data.streak.trophies);
-      // setCurProgress(response.data.streak.totalPoints%50);
-      // setDone(response.data.streak.rolls);
+      const response = await axios(options);
+      const loggedInData = response.data.streak.data;
+      let blocks = [];
+      let lastOne = 0, curCoins = 0, curTrophies = 0;
+      const monthKey = `${months[curDate.getMonth()]}'${curDate.getFullYear().toString().slice(2)}`;
 
-      /* 
-        for input:
-
-        Store the previous 10 months only for optimisation if needed.
-        month - curDate.getMonth()
-        year - curDate.getFullYear()
-      
-      */
-
-      const response = {
-        data: {
-          streak: {
-            _id: "663f3dd85b8ed59a52f1d400",
-            name: "Kunal",
-            totalPoints: 24,
-            consecutiveLoginDays: 13,
-            rolls: 0,
-            trophies: 0,
-            month: 'June',
-            loggedInDays: [1,0,1,1,1,1,1,1,2,1,1,5,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      if (loggedInData[monthKey]) {
+        blocks = [...loggedInData[monthKey].days];
+        for (let i=0; i < noOfDaysInMonth-1; i++) {
+          if (blocks[i] >= 1) {
+            lastOne = i; curCoins++;
+            if (blocks[i]===2) curTrophies++;
+            if (blocks[i] >= 3) curCoins += blocks[i] - 3;
           }
         }
-      }
-
-      const blocks = [...response.data.streak.loggedInDays];
-      let lastOne = 0, curCoins = 0, curTrophies = 0;
-      for (let i=0; i < noOfDaysInMonth-1; i++) {
-        if (blocks[i] >= 1) {
-          lastOne = i+1; curCoins++;
-          if (blocks[i]===2) curTrophies++;
-          if (blocks[i] >= 3) curCoins += blocks[i] - 3;
+      } else {
+        for (let i=0; i < noOfDaysInMonth-1; i++) {
+          blocks.push(0);
         }
       }
 
@@ -160,7 +137,7 @@ const GamePage = (props) => {
   useEffect(() => {
     setLoading(true);
   fetchStreak();
-  }, []);
+  }, [curDate]);
 
   const getRandomDiceNo = () => {
     const num = Math.floor(Math.random() * 6 + 1);
@@ -391,9 +368,9 @@ const GamePage = (props) => {
                             <View style={{ gap: 10, alignItems: 'flex-end', flexDirection: 'row' }}>
                               <View style={styles.horizontalLine} />
                               <View style={styles.starsContainer}>
-                                <Star size={24} progress={curProgress / starTimePeriod} />
-                                <Star size={32} progress={curProgress > starTimePeriod? (curProgress - starTimePeriod)/starTimePeriod : 0} />
-                                <Star size={24} progress={curProgress > (2*starTimePeriod)? (curProgress - 2*starTimePeriod)/starTimePeriod : 0} />
+                                <Star size={24} progress={(curMonthCoins+curMonthTrophies) / starTimePeriod} />
+                                <Star size={32} progress={(curMonthCoins+curMonthTrophies) > starTimePeriod? ((curMonthCoins+curMonthTrophies) - starTimePeriod)/starTimePeriod : 0} />
+                                <Star size={24} progress={(curMonthCoins+curMonthTrophies) > (2*starTimePeriod)? ((curMonthCoins+curMonthTrophies) - 2*starTimePeriod)/starTimePeriod : 0} />
                               </View>
                               <View style={styles.horizontalLine} />
                             </View>
@@ -413,7 +390,7 @@ const GamePage = (props) => {
                     {tiles.map((tile, index) => (
                       <TouchableOpacity key={index} 
                         style={{ position: 'relative', width: 35, height: 35, backgroundColor: tile >= 1? COLORS.white1 : COLORS.white3, borderRadius: 5, opacity: tile >= 1? 0.7 : 0.5 }}>
-                          {(curProgress-1)===index && (
+                          {curProgress===index && (
                             <View style={styles.tileInnerImgContainer}>
                               <Image 
                                 source={images.boy_gamer}
@@ -421,7 +398,7 @@ const GamePage = (props) => {
                               />
                             </View>
                           )}
-                          {(curProgress-1) > index && (
+                          {curProgress > index && (
                             tile >= 1?
                             tile===2? (
                               <View style={styles.tileInnerImgContainer}>
@@ -434,7 +411,7 @@ const GamePage = (props) => {
                               tile >= 3? (
                                 <View style={styles.tileInnerImgContainer}>
                                   <Image 
-                                    source={images[`dice${Math.max(1,Math.min(6, tile-3))}`]}
+                                    source={images.dice6}
                                     style={[styles.tileInnerImg, { tintColor: COLORS.main3 }]}
                                   />
                                 </View>  
