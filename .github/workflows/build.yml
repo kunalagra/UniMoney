@@ -12,6 +12,10 @@ jobs:
       - name: Install npm dependencies
         run: |
           npm install
+      - uses: actions/setup-java@v4
+        with:
+           distribution: 'microsoft' # See 'Supported distributions' for available options
+           java-version: '17'
   build-android:
     needs: install-and-test
     runs-on: ubuntu-latest
