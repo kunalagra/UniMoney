@@ -1,16 +1,72 @@
 "use strict";
 import { SafeAreaView, View, Text, ScrollView, StatusBar, TouchableOpacity, Image, Switch , ToastAndroid} from "react-native";
-import { COLORS, SHADOWS, icons, images } from "../../constants";
+import { COLORS, SHADOWS, icons, images, FONT, SIZES } from "../../constants";
 import { useState, useEffect } from "react";
 import styles from "./settingspage.style";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector } from "react-redux";
+import CustomButton from '../../components/profilecreation/common/button/CustomButton';
 import LinearGradient from "react-native-linear-gradient";
 import axios from "axios";
+import { Dialog, Icon, Input } from '@rneui/themed';
 import { REACT_APP_BACKEND_URL } from "@env";
 
 
+
+const DeleteModal = ({ deleteModalOpen, setDeleteModalOpen }) => {
+    const handleDelete = async () => {
+        const options = {
+        method: 'DELETE',
+        url: `${REACT_APP_BACKEND_URL}/transaction/cleardata`,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + await AsyncStorage.getItem('token')
+        }
+    };
+    try {
+        const response = await axios(options);
+        ToastAndroid.show("Data cleared successfully", ToastAndroid.SHORT);
+    }
+    catch (error) {
+        console.log(error);
+    }
+    }
+
+    return (
+        <Dialog
+            animationType="slide"
+            transparent={true}
+            isVisible={deleteModalOpen}
+            onRequestClose={() => {
+                setDeleteModalOpen(false);
+            }}
+            onBackdropPress={() => {
+                setDeleteModalOpen(false);
+            }}
+            overlayStyle={{ borderRadius: 8, width: 330 }}
+        >
+            <View style={{ gap: 20 }}>
+                <Text style={{color: COLORS.gray2, fontFamily: FONT.medium, fontSize: SIZES.medium + 2}}>
+                    Reset app data
+                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', gap: 10}}>
+                    <CustomButton
+                        title="Cancel"
+                        handlePress={() => setDeleteModalOpen(false)}
+                        inlineStyles={[{ paddingVertical: 8, paddingHorizontal: 12, backgroundColor: COLORS.red0 }]}
+                    />
+                    <CustomButton
+                        title="Confirm"
+                        handlePress={() => handleDelete()}
+                        inlineStyles={[{ paddingVertical: 8, paddingHorizontal: 12, backgroundColor: COLORS.white3 }]}
+                        textStyles={[{ color: COLORS.red0 }]}
+                    />
+                </View>
+            </View>
+        </Dialog>
+    )
+}
 
 const SettingsPage = (props) => {
 
@@ -20,6 +76,7 @@ const SettingsPage = (props) => {
     const [isBudgetMode, setIsBudgetMode] = useState(false);
     const [isPushNotifications, setIsPushNotifications] = useState(false);
     const [isExpenseReminderOn, setIsExpenseRemainderOn] = useState(false);
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
     useEffect(() => {
         const getsettings = async () => {
@@ -90,23 +147,7 @@ const SettingsPage = (props) => {
             title: "Reset app data",
             image: images.bin,
             desc: "Delete app data and set it up again",
-            handlePress: async () => {
-                const options = {
-                method: 'DELETE',
-                url: `${REACT_APP_BACKEND_URL}/transaction/cleardata`,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + await AsyncStorage.getItem('token')
-                }
-            };
-            try {
-                const response = await axios(options);
-                ToastAndroid.show("Data cleared successfully", ToastAndroid.SHORT);
-            }
-            catch (error) {
-                console.log(error);
-            }
-            }
+            handlePress: () => setDeleteModalOpen(true),
         },
         {
             title: "About us",
@@ -174,6 +215,10 @@ const SettingsPage = (props) => {
             <StatusBar
                 barStyle={'dark-content'}
                 backgroundColor={COLORS.white2}
+            />
+            <DeleteModal 
+                deleteModalOpen={deleteModalOpen}
+                setDeleteModalOpen={setDeleteModalOpen}
             />
             <ScrollView>
                 <View style={styles.container}>
