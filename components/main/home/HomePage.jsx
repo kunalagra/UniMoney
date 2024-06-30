@@ -487,13 +487,14 @@ const fetchDataIfPermissionsGranted = async () => {
                                         name={item.name}
                                         image={item.category.img}
                                         url={true}
-                                        description={item.timestamp}
+                                        timestamp={item.timestamp}
                                         amount={item.amount}
                                         isExpense={item.isExpense}
                                         navigateTo={navigateTo}
                                         category={item.category.name}
                                         id={item._id}
-                                        acc={item.acc}
+                                        accountNumber={item.acc}
+                                        tnxid={item.txid}
                                     />
                                 ))}
                             </View>

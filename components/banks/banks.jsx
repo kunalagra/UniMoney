@@ -121,6 +121,11 @@ const Banks = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
+            <StatusBar
+                barStyle={'dark-content'}
+                backgroundColor={COLORS.white2}
+            />
+
             <View style={styles.navbar}>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <ArrowleftIcon style={styles.arrowleftIcon} fill={COLORS.gray3} />

@@ -19,6 +19,7 @@ import category_bw from "../assets/images/category_bw.png";
 import chaticon from "../assets/images/chaticon.png";
 import closeicon from "../assets/images/close.png";
 import coinstack from "../assets/images/coinsstack.png";
+import copy from "../assets/images/copy.png";
 import creditcards from "../assets/images/creditcards.png";
 import database from "../assets/images/database.png";
 import databaseicon from "../assets/images/databaseicon.png";
@@ -100,6 +101,7 @@ export default {
     chaticon,
     closeicon,
     coin,
+    copy,
     coinstack,
     creditcards,
     database,

@@ -158,9 +158,7 @@ const styles = StyleSheet.create({
     },
 
     starProgressContainer: {
-        borderRadius: 10, 
-        elevation: 10, 
-        ...SHADOWS.medium,
+        borderRadius: 10
     },
 
     starProgressGradientContainer: {

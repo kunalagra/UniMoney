@@ -320,6 +320,7 @@ const AddTransactionPage = (props) => {
                                 placeholderTextColor={COLORS.gray3}
                                 multiline
                                 numberOfLines={5}
+                                maxLength={200}
                             />
                         </View>
 

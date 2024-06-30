@@ -577,10 +577,10 @@ const InsightsPage = (props) => {
                                                     name={item.name}
                                                     image={item.image}
                                                     url={true}
-                                                    description={`${Math.round((item.amount/totalSpends).toFixed(2) * 100)}% of total spends`}
+                                                    timestamp={`${Math.round((item.amount/totalSpends).toFixed(2) * 100)}% of total spends`}
                                                     amount={item.amount}
                                                     isExpense={true}
-                                                    acc={item.acc}
+                                                    accountNumber={item.acc}
                                                     navigateTo={() => { props.navigation.navigate('TransactionByInsights', { alltransactions: spendTransactions, name: item.name }) }} 
                                                 />
                                             )) : (
@@ -595,7 +595,7 @@ const InsightsPage = (props) => {
                                                     name={item.name}
                                                     image={item.image}
                                                     url={true}
-                                                    description={`${Math.round((item.amount/totalIncome).toFixed(2) * 100)}% of total income`}
+                                                    timestamp={`${Math.round((item.amount/totalIncome).toFixed(2) * 100)}% of total income`}
                                                     amount={item.amount}
                                                     isExpense={false}
                                                     acc={item.acc}

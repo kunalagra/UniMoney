@@ -19,7 +19,7 @@ const GamePage = (props) => {
   const [curDate, setCurDate] = useState(date);
   const [refreshing, setRefreshing] = useState(false);
   const [diceModalVisible, setDiceModalVisible] = useState(false);
-  const [curProgress, setCurProgress] = useState(0);
+  const [curProgress, setCurProgress] = useState(-1);
   const [curDiceNo, setCurDiceNo] = useState(1);
   const [done, setDone] = useState(0);
   const scrollViewRef = useRef(null);
@@ -94,12 +94,13 @@ const GamePage = (props) => {
       const response = await axios(options);
       const loggedInData = response.data.streak.data;
       let blocks = [];
-      let lastOne = 0, curCoins = 0, curTrophies = 0;
+      let lastOne = -1, curCoins = 0, curTrophies = 0;
       const monthKey = `${months[curDate.getMonth()]}'${curDate.getFullYear().toString().slice(2)}`;
 
+      
       if (loggedInData[monthKey]) {
         blocks = [...loggedInData[monthKey].days];
-        for (let i=0; i < noOfDaysInMonth-1; i++) {
+        for (let i=0; i < noOfDaysInMonth; i++) {
           if (blocks[i] >= 1) {
             lastOne = i; curCoins++;
             if (blocks[i]===2) curTrophies++;
@@ -107,7 +108,7 @@ const GamePage = (props) => {
           }
         }
       } else {
-        for (let i=0; i < noOfDaysInMonth-1; i++) {
+        for (let i=0; i < noOfDaysInMonth; i++) {
           blocks.push(0);
         }
       }

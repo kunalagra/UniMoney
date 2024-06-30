@@ -243,17 +243,17 @@ const TransactionByBank = (props) => {
                                     <View style={styles.transactionsContainer}>
                                         {transactionsData.map((item, index) => (
                                             <TransactionCard
-                                            key={index}
-                                            name={item.name}
-                                            image={item.image}
-                                            description={item.timestamp}
-                                            amount={item.amount}
-                                            isExpense={item.isExpense}
-                                            navigateTo={props.navigation.navigate}
-                                            category={item.category.name}
-                                            id={item._id}
-                                            acc={item.acc}
-                                        />
+                                                key={index}
+                                                name={item.name}
+                                                image={item.image}
+                                                timestamp={item.timestamp}
+                                                amount={item.amount}
+                                                isExpense={item.isExpense}
+                                                navigateTo={props.navigation.navigate}
+                                                category={item.category.name}
+                                                id={item._id}
+                                                accountNumber={item.acc}
+                                            />
                                         ))}
                                     </View>
                                 ) : (

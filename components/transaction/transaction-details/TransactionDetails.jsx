@@ -1,6 +1,6 @@
 import {Text, View, TouchableOpacity, ScrollView, Image, SafeAreaView, StatusBar, RefreshControl, ToastAndroid } from 'react-native';
 import styles from './transactiondetails.style';
-import { COLORS, FONT, SIZES, icons } from '../../../constants';
+import { COLORS, FONT, SIZES, icons, images } from '../../../constants';
 import { useCallback, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -11,6 +11,7 @@ import { Dialog, Icon, Input } from '@rneui/themed';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { Dropdown } from 'react-native-element-dropdown';
 import { setAllTransactions } from '../../../store/transactiondata'
+import Clipboard from '@react-native-clipboard/clipboard';
 
 
 const CategoryCard = ({id, category, selectedCategory, setSelectedCategory, tranID}) => {
@@ -88,7 +89,7 @@ const CustomDropdown = ({data, value, setValue}) => {
     )
 }
 
-const EditModal = ({ editModalOpen, setEditModalOpen, selTypeOfPayment, selAccount, selReceiverID, selCategory, selAmount, selDesc, tranID, updatedTransaction }) => {
+const EditModal = ({ editModalOpen, setEditModalOpen, selTypeOfPayment, selAccount, selReceiverID, selCategory, selAmount, selDesc, tranID, updatedTransaction, useNavigate }) => {
 
     const [accountList, setAccountList] = useState([{
         label: "No Account Selected",
@@ -130,7 +131,6 @@ const EditModal = ({ editModalOpen, setEditModalOpen, selTypeOfPayment, selAccou
                     }
                 }));
                 setCategoryList(response.data.category.map((item) => {
-                    // console.log(item);
                     if (item.details)
                     return {
                         label: item.details.name,
@@ -147,7 +147,6 @@ const EditModal = ({ editModalOpen, setEditModalOpen, selTypeOfPayment, selAccou
 
     const handleUpdate = async () => {
       setUpdating(true);
-    //   console.log(tranID);
       const options = {
         method: 'PUT',
         url: `${REACT_APP_BACKEND_URL}/transaction/${tranID}`,
@@ -231,14 +230,25 @@ const EditModal = ({ editModalOpen, setEditModalOpen, selTypeOfPayment, selAccou
                     <CustomDropdown data={typeOfPaymentList} value={typeOfPayment} setValue={setTypeOfPayment} />
                 </View>
 
-                {accountList.length > 0 && (
-                    <View style={styles.rowField}>
-                        <Text style={styles.rowHeader}>
-                            { typeOfPayment === "debit" ? "Debit\n" : "Credit\n" }Account
-                        </Text>
+                <View style={styles.rowField}>
+                    <Text style={styles.rowHeader}>
+                        { typeOfPayment === "debit" ? "Debit\n" : "Credit\n" }Account
+                    </Text>
+
+                    {accountList.length > 0? (
                         <CustomDropdown data={accountList} value={account} setValue={setAccount} />
-                    </View>
-                )}
+                    ) : (
+                        <CustomButton
+                            title={"Add an account"}
+                            inlineStyles={[{ backgroundColor: COLORS.gray1, width: 190 }]}
+                            handlePress={() => {
+                                setEditModalOpen(false);
+                                useNavigate('Banks');
+                            }}
+                        />
+                    )}
+
+                </View>
 
                 <View style={styles.rowField}>
                     <Text style={styles.rowHeader}>
@@ -279,6 +289,7 @@ const EditModal = ({ editModalOpen, setEditModalOpen, selTypeOfPayment, selAccou
                         placeholderTextColor={COLORS.gray3}
                         multiline
                         numberOfLines={5}
+                        maxLength={200}
                     />
                 </View>
 
@@ -388,11 +399,10 @@ const TransactionDetailsPage = (props) => {
     const [selectedCategory, setSelectedCategory] = useState(transaction.category);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-
     const { ArrowleftIcon } = icons;
     const { Categories, alltransactions } = useSelector(state => state.transactiondata);
+    const [showDetails, setShowDetails] = useState(false);
     const [isCredited, setIsCredited] = useState(transaction.isExpense ? false : true);
-
     const [refreshing, setRefreshing] = useState(false);
 
     const onRefresh = useCallback(() => {
@@ -453,6 +463,7 @@ const TransactionDetailsPage = (props) => {
             />
             
             <EditModal 
+                useNavigate={props.navigation.navigate}
                 editModalOpen={editModalOpen} 
                 setEditModalOpen={setEditModalOpen}
                 selTypeOfPayment={isCredited? 'credit' : 'debit'}
@@ -526,6 +537,55 @@ const TransactionDetailsPage = (props) => {
                                     ₹ {transaction.amount}
                                 </Text>
                             </View>
+                            {transaction.tnxid && transaction.tnxid!=='0' && (
+                                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: COLORS.white5, borderRadius: 20, paddingHorizontal: 14, paddingVertical: 5 }}
+                                    onPress={() => {
+                                        Clipboard.setString(transaction.tnxid);
+                                        ToastAndroid.show('Copied', ToastAndroid.LONG);
+                                    }}
+                                >
+                                    <Text style={{ color: COLORS.gray2, fontFamily: FONT.regular, fontSize: SIZES.small }}>
+                                        TnxID: {transaction.tnxid}
+                                    </Text>
+                                    <Image
+                                        source={images.copy}
+                                        alt="copy"
+                                        style={{ width: 12, height: 12, objectFit: 'contain', tintColor: COLORS.gray2 }}
+                                    />
+                                </TouchableOpacity>
+                            )}
+                            {transaction.description && (
+                                <View>
+                                    {showDetails? (
+                                        <View style={{ justifyContent: 'center', gap: 8, backgroundColor: COLORS.white5, borderRadius: 20, paddingHorizontal: 14, paddingVertical: 10 }}>
+                                            <Text style={{ color: COLORS.gray2, fontFamily: FONT.regular, fontSize: SIZES.small }}>
+                                              {transaction.description}
+                                            </Text>
+                                            <TouchableOpacity
+                                              onPress={() => setShowDetails(false)}
+                                            >
+                                              <Text style={{ color: COLORS.gray2, fontFamily: FONT.regular, fontSize: SIZES.small, textAlign: 'center' }}>
+                                                  <Text style={{ textDecorationLine: 'underline' }}>
+                                                      Hide details
+                                                  </Text>
+                                                  ▲
+                                              </Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    ) : (
+                                        <TouchableOpacity
+                                            onPress={() => setShowDetails(true)}
+                                        >
+                                            <Text style={{ color: COLORS.gray2, fontFamily: FONT.regular, fontSize: SIZES.small }}>
+                                                <Text style={{ textDecorationLine: 'underline' }}>
+                                                    Show details
+                                                </Text>
+                                                ▼
+                                            </Text>
+                                        </TouchableOpacity>
+                                    )}
+                                </View>
+                            )}
                         </View>
                     </View>
                 </View>

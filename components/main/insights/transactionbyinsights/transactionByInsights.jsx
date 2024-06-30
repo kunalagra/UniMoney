@@ -97,13 +97,13 @@ const TransactionByInsights = (props) => {
                                             key={index}
                                             name={item.name}
                                             image={item.image}
-                                            description={item.timestamp}
+                                            timestamp={item.timestamp}
                                             amount={item.amount}
                                             isExpense={item.isExpense}
                                             navigateTo={props.navigation.navigate}
                                             category={item.category.name}
                                             id={item._id}
-                                            acc={item.acc}
+                                            accountNumber={item.acc}
                                         />
                                     ))}
                                 </View>
