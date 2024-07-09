@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href=""><img src="https://github.com/kunalagra/UniMoney/assets/87692393/0bcd7080-73fa-4d68-bb02-f5d0adf36f2f" alt="Unimoney" width="200"></a>
+  <a href=""><img src="https://raw.githubusercontent.com/kunalagra/UniMoney/main/assets/images/Logo_1.png" alt="Unimoney" width="200"></a>
   <br>
   UniMoney - Manage Your Money
   <br>
@@ -16,7 +16,7 @@
   <a href="#license">License</a>
 </p>
 
-![screenshot]()
+![screenshot](https://raw.githubusercontent.com/kunalagra/UniMoney/main/assets/images/screenshot.png)
 
 ## Key Features
 
