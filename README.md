@@ -1,79 +1,104 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+<h1 align="center">
+  <br>
+  <a href=""><img src="https://raw.githubusercontent.com/kunalagra/UniMoney/main/assets/images/Logo_1.png" alt="Unimoney" width="200"></a>
+  <br>
+  UniMoney - Manage Your Money
+  <br>
+</h1>
 
-# Getting Started
+<h4 align="center">Automated Personal Finance Management</h4>
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+<p align="center">
+  <a href="#key-features">Key Features</a> •
+  <a href="#how-to-use">How To Use</a> •
+  <a href="#credits">Credits</a> •
+  <a href="#collaborators">Collaborators</a> •
+  <a href="#license">License</a>
+</p>
 
-## Step 1: Start the Metro Server
+![screenshot]()
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## Key Features
 
-To start Metro, run the following command from the _root_ of your React Native project:
+* Automated Transaction Extraction from SMS (using [transaction-sms-parser](https://github.com/kunalagra/transaction-sms-parser/))
+* Sync Data so that you dont loose data ([Backend Code](https://github.com/kunalagra/UniMoney-Backend))
+* CRUD Operations for Trnasactions
+* Categories your income/spend from default or create new
+* Create Reminders so that you never miss a payment 
+* Set Budgets based on Category
+* Compete with your friends for Leaderboard
+* Transaction History & Analytics Dashboard
+* Support for Wallet, Cards and Bank Accounts
+* Monochrome Icon for A13+
+
+## How To Use
+
+To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
 
 ```bash
-# using npm
-npm start
+# Clone this repository
+$ git clone https://github.com/kunalagra/UniMoney
 
-# OR using Yarn
-yarn start
+# Go into the repository
+$ cd UniMoney
+
+# Rename .env.example to .env
+$ mv .env.example .env
+
+# Install dependencies
+$ npm install
+
+# Run the app
+$ npm run start
 ```
+> [!IMPORTANT]  
+> Populate your .env keys with their respective values. 
 
-## Step 2: Start your Application
+> [!NOTE]
+> If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+## Credits
 
-### For Android
+This software uses the following packages:
 
-```bash
-# using npm
-npm run android
+- [React Native](https://reactnative.dev/)
+- Various Other deps
 
-# OR using Yarn
-yarn android
-```
+## Collaborators
+<table>
+<tr>
+    <td align="center">
+        <a href="https://github.com/kunalagra">
+            <img src="https://avatars.githubusercontent.com/u/66416646?v=4" width="100;" alt="kunalagra"/>
+            <br />
+            <sub><b>Kunal Agrawal</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/ganesh-utla">
+            <img src="https://avatars.githubusercontent.com/u/87692393?v=4" width="100;" alt="ganesh-utla"/>
+            <br />
+            <sub><b>Ganesh Utla</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/MDeexith">
+            <img src="https://avatars.githubusercontent.com/u/88663554?v=4" width="100;" alt="MDeexith"/>
+            <br />
+            <sub><b>Deexith Madas</b></sub>
+        </a>
+    </td>
 
-### For iOS
+ </tr>
+</table>
 
-```bash
-# using npm
-npm run ios
 
-# OR using Yarn
-yarn ios
-```
+## You may also like...
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+- [Codegamy](https://github.com/kunalagra/codegamy) - A Coding and Interview Platform
+- [Sikho](https://github.com/kunalagra/sikho) - Professional Learning Marketplace
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+## License
 
-## Step 3: Modifying your App
+AGPL-3
 
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
