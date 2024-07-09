@@ -16,7 +16,8 @@
   <a href="#license">License</a>
 </p>
 
-![screenshot](https://raw.githubusercontent.com/kunalagra/UniMoney/main/assets/images/screenshot.png)
+![screenshot 1](https://raw.githubusercontent.com/kunalagra/UniMoney/main/assets/images/screenshot.png)
+![screenshot 2](https://raw.githubusercontent.com/kunalagra/UniMoney/main/assets/images/screenshot_2.png)
 
 ## Key Features
 
