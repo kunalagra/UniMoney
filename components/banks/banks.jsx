@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { SafeAreaView, View, Text, ScrollView, StatusBar, TouchableOpacity, Image, RefreshControl, Button } from "react-native";
+import { SafeAreaView, View, Text, ScrollView, StatusBar, TouchableOpacity, Image, RefreshControl, Button, ToastAndroid } from "react-native";
 import { COLORS, FONT, SIZES, icons, images } from "../../constants";
 import { Input, Icon } from '@rneui/themed';
 import styles from "./banks.style";
@@ -98,7 +98,7 @@ const Banks = ({ navigation }) => {
         };
         try {
             const response = await axios.request(options);
-            console.log(response.data);
+            ToastAndroid.show('Bank Account Linked', ToastAndroid.SHORT);
         } catch (error) {
             console.error(error);
         } finally {

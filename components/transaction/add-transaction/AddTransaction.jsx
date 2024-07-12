@@ -13,7 +13,7 @@ import { setAllTransactions } from '../../../store/transactiondata'
 import { useSelector, useDispatch } from 'react-redux';
 import { formatDateTime } from "../../../utils";
 
-const CustomDropdown = ({data, value, setValue}) => {
+const CustomDropdown = ({data, value, setValue, icon='', setIcon}) => {
     return (
         <Dropdown
             style={{backgroundColor: COLORS.white3, borderColor: COLORS.white5, borderWidth: 1, borderRadius: 8, paddingHorizontal: 8, width: 200}}
@@ -24,9 +24,35 @@ const CustomDropdown = ({data, value, setValue}) => {
             placeholder={data[0].label}
             labelField="label"
             valueField="value"
+            renderLeftIcon={(item) => {
+                return (
+                    <>
+                    {icon &&
+                    <Image
+                        source={{uri: icon}}
+                        style={{width: 20, height: 20, marginRight: 10}}
+                    />}
+                    </>
+                )
+            }}
+            renderItem={(item) => {
+                return (
+                    <View style={{flexDirection: 'row', alignItems: 'center', margin:15}}>
+                        {item.image &&
+                        <Image
+                            source={{uri: item.image}}
+                            style={{width: 20, height: 20, marginRight: 10}}
+                        />}
+                        <Text style={{fontFamily: FONT.regular, fontSize: SIZES.medium-2, color: COLORS.gray3}}>
+                            {item.label}
+                        </Text>
+                    </View> 
+                )         
+            }}
             value={value}
             onChange={item => {
                 setValue(item.value);
+                setIcon(item.image);
             }}
         />
     )
@@ -75,6 +101,7 @@ const AddTransactionPage = (props) => {
     const [accountList, setAccountList] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [icon, setIcon] = useState('');
 
     useEffect(() => {
         setLoading(true);
@@ -107,12 +134,13 @@ const AddTransactionPage = (props) => {
                     }
                 ]
             });
-
+            setIcon(response.data.category[0].details.img);
                 setCategoryList(response.data.category.map((item) => {
                     if (item.details)
                     return {
                         label: item.details.name,
-                        value: item.details.name
+                        value: item.details.name,
+                        image: item.details.img
                     }
                 }));
                 setLoading(false);
@@ -161,6 +189,7 @@ const AddTransactionPage = (props) => {
 
             dispatch(setAllTransactions(newTransactionList));
             
+            ToastAndroid.show("Transaction added successfully", ToastAndroid.SHORT);
             props.navigation.pop();
             // console.log(response);
         } catch (error) {
@@ -328,7 +357,7 @@ const AddTransactionPage = (props) => {
                             <Text style={styles.rowHeader}>
                                 Category
                             </Text>
-                            <CustomDropdown data={categoryList} value={category} setValue={setCategory} />
+                            <CustomDropdown data={categoryList} value={category} setValue={setCategory} icon={icon} setIcon={setIcon} />
                         </View>
 
                         <View style={styles.rowField}>

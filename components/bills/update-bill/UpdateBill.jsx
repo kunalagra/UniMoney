@@ -149,6 +149,7 @@ const UpdateBill = (props) => {
                     allowWhileIdle: true,
                     // repeatType: reminder === "does-not-repeat" ? '' : reminder === "monthly" ? 'month' : reminder === "bi-monthly" ? 'month' : reminder === "quarterly" ? 'month' : reminder === "every-6-months" ? 'month' : 'year',
                 });
+                ToastAndroid.show('Reminder updated successfully', ToastAndroid.SHORT);
                 props.navigation.pop();
             });
 
@@ -171,6 +172,7 @@ const UpdateBill = (props) => {
         };
         try {
             const response = await axios.request(options)
+            ToastAndroid.show('Reminder deleted successfully', ToastAndroid.SHORT);
         } catch (error) {
             console.log(error);
         }

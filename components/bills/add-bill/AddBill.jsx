@@ -146,6 +146,7 @@ const AddTransactionPage = (props) => {
                     allowWhileIdle: true,
                     // repeatType: reminder === "does-not-repeat" ? '' : reminder === "monthly" ? 'month' : reminder === "bi-monthly" ? 'month' : reminder === "quarterly" ? 'month' : reminder === "every-6-months" ? 'month' : 'year',
                 });
+                ToastAndroid.show('Reminder set successfully', ToastAndroid.SHORT);
                 props.navigation.pop();
             });
 

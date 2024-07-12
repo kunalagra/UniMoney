@@ -323,6 +323,8 @@ const HistoryPage = ({ navigateTo }) => {
                                                 id={item._id}
                                                 accountNumber={item.acc}
                                                 url={true}
+                                                tnxid={item.txid}
+                                                description={item.comment}
                                             />
                                         ))}
                                     </View>

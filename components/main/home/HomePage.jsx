@@ -486,7 +486,6 @@ const fetchDataIfPermissionsGranted = async () => {
                                         key={index}
                                         name={item.name}
                                         image={item.category.img}
-                                        url={true}
                                         timestamp={item.timestamp}
                                         amount={item.amount}
                                         isExpense={item.isExpense}
@@ -494,7 +493,9 @@ const fetchDataIfPermissionsGranted = async () => {
                                         category={item.category.name}
                                         id={item._id}
                                         accountNumber={item.acc}
+                                        url={true}
                                         tnxid={item.txid}
+                                        description={item.comment}
                                     />
                                 ))}
                             </View>

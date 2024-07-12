@@ -350,6 +350,7 @@ const DeleteModal = ({ deleteModalOpen, setDeleteModalOpen, tranID, navigation }
             const updatedTransactions = alltransactions.filter((item) => item._id !== tranID);
             // console.log(updatedTransactions);
             dispatch(setAllTransactions(updatedTransactions));
+            ToastAndroid.show('Transaction deleted', ToastAndroid.SHORT);
             navigation.pop();
         }
         catch (error) {
@@ -429,6 +430,7 @@ const TransactionDetailsPage = (props) => {
                 amount: response.data.amount,
                 category: response.data.category.name,
                 isExpense: response.data.type === "debit",
+                description: response.data.comment
             });
             // update the transaction in the alltransactions array in redux
             const updatedTransactions = alltransactions.map((item) => {
@@ -438,13 +440,15 @@ const TransactionDetailsPage = (props) => {
                         name: response.data.name,
                         amount: response.data.amount,
                         category: response.data.category,
-                        isExpense: response.data.type === "debit"
+                        isExpense: response.data.type === "debit",
+                        description: response.data.comment
                     }
                 }
                 return item;
             }
             );
             // console.log(updatedTransactions);
+            ToastAndroid.show('Transaction updated', ToastAndroid.SHORT);
             dispatch(setAllTransactions(updatedTransactions));
             setSelectedCategory(response.data.category.name);
             setIsCredited(response.data.type === "credit");
@@ -469,7 +473,7 @@ const TransactionDetailsPage = (props) => {
                 selTypeOfPayment={isCredited? 'credit' : 'debit'}
                 selAccount={transaction.acc}
                 selReceiverID={transaction.name}
-                selDesc={''}
+                selDesc={transaction.description}
                 selCategory={selectedCategory}
                 selAmount={transaction.amount}
                 tranID={transaction.id}

@@ -96,7 +96,7 @@ const TransactionByInsights = (props) => {
                                         <TransactionCard
                                             key={index}
                                             name={item.name}
-                                            image={item.image}
+                                            image={item.category.img}
                                             timestamp={item.timestamp}
                                             amount={item.amount}
                                             isExpense={item.isExpense}
@@ -104,6 +104,9 @@ const TransactionByInsights = (props) => {
                                             category={item.category.name}
                                             id={item._id}
                                             accountNumber={item.acc}
+                                            url={true}
+                                            tnxid={item.txid}
+                                            description={item.comment}
                                         />
                                     ))}
                                 </View>
