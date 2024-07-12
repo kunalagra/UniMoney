@@ -52,7 +52,9 @@ const CustomDropdown = ({data, value, setValue, icon='', setIcon}) => {
             value={value}
             onChange={item => {
                 setValue(item.value);
+                if(icon){
                 setIcon(item.image);
+                }
             }}
         />
     )
